@@ -1,7 +1,7 @@
-## Group's Member Names
+## Team Members
 
-Ovinson Abel Lugo Rosado
-Stacy Ann M. Yarrington
-Aruzhan Abilmazhin
-Nefi Zaldana
-Marco Tulio Salcedo
+- Ovinson Abel Lugo Rosado
+- Stacy Ann M. Yarrington
+- Aruzhan Abilmazhin
+- Nefi Zaldana
+- Marco Tulio Salcedo
