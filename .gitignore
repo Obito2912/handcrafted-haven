@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Only ignore specific JS files in root if needed
+# next.config.js should be committed
+# **/*.js  # Remove this line - it's too broad
+# *.jsx    # Remove this line - it's too broad
