@@ -12,6 +12,17 @@ export type UserProfile = {
     age: number | null;
     gender: 'male' | 'female' | null;
     bio: string | null;
-    profile_picture: string | null;
+    image_url: string | null;
+    created_at: string; // ISO date string
+}
+
+export type Product = {
+    product_id: string;
+    title: string;
+    description: string;
+    image_url: string;
+    user_id: string;
+    quantity: number;
+    price: number;
     created_at: string; // ISO date string
 }
