@@ -25,7 +25,7 @@ async function seedUserProfilesTable() {
         gender TEXT
             CHECK (gender IN ('male', 'female')),
         bio TEXT,
-        profile_picture TEXT,
+        image_url TEXT,
         created_at TIMESTAMP DEFAULT now(),
         
         CONSTRAINT fk_user_profiles_user
@@ -34,4 +34,17 @@ async function seedUserProfilesTable() {
                 ON DELETE CASCADE  
     )`;
     // Seed initial userProfiles
+}
+
+async function seedProductsTable() {
+    await sql`CREATE TABLE IF NOT EXISTS products (
+ product_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+ title TEXT NOT NULL,
+ description TEXT NOT NULL,
+ image_url TEXT NOT NULL,
+ user_id UUID NOT NULL REFERENCES users(id),
+ quantity INT NOT NULL CHECK (quantity >= 0),
+ price DECIMAL(10,2) NOT NULL
+)`;
+    // Seed initial products
 }

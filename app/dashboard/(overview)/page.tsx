@@ -1,5 +1,10 @@
-export default function Home() {
+import ProductCardWrapper from '@/app/ui/dashboard/product-cards';
+
+export default async function Home() {
   return (
-    <div>This will be the page that shows after the user is logged on</div>
+    <main className="p-4">
+      <h1 className="mb-4 text-2xl font-semibold">Your Products</h1>
+      <ProductCardWrapper />
+    </main>
   );
 }
