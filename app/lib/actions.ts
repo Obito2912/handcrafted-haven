@@ -7,12 +7,12 @@ import { revalidatePath } from 'next/cache';
 import bcrypt from 'bcrypt';
 import { signIn } from '@/auth'; 
 import { AuthError } from 'next-auth';
-import { SignupFormSchema, State } from './schemas';
+import { SignupFormSchema, ProfileSchema, AuthFormState, ProfileFormState } from './schemas';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function handleAuth(
-    prevState: State | undefined,
+    prevState: AuthFormState | undefined,
     formData: FormData,
 ) {
     console.log('handleAuth called');
@@ -27,7 +27,7 @@ export async function handleAuth(
         return await authenticate(formData);
     }
 }    
-async function createUserProfile(prevState: State, formData: FormData) { 
+async function createUserProfile(prevState: AuthFormState | undefined, formData: FormData) { 
     const validatedFields = SignupFormSchema.safeParse({
         name: formData.get('name'),
         email: formData.get('email'),
@@ -71,6 +71,57 @@ async function createUserProfile(prevState: State, formData: FormData) {
     redirect('/login');
 }
 
+async function updateUserProfile(prevState: ProfileFormState | undefined, formData: FormData) { 
+    const validatedFields = ProfileSchema.safeParse({
+        user_id: formData.get('user_id')?.toString(),
+        name: formData.get('name'),
+        age: formData.get('age'),
+        gender: formData.get('gender'),
+        bio: formData.get('bio'),
+        image_url: formData.get('image_url'),
+    });
+
+    if (!validatedFields.success) {
+      return {
+        errors: z.prettifyError(validatedFields.error),
+        message: z.prettifyError(validatedFields.error),
+        values: {
+            user_id: formData.get('user_id')?.toString(),            
+            name: formData.get('name')?.toString(),
+            age: formData.get('age')?.toString(),
+            gender: formData.get('gender')?.toString(),
+            bio: formData.get('bio')?.toString(),
+            image_url: formData.get('image_url')?.toString(),
+        },        
+      };
+    }
+
+    const { user_id, name, age, gender, bio, image_url } = validatedFields.data;    
+    const date = new Date().toISOString().split('T')[0];
+    try {
+        const [user] = await sql`
+            UPDATE user_profiles 
+            SET
+                name = ${name},
+                age = ${age},
+                gender = ${gender},
+                bio = ${bio},
+                image_url = ${image_url},
+                updated_at = ${date}
+            WHERE user_id = ${user_id}
+        `;
+        
+    } catch (error) {
+        console.error('Error updating user:', error);
+        return {
+            message: 'Error updating user. Please try again.',
+        };
+    }
+    //TODO Where to go?
+    revalidatePath('/profile');
+    redirect('/profile');
+}
+
 async function authenticate(formData: FormData) {
     console.log('authenticate called');
     try {
@@ -89,3 +140,6 @@ async function authenticate(formData: FormData) {
         throw error;  // Re-throw if not an AuthError
     }
 }
+
+
+

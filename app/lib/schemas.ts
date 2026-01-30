@@ -16,15 +16,30 @@ const FormSchema = z.object({
 
 export const LoginFormSchema = FormSchema.omit({ name: true});
 export const SignupFormSchema = FormSchema;
-export type State = {
-    errors?: {
-        name?: string[];
-        email?: string[];
-        password?: string[];
-    };
+type FormState<TFields extends string> = {
+    errors?: Partial<Record<TFields, string[]>>;
     message?: string | null;
     values?: {
     name?: string;
     email?: string;
 }
 };
+
+export type AuthFormState = FormState<'name' | 'email' | 'password'>;
+export type ProfileFormState = FormState<'user_id' | 'name' | 'bio' | 'gender' | 'image_url' | 'age'>;
+export const ProfileSchema = z.object({
+    user_id: z.uuid(),
+    name: z.string()
+      .min(2, 'Name must be at least 2 characters')
+      .max(100),
+    bio: z.string()
+      .max(500, 'Bio must be at most 500 characters'),
+    gender: z.enum(['Male', 'Female']),
+    image_url: z.string()
+    //.url('Image URL must be a valid URL')
+    .max(200, 'Image URL must be at most 200 characters'),
+    age: z.number()
+      .min(10, 'Age must be at least 10')
+      .max(120, 'Age must be at most 120')
+      .nullable(),
+});

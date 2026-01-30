@@ -6,7 +6,7 @@ import {
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-export async function fetchProductData(): Promise<{ productData: Product[] }> {
+export async function fetchProductData(): Promise<{ productData: Product[], rating: number }> {
     try 
     {
         // Artificially delay a response for demo purposes.
@@ -29,9 +29,22 @@ export async function fetchProductData(): Promise<{ productData: Product[] }> {
             ORDER BY created_at DESC
         `;
         console.log('Product data fetched:', productData.length);
-    return { productData };
+        //TODO Stacy create product ratings table
+        //TODO Nefi get all the ratings for each product and calculate average rating
+        //table defined in lib/definitions.ts
+        const rating = 4;
+    return { productData, rating };//Return rating also
     } catch (error) {       
         console.error('Error fetching product data:', error);
         throw new Error('Failed to fetch product data.');
     }
 }
+
+//TODO Marco
+//Look at data.ts for table structure that Stacy will add to app\seed\route.ts
+//Add fetchUserInformation
+//Add fetchUserProducts
+//Look at financial dashboard app\lib\data.ts
+
+//TODO Nefi
+//Add fetchProductsByFilters

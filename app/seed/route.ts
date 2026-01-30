@@ -16,7 +16,7 @@ async function seedUserTable() {
     
     // Seed initial users
 }
-
+//TODO Ovi add user type column to user_profiles table
 async function seedUserProfilesTable() {
     await sql`CREATE TABLE IF NOT EXISTS user_profiles (
         user_id UUID PRIMARY KEY,
