@@ -1,0 +1,33 @@
+@media (max-width: 1024px) {
+  .page__content {
+    padding: 12px;
+  }
+
+  .page__container {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page__content {
+    grid-template-rows: minmax(64px, 72px) auto minmax(32px, 48px);
+    padding: 12px;
+  }
+
+  .page__container {
+    flex-direction: column;
+    gap: 12px;
+    margin: 12px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 6px 0;
+  }
+
+  .page__content {
+    padding: 8px;
+    border-radius: 8px;
+  }
+}
