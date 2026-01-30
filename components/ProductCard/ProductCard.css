@@ -9,7 +9,7 @@
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     padding: 1em;
-    background-color: #fff;
+    background-color: rgb(41, 41, 41);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
@@ -17,6 +17,7 @@
     width: 100%;
     max-width: 250px;
     position: relative;
+    color: #fff;
 }
 
 .card__image-container {
@@ -49,7 +50,7 @@
 
 .card__product-stock {
     font-size: 0.8rem;
-    color: #FF5733;
+    color: #ffd92f;
 }
 
 .rating-stock {
@@ -81,14 +82,19 @@
     display: block;
     width: 90%;
     height: 1px;
-    background: #2B2E37;
+    background: #fff;
     margin: 0.5em auto 0 auto;
+}
+
+.fa-cart-plus {
+    margin-right: 8px;
+    color: #2B2E37;
 }
 
 .card__add-btn {
     padding: 0.5em 1em;
-    background-color: #2B2E37;
-    color: #fff;
+    background-color: #fff;
+    color: #2B2E37;
     border: none;
     border-radius: 6px;
     cursor: pointer;

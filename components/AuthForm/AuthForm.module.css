@@ -57,3 +57,9 @@
 .form_text {
     font-size: .9rem;
 }
+
+:global(.circle-icon) {
+    height: 1.5rem;
+    width: 1.5rem;
+    color: #ef4444;
+}

@@ -1,7 +1,4 @@
-import "@/app/ui/global.css";
-import Aside from "@/components/Aside/Aside";
-import Footer from "@/components/footer/Footer";
-import Header from "@/components/header/Header";
+import "@/app/styles/global.css";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -26,16 +23,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <div className="page">
-          <div className="page__content">
-            <Header />
-            <div className="page__container">
-              <Aside />
-              <main className="main">{children}</main>
-            </div>
-            <Footer />
-          </div>
-        </div>
+        {children}
       </body>
     </html>
   );

@@ -1,9 +1,8 @@
 'use client';
 
 import { Suspense } from 'react';
-import { Metadata } from 'next';
 import Image from 'next/image';
-import AuthForm from '../ui/AuthForm/AuthForm';
+import AuthForm from '../../../components/AuthForm/AuthForm';
 import styles from './login.module.css';
 import { useState } from 'react';
 

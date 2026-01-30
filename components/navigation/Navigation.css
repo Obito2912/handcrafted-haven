@@ -8,12 +8,11 @@
 .nav__list-item {
     list-style: none;
     padding: .5em;
-
 }
 
 .nav__list-item a {
     text-decoration: none;
-    color: #2B2E37;
+    color: #fff;
     font-size: 1.5rem;
 }
 
@@ -22,15 +21,16 @@
     display: block;
     width: 0;
     height: 2px;
-    background: #fff;
+    background: #ffd92f;
     transition: width .3s;
 }
 
 .nav__list-item a:hover:after,
-.nav__list-item a:focus:after {
+.nav__list-item a:focus:after,
+.nav__list-item a.active:after {
     width: 100%;
 }
 
 .nav__list-item a.active {
-    color: #fff;
+    color: #ffd92f;
 }

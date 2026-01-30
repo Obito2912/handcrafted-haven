@@ -1,4 +1,3 @@
-// Allow jsx syntax in tsx files
 {
   "compilerOptions": {
     "jsx": "react-jsx",
