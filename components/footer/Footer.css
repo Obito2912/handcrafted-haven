@@ -1,5 +1,6 @@
 .footer {
-    background-color: #a7c957;
+    background-color: rgb(41, 41, 41);
     border-radius: 10px;
     padding: 10px;
+    color: #fff;
 }

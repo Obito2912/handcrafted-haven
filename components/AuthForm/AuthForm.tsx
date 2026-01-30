@@ -3,7 +3,7 @@
 import styles from './AuthForm.module.css';
 import { useSearchParams } from 'next/navigation';
 import { useActionState } from 'react';
-import { handleAuth } from '@/app/lib/actions';
+import { handleAuth } from '../../app/(main)/lib/actions'
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 
 export default function AuthForm({ signup, setSignup }: { signup: boolean; setSignup: (value: boolean) => void }) {
@@ -34,14 +34,14 @@ export default function AuthForm({ signup, setSignup }: { signup: boolean; setSi
                 <span className={`${styles.form_text}`}>{signup ? 'Already have an account?' : 'New here? Join the community'}</span>
                 <button type="button" onClick={() => setSignup(!signup)}>{signup ? 'Login' : 'Sign Up'}</button>
             </div>
-        <div className="flex h-8 items-end space-x-1">
-          {state?.message && (
-            <>
-              <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
-              <p className="text-sm text-red-500">{state.message}</p>
-            </>
-          )}
-        </div>            
+            <div className="flex h-8 items-end space-x-1">
+                {state?.message && (
+                    <>
+                        <ExclamationCircleIcon className="circle-icon" />
+                        <p className="text-sm text-red-500">{state.message}</p>
+                    </>
+                )}
+            </div>
         </form>
     );
 }

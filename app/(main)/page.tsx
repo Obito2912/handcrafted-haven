@@ -1,4 +1,4 @@
-import ProductCardWrapper from "./ui/dashboard/product-cards";
+import ProductCardWrapper from "./dashboard/page";
 
 //TODO Nefi Add a filter for products
 //product ratings table in ProductRating
@@ -9,8 +9,7 @@ import ProductCardWrapper from "./ui/dashboard/product-cards";
 //Create the filters like a form with a search button
 export default function Home() {
   return (
-    <main className="p-4">
-      <h1 className="mb-4 text-2xl font-semibold">Your Products</h1>
+    <main className="">
       <ProductCardWrapper />
     </main>)
 }

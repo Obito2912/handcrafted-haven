@@ -1,6 +1,6 @@
 
-import { fetchProductData } from '@/app/lib/data';
-import { Product } from '@/app/lib/definitions';
+import { fetchProductData } from '@/app/(main)/lib/data';
+import { Product } from '@/app/(main)/lib/definitions';
 import Image from 'next/image';
 import './ProductCard.css';
 
@@ -40,7 +40,9 @@ export function ProductCard(product: Product) {
             </div>
             <div className="card__details">
                 <p className="card__price">${product.price}</p>
-                <button className='card__add-btn'>Add to Cart</button>
+                <button className='card__add-btn'>
+                    <i className="fa-solid fa-cart-plus"></i>
+                    Add</button>
             </div>
         </div>
     );
