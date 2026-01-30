@@ -1,0 +1,31 @@
+.nav__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nav__list-item {
+    list-style: none;
+    padding: .5em;
+
+}
+
+.nav__list-item a {
+    text-decoration: none;
+    color: #2B2E37;
+    font-size: 1.5rem;
+}
+
+.nav__list-item a:after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #fff;
+    transition: width .3s;
+}
+
+.nav__list-item a:hover:after {
+    width: 100%;
+}
