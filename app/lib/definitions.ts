@@ -13,6 +13,7 @@ export type UserProfile = {
     gender: 'male' | 'female' | null;
     bio: string | null;
     image_url: string | null;
+    user_type: 'artisan' | 'buyer' | null;//TODO Ovi add this column to the table
     created_at: string; // ISO date string
 }
 
@@ -24,5 +25,19 @@ export type Product = {
     user_id: string;
     quantity: number;
     price: number;
+    category: 'painting' | 'sculpture' | 'craft' | 'drawing' | 'photography' | 'art' | 'other';
+    created_at: string; // ISO date string    
+}//TODO Stacy add this column to the table
+
+export type UserProducts = {
+    user_id: string;
+    product_id: string;    
+}
+
+export type ProductRating = {
+    product_id: string;
+    user_id: string;
+    rating: number; // 1 to 5
+    review: string | null;
     created_at: string; // ISO date string
 }
