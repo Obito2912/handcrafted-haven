@@ -26,6 +26,11 @@
     transition: width .3s;
 }
 
-.nav__list-item a:hover:after {
+.nav__list-item a:hover:after,
+.nav__list-item a:focus:after {
     width: 100%;
+}
+
+.nav__list-item a.active {
+    color: #fff;
 }

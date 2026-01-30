@@ -1,0 +1,96 @@
+.product-card__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: center;
+}
+
+.card {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 1em;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 250px;
+    position: relative;
+}
+
+.card__image-container {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.card__like-btn {
+    border-radius: 10px;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.fa-heart {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.card__image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-position: center;
+}
+
+.card__product-stock {
+    font-size: 0.8rem;
+    color: #FF5733;
+}
+
+.rating-stock {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.fa-star {
+    color: #ffd92f;
+    margin-right: 5px;
+}
+
+.card__details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0.5em 0;
+    text-align: center;
+}
+
+.card__title:after {
+    content: '';
+    display: block;
+    width: 90%;
+    height: 1px;
+    background: #2B2E37;
+    margin: 0.5em auto 0 auto;
+}
+
+.card__add-btn {
+    padding: 0.5em 1em;
+    background-color: #2B2E37;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+}
