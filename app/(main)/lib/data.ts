@@ -1,4 +1,4 @@
-import postgres from 'postgres';
+import postgres from "postgres";
 
 import {
     Product,
@@ -10,16 +10,18 @@ import { toUserProfileValues } from './mappers';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-export async function fetchProductData(): Promise<{ productData: Product[], rating: number }> {
-    try 
-    {
-        // Artificially delay a response for demo purposes.
-        // Don't do this in production :)
+export async function fetchProductData(): Promise<{
+  productData: Product[];
+  rating: number;
+}> {
+  try {
+    // Artificially delay a response for demo purposes.
+    // Don't do this in production :)
 
-        console.log('Fetching product data...');
-        // await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log("Fetching product data...");
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
 
-        const productData: Product[] = await sql<Product[]>`
+    const productData: Product[] = await sql<Product[]>`
             SELECT 
                 product_id,
                 title,
@@ -32,16 +34,43 @@ export async function fetchProductData(): Promise<{ productData: Product[], rati
             FROM products
             ORDER BY created_at DESC
         `;
-        console.log('Product data fetched:', productData.length);
-        //TODO Stacy create product ratings table
-        //TODO Nefi get all the ratings for each product and calculate average rating
-        //table defined in lib/definitions.ts
-        const rating = 4;
-    return { productData, rating };//Return rating also
-    } catch (error) {       
-        console.error('Error fetching product data:', error);
-        throw new Error('Failed to fetch product data.');
-    }
+    console.log("Product data fetched:", productData.length);
+    //TODO Stacy create product ratings table
+    //TODO Nefi get all the ratings for each product and calculate average rating
+    //table defined in lib/definitions.ts
+    const rating = 4;
+    return { productData, rating }; //Return rating also
+  } catch (error) {
+    console.error("Error fetching product data:", error);
+    throw new Error("Failed to fetch product data.");
+  }
+}
+
+// ...existing code...
+
+export async function fetchUserProfile(
+  userId: string,
+): Promise<UserProfile | undefined> {
+  try {
+    const profiles = await sql<UserProfile[]>`
+            SELECT 
+                user_id,
+                name,
+                age,
+                gender,
+                bio,
+                image_url,
+                user_type,
+                created_at
+            FROM user_profiles
+            WHERE user_id = ${userId}
+        `;
+
+    return profiles[0];
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    throw new Error("Failed to fetch user profile.");
+  }
 }
 
 //TODO Marco

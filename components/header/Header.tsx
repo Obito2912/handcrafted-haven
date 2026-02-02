@@ -1,5 +1,6 @@
 import './Header.css';
 import Image from 'next/image';
+import defaultProfileImg from '../../public/default-profile-img.png';
 
 export default function Header() {
   return (
@@ -13,7 +14,7 @@ export default function Header() {
         <button className='header__settings-button'>
           <a href="/profile">Settings</a>
         </button>
-        <Image className='header__profile-image' src="" alt="Profile Image" width={24} height={24} />
+        <Image className='header__profile-image' src={defaultProfileImg} alt="Profile Image" width={60} height={60} />
       </div>
     </header>
   );
