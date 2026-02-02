@@ -13,7 +13,7 @@ export type UserProfile = {
     gender: 'male' | 'female' | null;
     bio: string | null;
     image_url: string | null;
-    user_type: 'artisan' | 'buyer' | null;//TODO Ovi add this column to the table
+    user_type: 'buyer' | 'seller' | null;
     created_at: string; // ISO date string
 }
 

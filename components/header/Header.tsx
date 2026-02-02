@@ -12,7 +12,7 @@ export default function Header() {
       </div>
       <div className='header__settings-container'>
         <button className='header__settings-button'>
-          <a href="/settings">Settings</a>
+          <a href="/profile">Settings</a>
         </button>
         <Image className='header__profile-image' src={defaultProfileImg} alt="Profile Image" width={60} height={60} />
       </div>

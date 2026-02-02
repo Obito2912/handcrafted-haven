@@ -1,8 +1,14 @@
 import postgres from "postgres";
 
-import { Product, UserProfile } from "./definitions";
+import {
+    Product,
+    UserProfile
+} from './definitions';
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+import { UserProfileValue } from './schemas/profileSchemas';
+import { toUserProfileValues } from './mappers';
+
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function fetchProductData(): Promise<{
   productData: Product[];
@@ -75,3 +81,36 @@ export async function fetchUserProfile(
 
 //TODO Nefi
 //Add fetchProductsByFilters
+
+export async function fetchUserProfile(userId: string): Promise<{ userProfile: UserProfileValue }> {
+    try 
+    {
+        // Artificially delay a response for demo purposes.
+        // Don't do this in production :)
+
+        console.log('Fetching user profile...');
+        // await new Promise((resolve) => setTimeout(resolve, 3000));
+
+        const userProfiles: UserProfile[] = await sql<UserProfile[]>`
+            SELECT 
+                user_id,
+                name,
+                age,
+                gender,
+                bio,
+                image_url,
+                user_type
+            FROM user_profiles
+           WHERE user_id = ${userId}
+            ORDER BY created_at DESC
+            LIMIT 1
+        `;
+        console.log('Profile data fetched:', userProfiles.length);
+    const userProfile = userProfiles[0] || null;
+    const userProfileValues = toUserProfileValues(userProfile);
+    return { userProfile: userProfileValues};
+    } catch (error) {       
+        console.error('Error fetching user profile:', error);
+        return undefined;
+    }
+}
