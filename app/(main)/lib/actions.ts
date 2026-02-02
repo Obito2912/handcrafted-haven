@@ -7,13 +7,9 @@ import { revalidatePath } from "next/cache";
 import bcrypt from "bcrypt";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
-import {
-  SignupFormSchema,
-  ProfileSchema,
-  AuthFormState,
-  ProfileFormState,
-} from "./schemas";
+import { SignupFormSchema, AuthFormState } from "./schemas/authSchemas";
 
+import { ProfileSchema, ProfileFormState } from "./schemas/profileSchemas";
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 export async function handleAuth(
@@ -38,7 +34,6 @@ async function createUserProfile(
 ) {
   const validatedFields = SignupFormSchema.safeParse({
     name: formData.get("name"),
-    profile_image_url: formData.get("profile_image_url"),
     email: formData.get("email"),
     password: formData.get("password"),
   });
@@ -50,13 +45,12 @@ async function createUserProfile(
       values: {
         name: formData.get("name")?.toString(),
         email: formData.get("email")?.toString(),
-        profile_image_url: formData.get("profile_image_url")?.toString(),
         // Don't include password for security
       },
     };
   }
 
-  const { name, profile_image_url, email, password } = validatedFields.data;
+  const { name, email, password } = validatedFields.data;
   const passwordHash = await bcrypt.hash(password, 10);
   const date = new Date().toISOString().split("T")[0];
   try {
@@ -67,8 +61,8 @@ async function createUserProfile(
         `;
 
     await sql`
-            INSERT INTO user_profiles (user_id, name, profile_image_url, created_at)
-            VALUES (${user.id}, ${name}, ${profile_image_url}, ${date})
+            INSERT INTO user_profiles (user_id, name, created_at)
+            VALUES (${user.id}, ${name}, ${date})
         `;
   } catch (error) {
     console.error("Error creating user:", error);
@@ -84,69 +78,97 @@ async function createUserProfile(
 async function authenticate(formData: FormData) {
     console.log('authenticate called');
     try {
-        await signIn('credentials', formData);
-        console.log('signIn completed');
-    } catch (error) {
-        console.log('authenticate error:', error);
-        if (error instanceof AuthError) {
-            switch (error.type) {
-                case 'CredentialsSignin':
-                    return { message: 'Invalid credentials.' };
-                default:
-                    return { message: 'Something went wrong.' };
-            }
-        }
-        throw error;  // Re-throw if not an AuthError
+        await signIn('credentials', formData,{ redirectTo: "/" });
+  } catch (error) {        
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return { message: 'Invalid credentials.' };
+        default:
+          return { message: 'Something went wrong.' };
+      }
+    }
+
+    // Let NEXT_REDIRECT and other framework errors propagate so redirects work
+    throw error;
     }
 }
 
-export async function updateUserProfile(prevState: ProfileFormState | undefined, formData: FormData) { 
-    const validatedFields = ProfileSchema.safeParse({
-        user_id: formData.get('user_id')?.toString(),
-        name: formData.get('name'),
-        age: formData.get('age'),
-        gender: formData.get('gender'),
-        bio: formData.get('bio'),
-        image_url: formData.get('image_url'),
-    });
+export async function updateUserProfile(
+  prevState: ProfileFormState,
+  formData: FormData,
+): Promise<ProfileFormState> {
+  const validatedFields = ProfileSchema.safeParse({
+    user_id: formData.get("user_id")?.toString(),
+    name: formData.get("name"),
+    age: formData.get("age"),
+    gender: formData.get("gender"),
+    bio: formData.get("bio"),
+    image_url: formData.get("image_url"),
+    user_type: formData.get("user_type"),
+  });
 
   if (!validatedFields.success) {
     return {
       errors: z.prettifyError(validatedFields.error),
       message: z.prettifyError(validatedFields.error),
+      success: false,
       values: {
         user_id: formData.get("user_id")?.toString(),
         name: formData.get("name")?.toString(),
         age: formData.get("age")?.toString(),
         gender: formData.get("gender")?.toString(),
         bio: formData.get("bio")?.toString(),
-        profile_image_url: formData.get("profile_image_url")?.toString(),
+        image_url: formData.get("image_url")?.toString(),
+        user_type: formData.get("user_type")?.toString(),
       },
     };
   }
 
-    const { user_id, name, age, gender, bio, image_url } = validatedFields.data;    
-    const date = new Date().toISOString().split('T')[0];
-    try {
-        await sql`
+  const { user_id, name, age, gender, bio, image_url, user_type } = validatedFields.data;
+  const date = new Date().toISOString().split("T")[0];
+console.log("UPDATE values:", {
+  user_id,
+  name,
+  age,
+  gender,
+  bio,
+  image_url,
+  user_type,
+  date
+});
+  try {
+    await sql`
             UPDATE user_profiles 
             SET
                 name = ${name},
                 age = ${age},
                 gender = ${gender},
                 bio = ${bio},
-                profile_image_url = ${profile_image_url},
-                updated_at = ${date}
+                image_url = ${image_url},
+                user_type = ${user_type}
             WHERE user_id = ${user_id}
         `;
   } catch (error) {
     console.error("Error updating user:", error);
     return {
       message: "Error updating user. Please try again.",
+      success: false,
     };
   }
-  //TODO Where to go?
-  revalidatePath("/profile");
-  redirect("/profile");
+
+  return {
+    message: "Profile updated successfully.",
+    success: true,
+    values: {
+      user_id: formData.get("user_id")?.toString(),
+      name: formData.get("name")?.toString(),
+      age: formData.get("age")?.toString(),
+      gender: formData.get("gender")?.toString(),
+      bio: formData.get("bio")?.toString(),
+      image_url: formData.get("image_url")?.toString(),
+      user_type: formData.get("user_type")?.toString(),
+    },
+  };
 }
 

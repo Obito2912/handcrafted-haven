@@ -22,9 +22,6 @@ export default function AuthForm({ signup, setSignup }: { signup: boolean; setSi
                     <label className={`${styles.form_label}`} htmlFor="name">Name
                         <input className={`${styles.form_input}`} type="text" id="name" name="name" autoComplete="name" defaultValue={state?.values?.name} />
                     </label>
-                    <label htmlFor="profile-image">Profile Image URL
-                        <input className={`${styles.form_input}`} type="url" id="profile-image" name="profile_image_url" autoComplete="profile-image" defaultValue={state?.values?.profile_image_url} />
-                    </label>
                 </>
             }
             <label className={`${styles.form_label}`} htmlFor="email">Email
