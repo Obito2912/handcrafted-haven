@@ -1,14 +1,17 @@
-'use client';
-
-import { Suspense } from 'react';
 import Image from 'next/image';
-import AuthForm from '../../../components/AuthForm/AuthForm';
 import styles from './login.module.css';
-import { useState } from 'react';
+import { auth } from '@/auth';
+import { fetchUserProfile } from '@/app/(main)/lib/data';
+import Link from 'next/link';
+import AuthFormWrapper from './AuthFormWrapper';
 
 
-export default function LoginPage() {
-    const [signup, setSignup] = useState(false);
+export default async function LoginPage() {
+    const session = await auth();
+    console.log("Session:", session);
+    console.log("User ID:", session?.user?.id);
+    const userProfile = session?.user?.id ? await fetchUserProfile(session.user.id) : null;
+    console.log("User profile fetched on login page:", userProfile);
 
     return (
         <>
@@ -22,10 +25,15 @@ export default function LoginPage() {
             <main className={styles.login}>
                 <Image src="/login-bckgrd.jpg" alt="Login Background" fill />
                 <div className={styles.login__formContainer}>
-                    <h1>{signup ? 'Welcome, please sign up' : 'Welcome, please login'}</h1>
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <AuthForm signup={signup} setSignup={setSignup} />
-                    </Suspense>
+                    {userProfile ? (
+                        <div className={styles.login__welcome}>
+                            <h1>Welcome back, {userProfile.name}!</h1>
+                            <p>You are already signed in.</p>
+                            <Link href="/">Go to Home Page</Link>
+                        </div>
+                    ) : (
+                        <AuthFormWrapper />
+                    )}
                 </div>
             </main>
         </>

@@ -10,7 +10,7 @@
     border-radius: 12px;
     padding: 1em;
     /* background-color: rgb(41, 41, 41); */
-    background-color: #495867d6;
+    background-color: rgba(32, 78, 28, 0.842);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
