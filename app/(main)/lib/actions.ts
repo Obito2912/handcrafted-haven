@@ -71,7 +71,26 @@ async function createUserProfile(prevState: AuthFormState | undefined, formData:
     redirect('/login');
 }
 
-async function updateUserProfile(prevState: ProfileFormState | undefined, formData: FormData) { 
+async function authenticate(formData: FormData) {
+    console.log('authenticate called');
+    try {
+        await signIn('credentials', formData);
+        console.log('signIn completed');
+    } catch (error) {
+        console.log('authenticate error:', error);
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return { message: 'Invalid credentials.' };
+                default:
+                    return { message: 'Something went wrong.' };
+            }
+        }
+        throw error;  // Re-throw if not an AuthError
+    }
+}
+
+export async function updateUserProfile(prevState: ProfileFormState | undefined, formData: FormData) { 
     const validatedFields = ProfileSchema.safeParse({
         user_id: formData.get('user_id')?.toString(),
         name: formData.get('name'),
@@ -99,7 +118,7 @@ async function updateUserProfile(prevState: ProfileFormState | undefined, formDa
     const { user_id, name, age, gender, bio, image_url } = validatedFields.data;    
     const date = new Date().toISOString().split('T')[0];
     try {
-        const [user] = await sql`
+        await sql`
             UPDATE user_profiles 
             SET
                 name = ${name},
@@ -121,25 +140,4 @@ async function updateUserProfile(prevState: ProfileFormState | undefined, formDa
     revalidatePath('/profile');
     redirect('/profile');
 }
-
-async function authenticate(formData: FormData) {
-    console.log('authenticate called');
-    try {
-        await signIn('credentials', formData);
-        console.log('signIn completed');
-    } catch (error) {
-        console.log('authenticate error:', error);
-        if (error instanceof AuthError) {
-            switch (error.type) {
-                case 'CredentialsSignin':
-                    return { message: 'Invalid credentials.' };
-                default:
-                    return { message: 'Something went wrong.' };
-            }
-        }
-        throw error;  // Re-throw if not an AuthError
-    }
-}
-
-
 

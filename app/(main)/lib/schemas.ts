@@ -17,7 +17,7 @@ const FormSchema = z.object({
 export const LoginFormSchema = FormSchema.omit({ name: true});
 export const SignupFormSchema = FormSchema;
 type FormState<TFields extends string> = {
-    errors?: Partial<Record<TFields, string[]>>;
+    errors?: string;//Partial<Record<TFields, string[]>>;
     message?: string | null;
     values?: {
     name?: string;
