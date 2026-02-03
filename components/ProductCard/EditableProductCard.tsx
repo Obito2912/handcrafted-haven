@@ -1,0 +1,48 @@
+
+"use client";
+
+import { Product } from '@/app/(main)/lib/definitions';
+import Image from 'next/image';
+import './ProductCard.css';
+
+export default function EditableProductCardWrapper(
+      { products }: { products: Product[] }
+) {
+
+    return (
+        <div className="product-card__wrapper">
+            {products.map((product) => (
+                <EditableProductCard key={product.product_id} {...product} />
+            ))}
+        </div>
+    );
+}
+
+export function EditableProductCard(product: Product) {
+    return (
+        <div className="card">
+            <div className="card__image-container">
+                <Image
+                    src={product.image_url}
+                    alt={product.title}
+                    width={128}
+                    height={128}
+                    className="card__image"
+                />
+                <button className='card__like-btn' aria-label="Add to Favorites">
+                    <i className="fa-regular fa-heart"></i>
+                </button>
+            </div>
+            <h2 className="card__title">{product.title}</h2>
+            <div className="rating-stock">
+                <span className='card__product-stock'>Only X left!</span>
+            </div>
+            <div className="card__details">
+                <p className="card__price">${product.price}</p>
+                <button className='card__add-btn'>
+                    <i className="fa-solid fa-cart-plus"></i>
+                    Add</button>
+            </div>
+        </div>
+    );
+}

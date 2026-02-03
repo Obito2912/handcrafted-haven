@@ -1,10 +1,9 @@
 import ProfileForm from "@/components/ProfileForm/ProfileForm";
-import { auth } from "@/auth";
+import { getLoggedInInfo } from "../lib/session";
 import { fetchUserProfile} from "../lib/data";
  
 export default async function Profile() {
-    const session = await auth();
-    const userId = session?.user?.id;
+    const { session, userId, loggedIn } = await getLoggedInInfo();
     console.log("User ID in Profile page:", userId);
     if (!userId)
     {
@@ -14,7 +13,7 @@ export default async function Profile() {
             </main>
         )
     }
-    const { userProfile } = await fetchUserProfile(userId);
+    const userProfile = await fetchUserProfile(userId);
 
     return (
         <main className="">
