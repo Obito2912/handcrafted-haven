@@ -46,33 +46,6 @@ export async function fetchProductData(): Promise<{
   }
 }
 
-// ...existing code...
-
-export async function fetchUserProfile(
-  userId: string,
-): Promise<UserProfile | undefined> {
-  try {
-    const profiles = await sql<UserProfile[]>`
-            SELECT 
-                user_id,
-                name,
-                age,
-                gender,
-                bio,
-                image_url,
-                user_type,
-                created_at
-            FROM user_profiles
-            WHERE user_id = ${userId}
-        `;
-
-    return profiles[0];
-  } catch (error) {
-    console.error("Error fetching user profile:", error);
-    throw new Error("Failed to fetch user profile.");
-  }
-}
-
 //TODO Marco
 //Look at data.ts for table structure that Stacy will add to app\seed\route.ts
 //Add fetchUserInformation
