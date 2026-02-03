@@ -13,6 +13,7 @@
 
 .fa-house {
     font-size: 2rem;
+    color: #495867;
 }
 
 .fa-leaf {
@@ -63,4 +64,14 @@
     height: 60px;
     border-radius: 50%;
     background-color: #495867;
+}
+
+.header__link,
+.header__link:link,
+.header__link:visited,
+.header__link:hover,
+.header__link:active,
+.header__link i {
+    text-decoration: none;
+    color: #495867;
 }
