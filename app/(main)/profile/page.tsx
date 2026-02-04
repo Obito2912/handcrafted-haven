@@ -1,9 +1,9 @@
 import ProfileForm from "@/components/ProfileForm/ProfileForm";
-import { auth } from "@/auth";
 import { fetchUserProfile } from "../lib/data";
+import { getLoggedInInfo } from "../lib/session";
 
 export default async function Profile() {
-    const { session, userId, loggedIn } = await getLoggedInInfo();
+    const { userId } = await getLoggedInInfo();
     console.log("User ID in Profile page:", userId);
     if (!userId) {
         return (
@@ -16,7 +16,8 @@ export default async function Profile() {
 
     return (
         <main className="">
-            <ProfileForm initialValues={userProfile ?? undefined} />
+            <ProfileForm initialValues={userProfile?.userProfile ?? undefined} />
         </main>
     );
 }
+
