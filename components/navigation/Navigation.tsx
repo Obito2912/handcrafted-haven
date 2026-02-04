@@ -1,6 +1,5 @@
 'use client';
 
-import { auth } from '@/auth';
 import './Navigation.css';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -17,7 +16,7 @@ export default function Navigation(
   { loggedIn }: { loggedIn: boolean }
 ) {
   const pathname = usePathname();
-  
+
   return (
     <nav className='nav'>
       <ul className='nav__list'>
