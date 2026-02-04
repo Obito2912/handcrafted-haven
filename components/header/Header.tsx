@@ -4,6 +4,7 @@ import './Header.css';
 import Image from 'next/image';
 import defaultProfileImg from '../../public/default-profile-img.png';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 type HeaderProps = {
   isAuthenticated?: boolean;
@@ -14,7 +15,6 @@ type HeaderProps = {
 export default function Header({ isAuthenticated, userProfileImg }: HeaderProps) {
   const pathname = usePathname();
   const isOnProfilePage = pathname === '/profile';
-import Link from 'next/link';
 
   return (
     <header className="header">
