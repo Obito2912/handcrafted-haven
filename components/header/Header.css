@@ -31,36 +31,49 @@
     gap: 1em;
 }
 
-.header__settings-button {
-    text-decoration: none;
+.header__profile-image {
+    display: block;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #495867;
+}
+
+.header__settings-button,
+.signin-btn {
     border: 1px solid #495867;
     padding: 0.3em 0.6em;
     border-radius: 8px;
-    margin-right: 1em;
     background: transparent;
     font-size: 1.1rem;
     cursor: pointer;
 }
 
-.header__settings-button a {
+.header__settings-button>a,
+.signin-btn>a {
     text-decoration: none;
     color: #495867;
 }
 
 .header__settings-button:hover,
-.header__settings-button:focus {
-    border: 1px solid #327b2c;
+.header__settings-button:focus,
+.signin-btn:hover,
+.signin-btn:focus {
+    border: 2px solid #327b2c;
 }
 
-.header__settings-button a:hover,
-.header__settings-button a:focus {
+/* Change color of 'btn a' when hover over signin-btn/settings */
+.header__settings-button:hover>a,
+.header__settings-button:focus>a,
+.signin-btn:hover>a,
+.signin-btn:focus>a {
     color: #327b2c;
 }
 
-.header__profile-image {
-    display: block;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #495867;
+.active {
+    border: 2px solid #327b2c;
+}
+
+.active>a {
+    color: #327b2c;
 }
