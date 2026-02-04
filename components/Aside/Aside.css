@@ -26,9 +26,10 @@
     bottom: 20px;
 }
 
-.sign-out:hover {
-    color: #ffaf2f;
-    outline: 1px solid #ffaf2f;
+.sign-out:hover,
+.sign-out:focus {
+    color: #ff4b4b;
+    outline: 1px solid #ff4b4b;
 }
 
 .sign-out:active {
