@@ -1,105 +1,144 @@
-'use server'
+"use server";
 
-import { z } from 'zod';
-import { redirect } from 'next/navigation';
-import postgres from 'postgres';
-import { revalidatePath } from 'next/cache';
-import bcrypt from 'bcrypt';
-import { signIn } from '@/auth'; 
-import { AuthError } from 'next-auth';
-import { SignupFormSchema, ProfileSchema, AuthFormState, ProfileFormState } from './schemas';
+import { z } from "zod";
+import { redirect } from "next/navigation";
+import postgres from "postgres";
+import { revalidatePath } from "next/cache";
+import bcrypt from "bcrypt";
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
+import { SignupFormSchema, AuthFormState } from "./schemas/authSchemas";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+import { ProfileSchema, ProfileFormState } from "./schemas/profileSchemas";
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 export async function handleAuth(
-    prevState: AuthFormState | undefined,
-    formData: FormData,
+  prevState: AuthFormState | undefined,
+  formData: FormData,
 ) {
-    console.log('handleAuth called');
-    console.log('Form data:', Object.fromEntries(formData));
-    
-    const mode = formData.get('mode');
-    console.log('Mode:', mode);
-    
-    if (mode === 'signup') {
-        return await createUserProfile(prevState, formData);
-    } else {
-        return await authenticate(formData);
-    }
-}    
-async function createUserProfile(prevState: AuthFormState | undefined, formData: FormData) { 
-    const validatedFields = SignupFormSchema.safeParse({
-        name: formData.get('name'),
-        email: formData.get('email'),
-        password: formData.get('password'),
-    });
+  console.log("handleAuth called");
+  console.log("Form data:", Object.fromEntries(formData));
 
-    if (!validatedFields.success) {
-      return {
-        errors: z.prettifyError(validatedFields.error),
-        message: z.prettifyError(validatedFields.error),
-        values: {
-            name: formData.get('name')?.toString(),
-            email: formData.get('email')?.toString(),
-            // Don't include password for security
-        },        
-      };
-    }
+  const mode = formData.get("mode");
+  console.log("Mode:", mode);
 
-    const { name, email, password } = validatedFields.data;
-    const passwordHash = await bcrypt.hash(password, 10);
-    const date = new Date().toISOString().split('T')[0];
-    try {
-        const [user] = await sql`
+  if (mode === "signup") {
+    return await createUserProfile(prevState, formData);
+  } else {
+    return await authenticate(formData);
+  }
+}
+async function createUserProfile(
+  prevState: AuthFormState | undefined,
+  formData: FormData,
+) {
+  const validatedFields = SignupFormSchema.safeParse({
+    name: formData.get("name"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: z.prettifyError(validatedFields.error),
+      message: z.prettifyError(validatedFields.error),
+      values: {
+        name: formData.get("name")?.toString(),
+        email: formData.get("email")?.toString(),
+        // Don't include password for security
+      },
+    };
+  }
+
+  const { name, email, password } = validatedFields.data;
+  const passwordHash = await bcrypt.hash(password, 10);
+  const date = new Date().toISOString().split("T")[0];
+  try {
+    const [user] = await sql`
             INSERT INTO users (email, password_hash, created_at)
             VALUES (${email}, ${passwordHash}, ${date})
             RETURNING id
         `;
-        
-        await sql`
+
+    await sql`
             INSERT INTO user_profiles (user_id, name, created_at)
             VALUES (${user.id}, ${name}, ${date})
         `;
-    } catch (error) {
-        console.error('Error creating user:', error);
-        return {
-            message: 'Error creating user. Please try again.',
-        };
-    }
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return {
+      message: "Error creating user. Please try again.",
+    };
+  }
 
-    revalidatePath('/login');
-    redirect('/login');
+  revalidatePath("/login");
+  redirect("/login");
 }
 
-async function updateUserProfile(prevState: ProfileFormState | undefined, formData: FormData) { 
-    const validatedFields = ProfileSchema.safeParse({
-        user_id: formData.get('user_id')?.toString(),
-        name: formData.get('name'),
-        age: formData.get('age'),
-        gender: formData.get('gender'),
-        bio: formData.get('bio'),
-        image_url: formData.get('image_url'),
-    });
-
-    if (!validatedFields.success) {
-      return {
-        errors: z.prettifyError(validatedFields.error),
-        message: z.prettifyError(validatedFields.error),
-        values: {
-            user_id: formData.get('user_id')?.toString(),            
-            name: formData.get('name')?.toString(),
-            age: formData.get('age')?.toString(),
-            gender: formData.get('gender')?.toString(),
-            bio: formData.get('bio')?.toString(),
-            image_url: formData.get('image_url')?.toString(),
-        },        
-      };
+async function authenticate(formData: FormData) {
+    console.log('authenticate called');
+    try {
+        await signIn('credentials', formData,{ redirectTo: "/" });
+  } catch (error) {        
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return { message: 'Invalid credentials.' };
+        default:
+          return { message: 'Something went wrong.' };
+      }
     }
 
-    const { user_id, name, age, gender, bio, image_url } = validatedFields.data;    
-    const date = new Date().toISOString().split('T')[0];
-    try {
-        const [user] = await sql`
+    // Let NEXT_REDIRECT and other framework errors propagate so redirects work
+    throw error;
+    }
+}
+
+export async function updateUserProfile(
+  prevState: ProfileFormState,
+  formData: FormData,
+): Promise<ProfileFormState> {
+  const validatedFields = ProfileSchema.safeParse({
+    user_id: formData.get("user_id")?.toString(),
+    name: formData.get("name"),
+    age: formData.get("age"),
+    gender: formData.get("gender"),
+    bio: formData.get("bio"),
+    image_url: formData.get("image_url"),
+    user_type: formData.get("user_type"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: z.prettifyError(validatedFields.error),
+      message: z.prettifyError(validatedFields.error),
+      success: false,
+      values: {
+        user_id: formData.get("user_id")?.toString(),
+        name: formData.get("name")?.toString(),
+        age: formData.get("age")?.toString(),
+        gender: formData.get("gender")?.toString(),
+        bio: formData.get("bio")?.toString(),
+        image_url: formData.get("image_url")?.toString(),
+        user_type: formData.get("user_type")?.toString(),
+      },
+    };
+  }
+
+  const { user_id, name, age, gender, bio, image_url, user_type } = validatedFields.data;
+  const date = new Date().toISOString().split("T")[0];
+console.log("UPDATE values:", {
+  user_id,
+  name,
+  age,
+  gender,
+  bio,
+  image_url,
+  user_type,
+  date
+});
+  try {
+    await sql`
             UPDATE user_profiles 
             SET
                 name = ${name},
@@ -107,39 +146,29 @@ async function updateUserProfile(prevState: ProfileFormState | undefined, formDa
                 gender = ${gender},
                 bio = ${bio},
                 image_url = ${image_url},
-                updated_at = ${date}
+                user_type = ${user_type}
             WHERE user_id = ${user_id}
         `;
-        
-    } catch (error) {
-        console.error('Error updating user:', error);
-        return {
-            message: 'Error updating user. Please try again.',
-        };
-    }
-    //TODO Where to go?
-    revalidatePath('/profile');
-    redirect('/profile');
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return {
+      message: "Error updating user. Please try again.",
+      success: false,
+    };
+  }
+
+  return {
+    message: "Profile updated successfully.",
+    success: true,
+    values: {
+      user_id: formData.get("user_id")?.toString(),
+      name: formData.get("name")?.toString(),
+      age: formData.get("age")?.toString(),
+      gender: formData.get("gender")?.toString(),
+      bio: formData.get("bio")?.toString(),
+      image_url: formData.get("image_url")?.toString(),
+      user_type: formData.get("user_type")?.toString(),
+    },
+  };
 }
-
-async function authenticate(formData: FormData) {
-    console.log('authenticate called');
-    try {
-        await signIn('credentials', formData);
-        console.log('signIn completed');
-    } catch (error) {
-        console.log('authenticate error:', error);
-        if (error instanceof AuthError) {
-            switch (error.type) {
-                case 'CredentialsSignin':
-                    return { message: 'Invalid credentials.' };
-                default:
-                    return { message: 'Something went wrong.' };
-            }
-        }
-        throw error;  // Re-throw if not an AuthError
-    }
-}
-
-
 

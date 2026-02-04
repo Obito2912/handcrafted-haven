@@ -17,9 +17,13 @@ export default function AuthForm({ signup, setSignup }: { signup: boolean; setSi
     return (
         <form action={formAction} className={`${styles.form}`}>
             <input type="hidden" name="mode" value={signup ? 'signup' : 'login'} />
-            {signup && <label className={`${styles.form_label}`} htmlFor="name">Name
-                <input className={`${styles.form_input}`} type="text" id="name" name="name" autoComplete="name" defaultValue={state?.values?.name} />
-            </label>}
+            {signup &&
+                <>
+                    <label className={`${styles.form_label}`} htmlFor="name">Name
+                        <input className={`${styles.form_input}`} type="text" id="name" name="name" autoComplete="name" defaultValue={state?.values?.name} />
+                    </label>
+                </>
+            }
             <label className={`${styles.form_label}`} htmlFor="email">Email
                 <input className={`${styles.form_input}`} type="email" id="email" name="email" autoComplete="email" defaultValue={state?.values?.email} />
             </label>

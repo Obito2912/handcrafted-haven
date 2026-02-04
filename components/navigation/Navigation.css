@@ -12,7 +12,7 @@
 
 .nav__list-item a {
     text-decoration: none;
-    color: #fff;
+    color: #495867;
     font-size: 1.5rem;
 }
 
@@ -21,7 +21,7 @@
     display: block;
     width: 0;
     height: 2px;
-    background: #ffd92f;
+    background: #495867;
     transition: width .3s;
 }
 
@@ -32,5 +32,5 @@
 }
 
 .nav__list-item a.active {
-    color: #ffd92f;
+    color: #327b2c;
 }

@@ -1,6 +1,8 @@
 import postgres from 'postgres';
-import { Product, User } from './definitions';
 
+import {
+    Product
+} from './definitions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -37,61 +39,6 @@ export async function fetchProductData(): Promise<{ productData: Product[], rati
         throw new Error('Failed to fetch product data.');
     }
 }
-
-/**
- * Fetch information about a single user.
- * - Queries the `users` table by user ID
- * - Returns a User object if found, otherwise null
- */
-export async function fetchUserInformation(userId: string): Promise<User | null> {
-  try {
-    console.log('Fetching user information...');
-    const [user] = await sql<User[]>`
-      SELECT 
-        id,
-        email,
-        password_hash,
-        created_at
-      FROM users
-      WHERE id = ${userId}
-    `;
-    return user || null;
-  } catch (error) {
-    console.error('Error fetching user information:', error);
-    throw new Error('Failed to fetch user information.');
-  }
-}
-
-/**
- * Fetch all products that belong to a specific user.
- * - Queries the `products` table by user ID
- * - Returns an array of Product objects
- */
-export async function fetchUserProducts(userId: string): Promise<Product[]> {
-  try {
-    console.log('Fetching products for user:', userId);
-    const products = await sql<Product[]>`
-      SELECT 
-        product_id,
-        title,
-        description,
-        image_url,
-        user_id,
-        quantity,
-        price,
-        category,
-        created_at
-      FROM products
-      WHERE user_id = ${userId}
-      ORDER BY created_at DESC
-    `;
-    return products;
-  } catch (error) {
-    console.error('Error fetching user products:', error);
-    throw new Error('Failed to fetch user products.');
-  }
-}
-
 
 //TODO Marco
 //Look at data.ts for table structure that Stacy will add to app\seed\route.ts

@@ -1,22 +1,77 @@
 .header {
-    background-color: rgb(41, 41, 41);
+    /* background-color: rgb(41, 41, 41); */
+    background-color: #fff;
+    border: 3px solid #495867;
     border-radius: 10px;
     width: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    color: #fff;
+    color: #495867;
+    padding: 0 1em;
 }
 
 .fa-house {
     font-size: 2rem;
+    color: #495867;
 }
 
 .fa-leaf {
-    color: #ffd92f;
+    color: #327b2c;
     font-size: 1.5rem;
 }
 
 .header__title {
     font-size: 1.5rem;
     font-weight: bold;
+}
+
+.header__settings-container {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.header__settings-button {
+    text-decoration: none;
+    border: 1px solid #495867;
+    padding: 0.3em 0.6em;
+    border-radius: 8px;
+    margin-right: 1em;
+    background: transparent;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.header__settings-button a {
+    text-decoration: none;
+    color: #495867;
+}
+
+.header__settings-button:hover,
+.header__settings-button:focus {
+    border: 1px solid #327b2c;
+}
+
+.header__settings-button a:hover,
+.header__settings-button a:focus {
+    color: #327b2c;
+}
+
+.header__profile-image {
+    display: block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #495867;
+}
+
+.header__link,
+.header__link:link,
+.header__link:visited,
+.header__link:hover,
+.header__link:active,
+.header__link i {
+    text-decoration: none;
+    color: #495867;
 }

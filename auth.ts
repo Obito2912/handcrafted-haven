@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { LoginFormSchema } from "@/app/(main)/lib/schemas";
+import { LoginFormSchema } from "@/app/(main)/lib/schemas/authSchemas";
 import { authConfig } from "./auth.config";
 import type { User } from "@/app/(main)/lib/definitions";
 import bcrypt from "bcrypt";
@@ -18,7 +18,7 @@ async function getUser(email: string): Promise<User | undefined> {
   }
 }
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
@@ -40,4 +40,18 @@ export const { auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
+  },
 });

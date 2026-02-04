@@ -13,9 +13,21 @@ export type UserProfile = {
     gender: 'male' | 'female' | null;
     bio: string | null;
     image_url: string | null;
-    user_type: 'artisan' | 'buyer' | null;//TODO Ovi add this column to the table
+    user_type: 'buyer' | 'seller' | null;
     created_at: string; // ISO date string
 }
+
+export const PRODUCT_CATEGORIES = [
+    'painting',
+    'sculpture',
+    'craft',
+    'drawing',
+    'photography',
+    'art',
+    'other'
+] as const;
+
+export type ProductCategory = typeof PRODUCT_CATEGORIES[number];
 
 export type Product = {
     product_id: string;
@@ -25,9 +37,9 @@ export type Product = {
     user_id: string;
     quantity: number;
     price: number;
-    category: 'painting' | 'sculpture' | 'craft' | 'drawing' | 'photography' | 'art' | 'other';
+    category: ProductCategory;
     created_at: string; // ISO date string    
-}//TODO Stacy add this column to the table
+}
 
 export type UserProducts = {
     user_id: string;

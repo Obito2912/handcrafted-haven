@@ -1,5 +1,7 @@
 .sidebar {
-    background-color: rgb(41, 41, 41);
+    /* background-color: rgb(41, 41, 41); */
+    background-color: #fff;
+    border: 3px solid #495867;
     flex: 0 0 200px;
     border-radius: 10px;
     display: flex;
@@ -11,10 +13,10 @@
 }
 
 .sign-out {
-    color: #fff;
+    color: #495867;
     background: transparent;
     border-radius: 4px;
-    outline: 1px solid #fff;
+    outline: 1px solid #495867;
     cursor: pointer;
     border: none;
     width: fit-content;
@@ -25,8 +27,8 @@
 }
 
 .sign-out:hover {
-    color: #ffd92f;
-    outline: 1px solid #ffd92f;
+    color: #ffaf2f;
+    outline: 1px solid #ffaf2f;
 }
 
 .sign-out:active {
