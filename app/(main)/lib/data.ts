@@ -1,5 +1,8 @@
 import postgres from "postgres";
-import { Product, User, UserProfile, UserProfileValue } from "./definitions";
+import { Product, User, UserProfile } from "./definitions";
+
+import { UserProfileValue } from "./schemas/profileSchemas";
+import { toUserProfileValues } from "./mappers";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
