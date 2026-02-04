@@ -1,7 +1,7 @@
 'use client';
 
 import './Aside.css';
-import Navigation from "../Navigation/Navigation";
+import Navigation from "../navigation/Navigation";
 import { signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 

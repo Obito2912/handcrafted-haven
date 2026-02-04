@@ -14,11 +14,12 @@ type HeaderProps = {
 export default function Header({ isAuthenticated, userProfileImg }: HeaderProps) {
   const pathname = usePathname();
   const isOnProfilePage = pathname === '/profile';
+import Link from 'next/link';
 
   return (
     <header className="header">
       <div className='header__logo-container'>
-        <i className="fa-regular fa-house"></i>
+        <Link href="/" className="header__link"><i className="fa-regular fa-house"></i></Link>
         <span className='header__title'>HandCrafted Haven</span>
         <i className="fa-solid fa-leaf"></i>
       </div>

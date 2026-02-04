@@ -16,14 +16,14 @@ export default async function LoginPage() {
 
     return (
         <>
-            <header className={styles.header}>
+            {/* <header className={styles.header}>
                 <div>
                     <i className="fa-regular fa-house"></i>
                     <span className={styles.header__title}>HandCrafted Haven</span>
                     <i className="fa-solid fa-leaf"></i>
                 </div>
-            </header>
-            <main className={styles.login}>
+            </header> */}
+            <div className={styles.login}>
                 <Image src="/login-bckgrd.jpg" alt="Login Background" fill />
                 <div className={styles.login__formContainer}>
                     {userProfile ? (
@@ -32,11 +32,11 @@ export default async function LoginPage() {
                             <p>You are already signed in.</p>
                             <Link href="/">Go to Home Page</Link>
                         </div>
-                    ) : (
+                    ):  (
                         <AuthFormWrapper />
                     )}
                 </div>
-            </main>
+            </div>
         </>
     );
 }
