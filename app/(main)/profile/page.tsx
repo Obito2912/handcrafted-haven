@@ -1,6 +1,7 @@
 import ProfileForm from "@/components/ProfileForm/ProfileForm";
 import { fetchUserProfile } from "../lib/data";
 import { getLoggedInInfo } from "../lib/session";
+import ScrollableContainer from "@/components/ScrollableContainer/ScrollableContainer";
 
 export default async function Profile() {
     const { userId } = await getLoggedInInfo();
@@ -16,7 +17,9 @@ export default async function Profile() {
 
     return (
         <main className="">
-            <ProfileForm initialValues={userProfile?.userProfile ?? undefined} />
+            <ScrollableContainer>
+                <ProfileForm initialValues={userProfile?.userProfile ?? undefined} />
+            </ScrollableContainer>
         </main>
     );
 }

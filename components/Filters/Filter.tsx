@@ -1,86 +1,127 @@
-import Link from "next/link";
-import { PRODUCT_CATEGORIES } from "@/app/(main)/lib/definitions";
-import "./Filter.css";
+'use client';
 
-// search by product name, filter by price range and category
-type ProductFilterProps = {
+import { useRouter } from 'next/navigation';
+import { useState, useCallback } from 'react';
+import { ProductCategories } from "@/app/(main)/lib/definitions";
+import './Filter.css';
+
+type FilterProps = {
   query?: string;
   minPrice?: string;
   maxPrice?: string;
   category?: string;
 };
 
-export default function ProductFilters({
-  query,
-  minPrice,
-  maxPrice,
-  category,
-}: ProductFilterProps) {
+export default function ProductFilters({ query, minPrice, maxPrice, category }: FilterProps) {
+  const router = useRouter();
+
+  const [filters, setFilters] = useState({
+    q: query || '',
+    minPrice: minPrice || '',
+    maxPrice: maxPrice || '',
+    category: category || ''
+  });
+
+  const handleFilterChange = useCallback((key: string, value: string) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+  }, []);
+
+  const handleSubmit = (e: React.ChangeEvent) => {
+    e.preventDefault();
+
+    // Create new URLSearchParams
+    const params = new URLSearchParams();
+
+    // Add non-empty values
+    if (filters.q) params.set('q', filters.q);
+    if (filters.minPrice) params.set('minPrice', filters.minPrice);
+    if (filters.maxPrice) params.set('maxPrice', filters.maxPrice);
+    if (filters.category) params.set('category', filters.category);
+
+    // Navigate with new search params (no page refresh!)
+    router.push(`/?${params.toString()}`);
+  };
+
+  const handleClear = () => {
+    setFilters({
+      q: '',
+      minPrice: '',
+      maxPrice: '',
+      category: ''
+    });
+    router.push('/'); // Clear all filters
+  };
+
   return (
-    <form className="product-filters" method="get">
-      <div className="product-filters__row">
-        <label className="product-filters__field">
-          <span className="product-filters__label">Search</span>
-          <input
-            type="search"
-            name="q"
-            placeholder="Product name"
-            defaultValue={query}
-            className="product-filters__input"
-          />
-        </label>
+    <div>
+      <form className="product-filters__form" onSubmit={handleSubmit}>
+        <div className="product-filters__container">
 
-        <label className="product-filters__field">
-          <span className="product-filters__label">Category</span>
-          <select
-            name="category"
-            defaultValue={category || ""}
-            className="product-filters__select"
-          >
-            <option value="">All categories</option>
-            {PRODUCT_CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </label>
+          <div className="product-filters__row">
+            <label className="product-filters__field" htmlFor="q">
+              <span className="product-filters__label">Search</span>
+              <input
+                className="product-filters__input"
+                id="q"
+                name="q"
+                type="text"
+                value={filters.q}
+                onChange={(e) => handleFilterChange('q', e.target.value)}
+                placeholder="Search products..."
+              />
+            </label>
+            <label className="product-filters__field" htmlFor="minPrice">
+              <span className="product-filters__label">Min Price</span>
+              <input
+                className="product-filters__input"
+                id="minPrice"
+                name="minPrice"
+                type="number"
+                min="0"
+                step="0.01"
+                value={filters.minPrice}
+                onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+              />
+            </label>
+            <label className="product-filters__field" htmlFor="maxPrice">
+              <span className="product-filters__label">Max Price</span>
+              <input
+                className="product-filters__input"
+                id="maxPrice"
+                name="maxPrice"
+                type="number"
+                min="0"
+                step="0.01"
+                value={filters.maxPrice}
+                onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+              />
+            </label>
+            <label className="product-filters__field" htmlFor="category">
+              <span className="product-filters__label">Category</span>
+              <select
+                className="product-filters__input"
+                id="category"
+                name="category"
+                value={filters.category}
+                onChange={(e) => handleFilterChange('category', e.target.value)}
+              >
+                <option value="">All Categories</option>
+                {ProductCategories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
 
-        <label className="product-filters__field">
-          <span className="product-filters__label">Min price</span>
-          <input
-            type="number"
-            name="minPrice"
-            min={0}
-            step="0.01"
-            placeholder="0"
-            defaultValue={minPrice}
-            className="product-filters__input"
-          />
-        </label>
+          <div className="product-filters__actions">
+            <button type="submit" className="product-filters__submit">Filter</button>
+            <button type="button" className="product-filters__clear" onClick={handleClear}>Clear Filters</button>
+          </div>
 
-        <label className="product-filters__field">
-          <span className="product-filters__label">Max price</span>
-          <input
-            type="number"
-            name="maxPrice"
-            min={0}
-            step="0.01"
-            placeholder="100"
-            defaultValue={maxPrice}
-            className="product-filters__input"
-          />
-        </label>
-      </div>
-
-      <div className="product-filters__actions">
-        <button className="product-filters__submit" type="submit">
-          Search
-        </button>
-        <Link className="product-filters__clear" href="/">
-          Clear filters
-        </Link>
-      </div>
-    </form>
+        </div>
+      </form>
+    </div>
   );
 }

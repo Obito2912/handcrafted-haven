@@ -1,7 +1,7 @@
 .sidebar {
     /* background-color: rgb(41, 41, 41); */
     background-color: #fff;
-    border: 3px solid #495867;
+    border: 3px solid #6D543A;
     flex: 0 0 200px;
     border-radius: 10px;
     display: flex;
@@ -13,10 +13,10 @@
 }
 
 .sign-out {
-    color: #495867;
+    color: #6D543A;
     background: transparent;
     border-radius: 4px;
-    outline: 1px solid #495867;
+    outline: 1px solid #6D543A;
     cursor: pointer;
     border: none;
     width: fit-content;
