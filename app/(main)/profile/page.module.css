@@ -1,0 +1,6 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 240px);
+    /* or calc(100vh - header-height) */
+}

@@ -1,4 +1,6 @@
 .scrollable-container {
-    max-height: 400px;
+    flex: 1;
     overflow-y: auto;
+    min-height: 0;
+    /* Ensure the container can shrink properly */
 }

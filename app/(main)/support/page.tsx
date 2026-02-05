@@ -1,3 +1,12 @@
+import ScrollableContainer from "@/components/ScrollableContainer/ScrollableContainer";
+
 export default function Support() {
-    return 'Support Page';
+    return (
+        <main className="support">
+            <ScrollableContainer>
+                <h1>Support Page</h1>
+                <p>This is the support page. Here you can find help and resources.</p>
+            </ScrollableContainer>
+        </main>
+    );
 }

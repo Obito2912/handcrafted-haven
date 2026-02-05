@@ -1,10 +1,11 @@
 import ProductForm from "@/components/Products/ProductForm"
 import { getLoggedInInfo } from "@/app/(main)/lib/session";
 import { fetchProductById } from "@/app/(main)/lib/data";
+import ScrollableContainer from "@/components/ScrollableContainer/ScrollableContainer";
 
 export default async function EditProduct(
-props: { params: Promise<{ id: string }> }
-){
+    props: { params: Promise<{ id: string }> }
+) {
     const { session, userId, loggedIn } = await getLoggedInInfo();
     if (!userId) {
         return <div>Please log in to view your products.</div>;
@@ -17,8 +18,10 @@ props: { params: Promise<{ id: string }> }
         return <div>Product not found.</div>;
     }
     return (
-        <main className="">
-        <ProductForm initialValues={product} userId={userId} />
+        <main className="edit-product">
+            <ScrollableContainer>
+                <ProductForm initialValues={product} userId={userId} />
+            </ScrollableContainer>
         </main>
     );
 }

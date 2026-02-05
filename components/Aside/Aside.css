@@ -13,10 +13,10 @@
 }
 
 .sign-out {
-    color: #6D543A;
+    color: #495867;
     background: transparent;
     border-radius: 4px;
-    outline: 1px solid #6D543A;
+    outline: 1px solid #495867;
     cursor: pointer;
     border: none;
     width: fit-content;
@@ -28,8 +28,8 @@
 
 .sign-out:hover,
 .sign-out:focus {
-    color: #ff4b4b;
-    outline: 1px solid #ff4b4b;
+    color: #AD1E1E;
+    outline: 1px solid #AD1E1E;
 }
 
 .sign-out:active {

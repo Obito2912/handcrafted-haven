@@ -26,12 +26,12 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
     return (
         <form action={formAction} className={`${styles.form}`}>
             <label className={`${styles.form_label}`} htmlFor="name">Name
-                <input className={`${styles.form_input}`} 
-                type="text" id="name" name="name" autoComplete="name" 
-                defaultValue={state?.values?.name ?? initialValues?.name}  />
+                <input className={`${styles.form_input}`}
+                    type="text" id="name" name="name" autoComplete="name"
+                    defaultValue={state?.values?.name ?? initialValues?.name} />
             </label>
             <label className={`${styles.form_label}`} htmlFor="age">Age
-                <input className={`${styles.form_input}`} type="number" id="age" name="age" defaultValue={state?.values?.age ?? initialValues?.age}  />
+                <input className={`${styles.form_input}`} type="number" id="age" name="age" defaultValue={state?.values?.age ?? initialValues?.age} />
             </label>
             <label className={`${styles.form_label}`} htmlFor="bio">Bio
                 <textarea className={`${styles.form_input}`} id="bio" name="bio" rows={3} defaultValue={state?.values?.bio ?? initialValues?.bio} />
@@ -48,17 +48,17 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
             </label> */}
             <label htmlFor="profile-image">Profile Image URL
                 <input className={`${styles.form_input}`} type="text" id="profile-image" name="image_url" autoComplete="profile-image" defaultValue={state?.values?.image_url ?? initialValues?.image_url} />
-            </label>            
+            </label>
             <label className={`${styles.form_label}`} htmlFor="user_type">User Type
                 <select className={`${styles.form_input}`} id="user_type" name="user_type" defaultValue={state?.values?.user_type ?? initialValues?.user_type}>
                     <option value="" disabled>Select your user type</option>
                     <option value="buyer">Buyer</option>
                     <option value="seller">Seller</option>
                 </select>
-            </label>      
+            </label>
             <input type="hidden" name="user_id" value={state?.values?.user_id ?? initialValues?.user_id} />
             <button type="submit">
-            Update Profile
+                Update Profile
             </button>
 
             <div className="flex h-8 items-end space-x-1">
