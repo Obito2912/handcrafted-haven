@@ -5,33 +5,28 @@
     justify-content: center;
 }
 
-/* so when the card is a link, everything will not be a link */
-.product-card__wrapper > a {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
-
 .card {
-    border: 3px solid #fff;
+    border: 3px solid #6D543A;
     border-radius: 12px;
     padding: 1em;
     /* background-color: rgb(41, 41, 41); */
-    background-color: rgba(32, 78, 28, 0.842);
+    background-color: #fff;
+    /* 
+    #c8d5b9,
+    #7a6c5d,
+    #ddc9b4,
+    #ebd8d0,
+    #f7f0f5,
+    #d5d6aa,
+    */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     max-width: 250px;
     position: relative;
-    color: #fff;
-}
-
-.card:hover {
-    transform: translateY(4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    color: #6D543A;
 }
 
 .card__image-container {
@@ -53,10 +48,12 @@
 .fa-heart {
     font-size: 1.5rem;
     cursor: pointer;
-    color: #495867;
+    color: #6D543A;
 }
 
 .card__image {
+    border-radius: 8px;
+    border: 1px solid #6D543A;
     object-fit: cover;
     width: 100%;
     height: 100%;
@@ -65,7 +62,7 @@
 
 .card__product-stock {
     font-size: 0.8rem;
-    color: #ffd92f;
+    color: #AD1E1E;
 }
 
 .rating-stock {
@@ -74,7 +71,7 @@
 }
 
 .fa-star {
-    color: #ffd92f;
+    color: #AD1E1E;
     margin-right: 5px;
 }
 
@@ -97,19 +94,19 @@
     display: block;
     width: 90%;
     height: 1px;
-    background: #fff;
+    background: #6D543A;
     margin: 0.5em auto 0 auto;
 }
 
 .fa-cart-plus {
     margin-right: 8px;
-    color: #2B2E37;
+    color: #fff;
 }
 
 .card__add-btn {
     padding: 0.5em 1em;
-    background-color: #fff;
-    color: #2B2E37;
+    background-color: #6D543A;
+    color: #fff;
     border: none;
     border-radius: 6px;
     cursor: pointer;

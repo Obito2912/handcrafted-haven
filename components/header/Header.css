@@ -1,7 +1,7 @@
 .header {
     /* background-color: rgb(41, 41, 41); */
     background-color: #fff;
-    border: 3px solid #495867;
+    border: 3px solid #6D543A;
     border-radius: 10px;
     width: 100%;
     display: flex;
@@ -37,7 +37,7 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background-color: #495867;
+    background-color: #6D543A;
 }
 
 .header__settings-button,
@@ -60,7 +60,7 @@
 .header__settings-button:focus,
 .signin-btn:hover,
 .signin-btn:focus {
-    border: 2px solid #327b2c;
+    border: 2px solid #495867;
 }
 
 /* Change color of 'btn a' when hover over signin-btn/settings */
@@ -68,13 +68,13 @@
 .header__settings-button:focus>a,
 .signin-btn:hover>a,
 .signin-btn:focus>a {
-    color: #327b2c;
+    color: #495867;
 }
 
 .active {
-    border: 2px solid #327b2c;
+    border: 2px solid #495867;
 }
 
 .active>a {
-    color: #327b2c;
+    color: #495867;
 }

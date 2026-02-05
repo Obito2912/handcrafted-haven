@@ -22,7 +22,7 @@
     display: block;
     width: 0;
     height: 2px;
-    background: #327b2c;
+    background: #6D543A;
     transition: width .3s;
 }
 
@@ -35,10 +35,10 @@
 .nav__list-item a:hover,
 .nav__list-item a:focus,
 .nav__list-item a.active {
-    color: #327b2c;
+    color: #6D543A;
 }
 
 /* When link is active, update background of :after to match active color */
 .nav__list-item a.active:after {
-    background: #327b2c;
+    background: #6D543A;
 }
