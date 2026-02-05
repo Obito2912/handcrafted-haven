@@ -13,7 +13,7 @@
 
 .fa-house {
     font-size: 2rem;
-    color: #495867;
+    color: #6D543A;
 }
 
 .fa-leaf {
@@ -36,8 +36,9 @@
     display: block;
     width: 44px;
     height: 44px;
+    border: 2px solid #6D543A;
     border-radius: 50%;
-    background-color: #6D543A;
+    object-fit: cover;
 }
 
 .header__settings-button,
@@ -50,8 +51,8 @@
     cursor: pointer;
 }
 
-.header__settings-button>a,
-.signin-btn>a {
+.header__settings-button,
+.signin-btn {
     text-decoration: none;
     color: #495867;
 }
@@ -60,21 +61,11 @@
 .header__settings-button:focus,
 .signin-btn:hover,
 .signin-btn:focus {
-    border: 2px solid #495867;
-}
-
-/* Change color of 'btn a' when hover over signin-btn/settings */
-.header__settings-button:hover>a,
-.header__settings-button:focus>a,
-.signin-btn:hover>a,
-.signin-btn:focus>a {
-    color: #495867;
+    border: 2px solid #6D543A;
+    color: #6D543A;
 }
 
 .active {
-    border: 2px solid #495867;
-}
-
-.active>a {
-    color: #495867;
+    border: 2px solid #6D543A;
+    color: #6D543A;
 }

@@ -19,22 +19,20 @@ export default function Header({ isAuthenticated, userProfileImg }: HeaderProps)
   return (
     <header className="header">
       <div className='header__logo-container'>
-        <Link href="/" className="header__link"><i className="fa-regular fa-house"></i></Link>
+        <Link href="/" className="header__link">
+          <i className="fa-regular fa-house"></i>
+        </Link>
         <span className='header__title'>HandCrafted Haven</span>
         <i className="fa-solid fa-leaf"></i>
       </div>
       {isAuthenticated ? (
-        <>
-          <div className='header__settings-container'>
-            <button className={`header__settings-button ${isOnProfilePage ? ' active' : ''}`}>
-              <a href="/profile">Settings</a>
-            </button>
-            <Image className='header__profile-image' src={userProfileImg || defaultProfileImg} alt="Profile Image" width={44} height={44} />
-          </div>
-        </>
-      ) : <button className='signin-btn'>
-        <a href="/login">Sign In</a>
-      </button>}
+        <div className='header__settings-container'>
+          <Link href="/profile" className={`header__settings-button ${isOnProfilePage ? ' active' : ''}`}>Settings</Link>
+          <Image className='header__profile-image' src={userProfileImg || defaultProfileImg} alt="Profile Image" width={44} height={44} />
+        </div>
+      ) :
+        <Link href="/login" className='signin-btn'>Sign In</Link>
+      }
     </header>
   );
 }
