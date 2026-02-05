@@ -1,5 +1,6 @@
 import { UserProfileValue} from "./schemas/profileSchemas";
-import { UserProfile } from "./definitions";
+import { ProductValue } from "./schemas/productSchema";
+import { Product, PRODUCT_CATEGORIES, UserProfile } from "./definitions";
 
 export function toUserProfileValues(profile: UserProfile | null): UserProfileValue {
     return {
@@ -10,5 +11,18 @@ export function toUserProfileValues(profile: UserProfile | null): UserProfileVal
         image_url: profile?.image_url || "",
         age: profile?.age || undefined,
         user_type: profile?.user_type === "seller" ? "seller" : "buyer"
+    };
+}
+
+export function toProductValue(product: Product | null): ProductValue {
+    return {
+        product_id: product?.product_id || '',
+        title: product?.title || '',
+        description: product?.description || '',
+        image_url: product?.image_url || '',
+        userId: product?.user_id || '',
+        quantity: product?.quantity || 0,
+        price: product?.price || 0,
+        category: product?.category || PRODUCT_CATEGORIES[0]
     };
 }

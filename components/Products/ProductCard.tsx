@@ -1,27 +1,9 @@
-import { fetchProductData } from "@/app/(main)/lib/data";
 import { Product } from "@/app/(main)/lib/definitions";
 import Image from "next/image";
 import "./ProductCard.css";
 
-type ProductCardWrapperProps = {
-  products?: Product[];
-};
 
-export default async function ProductCardWrapper({
-  products,
-}: ProductCardWrapperProps = {}) {
-  //TODO Add Paging and Filtering
-  const productData = products ?? (await fetchProductData()).productData;
-  return (
-    <div className="product-card__wrapper">
-      {productData.map((product) => (
-        <ProductCard key={product.product_id} {...product} />
-      ))}
-    </div>
-  );
-}
-
-export function ProductCard(product: Product) {
+export default function ProductCard(product: Product) {
   return (
     <div className="card">
       <div className="card__image-container">

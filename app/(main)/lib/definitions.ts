@@ -39,6 +39,7 @@ export type Product = {
     price: number;
     category: ProductCategory;
     created_at: string; // ISO date string    
+    updated_at: string; // ISO date string
 }
 
 export type UserProducts = {
