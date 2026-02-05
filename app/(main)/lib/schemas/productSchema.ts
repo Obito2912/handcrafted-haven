@@ -14,6 +14,8 @@ export const ProductSchema = z.object({
   category: z.enum(PRODUCT_CATEGORIES)
 });
 
+export const CreateProductSchema = ProductSchema.omit({ product_id: true });
+export const UpdateProductSchema = ProductSchema;
 export type ProductValue = z.infer<typeof ProductSchema>;
 
 type FormState<TValues> = {

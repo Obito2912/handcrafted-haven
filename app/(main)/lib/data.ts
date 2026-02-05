@@ -220,9 +220,7 @@ export async function fetchUserProducts(userId: string): Promise<Product[]> {
   }
 }
 
-export async function fetchProductById(productId: string): Promise<{
-  product: ProductValue | null;
-}> {
+export async function fetchProductById(productId: string): Promise<ProductValue | null> {
   try {
     console.log(`Fetching product for id ${productId}...`);
     const products: Product[] = await sql<Product[]>`
@@ -237,15 +235,13 @@ export async function fetchProductById(productId: string): Promise<{
                 created_at
             FROM products
             WHERE product_id = ${productId}
-            LIMIT 1
-            ORDER BY created_at DESC
         `;
     console.log("Product fetched:", products);
     if (products.length === 0) {
       throw new Error('Product not found');
     }
     const productValue = toProductValue(products[0]);
-    return { product: productValue };    
+    return productValue;    
   } catch (error) {
     console.error("Error fetching product:", error);
     throw new Error("Failed to fetch product.");

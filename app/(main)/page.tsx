@@ -1,5 +1,5 @@
 import ProductFilters from "@/components/Filters/Filter";
-import ProductCardWrapper from "@/components/ProductCard/ProductCard";
+import ProductCardWrapper from "@/components/Products/ProductCardWrapper";
 import { fetchProductsByFilters } from "./lib/data";
 
 //TODO Nefi Add a filter for products

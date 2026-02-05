@@ -2,7 +2,7 @@
 
 import styles from "./ProductForm.module.css";
 import { useActionState } from "react";
-import { createProduct } from "@/app/(main)/lib/actions";
+import { createProduct, updateProduct } from "@/app/(main)/lib/actions";
 import { ProductFormState, ProductValue } from "@/app/(main)/lib/schemas/productSchema";
 import { PRODUCT_CATEGORIES } from "@/app/(main)/lib/definitions";
 import ExclamationCircleIcon from "@heroicons/react/24/solid/esm/ExclamationCircleIcon";
@@ -12,20 +12,29 @@ type ProductFormProps = {
     userId?: string;
 };
 
-export default function CreateProductForm( { initialValues, userId }: ProductFormProps)
+export default function ProductForm( { initialValues, userId }: ProductFormProps)
 {
     const initialState: ProductFormState = { 
         message: null, 
         errors: null,
-        values: {}
+        values: {
+            product_id: initialValues?.product_id ?? "",
+            title: initialValues?.title ?? "",
+            description: initialValues?.description ?? "",
+            image_url: initialValues?.image_url ?? "",
+            userId: initialValues?.userId ?? userId ?? "",
+            quantity: initialValues?.quantity?.toString() ?? "",
+            price: initialValues?.price?.toString() ?? "",
+            category: initialValues?.category ?? "",
+        }
     };
 
-    const [state, formAction] = useActionState(createProduct, initialState);
+    const isEditMode = !!initialValues;
+    const [state, formAction] = useActionState(isEditMode ? updateProduct : createProduct, initialState);
     
     if (!userId) {
         return <p className="text-red-500">You must be logged in to create a product.</p>;
     }
-
     return (
         <form action={formAction} className={`${styles.form}`}>
             <label className={`${styles.form_label}`} htmlFor="title">Name
@@ -54,10 +63,11 @@ export default function CreateProductForm( { initialValues, userId }: ProductFor
                         </option>
                     ))}
                 </select>
-            </label>
+            </label>            
+            { isEditMode && <input type="hidden" name="product_id" value={state?.values?.product_id ?? initialValues?.product_id} /> }
             <input type="hidden" name="user_id" value={state?.values?.userId ?? initialValues?.userId} />
             <button type="submit">
-            Create Product
+            {isEditMode ? "Update Product" : "Create Product"}
             </button>
 
             <div className="flex h-8 items-end space-x-1">

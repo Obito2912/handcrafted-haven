@@ -5,6 +5,13 @@
     justify-content: center;
 }
 
+/* so when the card is a link, everything will not be a link */
+.product-card__wrapper > a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .card {
     border: 3px solid #fff;
     border-radius: 12px;
@@ -12,6 +19,7 @@
     /* background-color: rgb(41, 41, 41); */
     background-color: rgba(32, 78, 28, 0.842);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,6 +27,11 @@
     max-width: 250px;
     position: relative;
     color: #fff;
+}
+
+.card:hover {
+    transform: translateY(4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 }
 
 .card__image-container {
