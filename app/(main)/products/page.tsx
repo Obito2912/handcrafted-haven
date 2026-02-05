@@ -1,6 +1,7 @@
-import EditableProductCardWrapper from "@/components/ProductCard/EditableProductCard";
+import EditableProductCardWrapper from "@/components/Products/EditableProductCardWrapper";
 import { getLoggedInInfo } from "../lib/session";
 import { fetchProductDataByUser } from "../lib/data";
+import Link from "next/dist/client/link";
 
 export default async function Products() {
     const { session, userId, loggedIn } = await getLoggedInInfo();
@@ -10,6 +11,8 @@ export default async function Products() {
     const { productData } = await fetchProductDataByUser(userId);
   return (
     <main className="">
+      <h1 className="mb-4 text-2xl font-bold">My Products</h1>
+      <h2 className="mb-2 text-lg font-semibold"><Link href="/products/create">Create New Product</Link></h2>
       <EditableProductCardWrapper products={productData} />
     </main>)
 }

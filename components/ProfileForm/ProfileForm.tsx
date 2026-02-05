@@ -25,11 +25,11 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
 
     return (
         <form action={formAction} className={`${styles.form}`}>
-            {<label className={`${styles.form_label}`} htmlFor="name">Name
+            <label className={`${styles.form_label}`} htmlFor="name">Name
                 <input className={`${styles.form_input}`} 
                 type="text" id="name" name="name" autoComplete="name" 
                 defaultValue={state?.values?.name ?? initialValues?.name}  />
-            </label>}
+            </label>
             <label className={`${styles.form_label}`} htmlFor="age">Age
                 <input className={`${styles.form_input}`} type="number" id="age" name="age" defaultValue={state?.values?.age ?? initialValues?.age}  />
             </label>

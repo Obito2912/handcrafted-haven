@@ -1,14 +1,16 @@
 import postgres from "postgres";
-import { Product, User, UserProfile } from "./definitions";
+import { Product, ProductCategory, User, UserProfile } from "./definitions";
 
 import { UserProfileValue } from "./schemas/profileSchemas";
-import { toUserProfileValues } from "./mappers";
+import { ProductValue } from "./schemas/productSchema";
+import { toUserProfileValues, toProductValue } from "./mappers";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 export async function fetchProductData(): Promise<{
   productData: Product[];
   rating: number;
+  ratingsByProduct: Record<string, number | null>; // Nefi added the rating by average by product
 }> {
   try {
     // Artificially delay a response for demo purposes.
@@ -34,11 +36,131 @@ export async function fetchProductData(): Promise<{
     //TODO Stacy create product ratings table
     //TODO Nefi get all the ratings for each product and calculate average rating
     //table defined in lib/definitions.ts
-    const rating = 4;
-    return { productData, rating }; //Return rating also
+    const [{ exists: ratingsTableExists } = { exists: null }] = await sql<
+      { exists: string | null }[]
+    >`
+        SELECT to_regclass('public.product_ratings') AS exists
+      `;
+
+    const ratingRows: { product_id: string; avg_rating: number | null }[] =
+      ratingsTableExists
+        ? await sql`
+            SELECT product_id, AVG(rating) AS avg_rating
+            FROM product_ratings
+            GROUP BY product_id
+          `
+        : [];
+
+    const ratingsByProduct = ratingRows.reduce<Record<string, number | null>>(
+      (acc, row) => {
+        acc[row.product_id] =
+          row.avg_rating === null ? null : Number(row.avg_rating);
+        return acc;
+      },
+      {},
+    );
+
+    const rating = ratingRows.length
+      ? ratingRows.reduce((sum, row) => sum + Number(row.avg_rating ?? 0), 0) /
+        ratingRows.length
+      : 0;
+    return { productData, rating, ratingsByProduct }; //Return rating also
   } catch (error) {
     console.error("Error fetching product data:", error);
     throw new Error("Failed to fetch product data.");
+  }
+}
+
+export type ProductFilters = {
+  query?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  category?: ProductCategory | string;
+};
+
+export async function fetchProductsByFilters(filters: ProductFilters): Promise<{
+  productData: Product[];
+  rating: number;
+  ratingsByProduct: Record<string, number | null>;
+}> {
+  try {
+    console.log("Fetching filtered product data...");
+
+    const conditions = [] as ReturnType<typeof sql>[];
+
+    if (filters.query) {
+      conditions.push(sql`title ILIKE ${`%${filters.query}%`}`);
+    }
+
+    if (filters.category) {
+      conditions.push(sql`category = ${filters.category}`);
+    }
+
+    if (filters.minPrice !== undefined) {
+      conditions.push(sql`price >= ${filters.minPrice}`);
+    }
+
+    if (filters.maxPrice !== undefined) {
+      conditions.push(sql`price <= ${filters.maxPrice}`);
+    }
+
+    let whereClause = sql``;
+
+    conditions.forEach((condition, index) => {
+      if (index === 0) {
+        whereClause = sql`WHERE ${condition}`;
+      } else {
+        whereClause = sql`${whereClause} AND ${condition}`;
+      }
+    });
+
+    const productData: Product[] = await sql<Product[]>`
+            SELECT 
+                product_id,
+                title,
+                description,
+                image_url,
+                user_id,
+                quantity,
+                price,
+                category,
+                created_at
+            FROM products
+            ${whereClause}
+            ORDER BY created_at DESC
+        `;
+    const [{ exists: ratingsTableExists } = { exists: null }] = await sql<
+      { exists: string | null }[]
+    >`
+        SELECT to_regclass('public.product_ratings') AS exists
+      `;
+
+    const ratingRows: { product_id: string; avg_rating: number | null }[] =
+      ratingsTableExists
+        ? await sql`
+            SELECT product_id, AVG(rating) AS avg_rating
+            FROM product_ratings
+            GROUP BY product_id
+          `
+        : [];
+
+    const ratingsByProduct = ratingRows.reduce<Record<string, number | null>>(
+      (acc, row) => {
+        acc[row.product_id] =
+          row.avg_rating === null ? null : Number(row.avg_rating);
+        return acc;
+      },
+      {},
+    );
+
+    const rating = ratingRows.length
+      ? ratingRows.reduce((sum, row) => sum + Number(row.avg_rating ?? 0), 0) /
+        ratingRows.length
+      : 0;
+    return { productData, rating, ratingsByProduct };
+  } catch (error) {
+    console.error("Error fetching filtered product data:", error);
+    throw new Error("Failed to fetch filtered product data.");
   }
 }
 
@@ -95,6 +217,62 @@ export async function fetchUserProducts(userId: string): Promise<Product[]> {
   } catch (error) {
     console.error("Error fetching user products:", error);
     throw new Error("Failed to fetch user products.");
+  }
+}
+
+export async function fetchProductById(productId: string): Promise<ProductValue | null> {
+  try {
+    console.log(`Fetching product for id ${productId}...`);
+    const products: Product[] = await sql<Product[]>`
+            SELECT 
+                product_id,
+                title,
+                description,
+                image_url,
+                user_id,
+                quantity,
+                price,
+                created_at
+            FROM products
+            WHERE product_id = ${productId}
+        `;
+    console.log("Product fetched:", products);
+    if (products.length === 0) {
+      throw new Error('Product not found');
+    }
+    const productValue = toProductValue(products[0]);
+    return productValue;    
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    throw new Error("Failed to fetch product.");
+  }
+}
+
+export async function fetchProductDataByUser(userId: string): Promise<{
+  productData: Product[];
+}> {
+  try {
+    console.log(`Fetching product data for user ${userId}...`);
+
+    const productData: Product[] = await sql<Product[]>`
+            SELECT 
+                product_id,
+                title,
+                description,
+                image_url,
+                user_id,
+                quantity,
+                price,
+                created_at
+            FROM products
+            WHERE user_id = ${userId}
+            ORDER BY created_at DESC
+        `;
+    console.log("Product  fetched:", productData.length);
+    return { productData };
+  } catch (error) {
+    console.error("Error fetching product data:", error);
+    throw new Error("Failed to fetch product data.");
   }
 }
 
