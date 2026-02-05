@@ -2,7 +2,8 @@ import postgres from "postgres";
 import { Product, User, UserProfile } from "./definitions";
 
 import { UserProfileValue } from "./schemas/profileSchemas";
-import { toUserProfileValues } from "./mappers";
+import { ProductValue } from "./schemas/productSchema";
+import { toUserProfileValues, toProductValue } from "./mappers";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -95,6 +96,66 @@ export async function fetchUserProducts(userId: string): Promise<Product[]> {
   } catch (error) {
     console.error("Error fetching user products:", error);
     throw new Error("Failed to fetch user products.");
+  }
+}
+
+export async function fetchProductById(productId: string): Promise<{
+  product: ProductValue | null;
+}> {
+  try {
+    console.log(`Fetching product for id ${productId}...`);
+    const products: Product[] = await sql<Product[]>`
+            SELECT 
+                product_id,
+                title,
+                description,
+                image_url,
+                user_id,
+                quantity,
+                price,
+                created_at
+            FROM products
+            WHERE product_id = ${productId}
+            LIMIT 1
+            ORDER BY created_at DESC
+        `;
+    console.log("Product fetched:", products);
+    if (products.length === 0) {
+      throw new Error('Product not found');
+    }
+    const productValue = toProductValue(products[0]);
+    return { product: productValue };    
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    throw new Error("Failed to fetch product.");
+  }
+}
+
+export async function fetchProductDataByUser(userId: string): Promise<{
+  productData: Product[];
+}> {
+  try {
+    console.log(`Fetching product data for user ${userId}...`);
+
+    const productData: Product[] = await sql<Product[]>`
+            SELECT 
+                product_id,
+                title,
+                description,
+                image_url,
+                user_id,
+                quantity,
+                price,
+                created_at
+            FROM products
+            WHERE user_id = ${userId}
+            ORDER BY created_at DESC
+        `;
+    console.log("Product  fetched:", productData.length);
+    return { productData };
+  } catch (error) {
+    console.error("Error fetching product data:", error);
+    throw new Error("Failed to fetch product data.");
   }
 }
 

@@ -8,8 +8,9 @@ import bcrypt from "bcrypt";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { SignupFormSchema, AuthFormState } from "./schemas/authSchemas";
-
 import { ProfileSchema, ProfileFormState } from "./schemas/profileSchemas";
+import { ProductFormState, ProductSchema } from "./schemas/productSchema";
+
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 export async function handleAuth(
@@ -171,4 +172,64 @@ console.log("UPDATE values:", {
     },
   };
 }
+
+export async function createProduct(
+  prevState: ProductFormState | undefined,
+  formData: FormData,
+): Promise<ProductFormState> {
+  const validatedFields = ProductSchema.safeParse({
+    title: formData.get("title"),
+    description: formData.get("description"),
+    image_url: formData.get("image_url"),
+    userId: formData.get("user_id")?.toString(),
+    quantity: formData.get("quantity") ? Number(formData.get("quantity")) : undefined,
+    price: formData.get("price") ? Number(formData.get("price")) : undefined,
+    category: formData.get("category"),
+  });  
+  if (!validatedFields.success) {
+    return {
+      errors: z.prettifyError(validatedFields.error), 
+      message: z.prettifyError(validatedFields.error),
+      values: {
+        title: formData.get("title")?.toString(),
+        description: formData.get("description")?.toString(),
+        image_url: formData.get("image_url")?.toString(),
+        userId: formData.get("user_id")?.toString(),
+        quantity: formData.get("quantity")?.toString(),
+        price: formData.get("price")?.toString(),
+        category: formData.get("category")?.toString(),
+      },
+    };
+  }
+  const { title, description, image_url, userId, quantity, price, category } = validatedFields.data;
+  const date = new Date().toISOString().split("T")[0];
+  try {
+    const [product] =await sql`
+            INSERT INTO products (title, description, image_url, user_id, quantity, price, category, created_at)
+            VALUES (${title}, ${description}, ${image_url}, ${userId}, ${quantity}, ${price}, ${category}, ${date})
+            RETURNING product
+        `;
+      return {
+        message: "Product created successfully.",
+        success: true,
+        values: {
+          product_id: product.product_id,
+          title: product.title,
+          description: product.description,
+          image_url: product.image_url,
+          userId: product.user_id,
+          quantity: product.quantity,
+          price: product.price,
+          category: product.category,
+
+        }
+      }
+  } catch (error) {
+    console.error("Error creating product:", error);
+    return {
+      message: "Error creating product. Please try again.",
+    };
+  }
+   //TODO or revalidate path where products are listed
+ };
 
