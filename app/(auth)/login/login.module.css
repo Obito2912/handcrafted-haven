@@ -19,25 +19,45 @@
     color: #11971a;
 }
 
-.header__title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2B2E37;
-}
-
 .login {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     background-color: #2B2E37;
     position: relative;
+    border-radius: 8px;
+    height: calc(100vh - 230px);
+    overflow: hidden;
 }
 
-.login h1 {
+.login__background {
+    object-fit: cover;
+    /* Center image */
+    object-position: center;
+}
+
+.login__welcome {
     color: #2B2E37;
     text-align: center;
+}
+
+.login__message {
     margin-bottom: 1rem;
+    color: #327b2c;
+}
+
+.login__go_home {
+    color: #495867;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+.login__go_home:hover,
+.login__go_home:focus {
+    color: #327b2c;
+    text-decoration: underline;
 }
 
 .login__formContainer {

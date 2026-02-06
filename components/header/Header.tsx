@@ -9,10 +9,10 @@ import Link from 'next/link';
 type HeaderProps = {
   isAuthenticated?: boolean;
   userProfileImg?: string | null;
-
+  showSignIn?: boolean;
 }
 
-export default function Header({ isAuthenticated, userProfileImg }: HeaderProps) {
+export default function Header({ isAuthenticated, userProfileImg, showSignIn }: HeaderProps) {
   const pathname = usePathname();
   const isOnProfilePage = pathname === '/profile';
 
@@ -31,7 +31,11 @@ export default function Header({ isAuthenticated, userProfileImg }: HeaderProps)
           <Image className='header__profile-image' src={userProfileImg || defaultProfileImg} alt="Profile Image" width={44} height={44} />
         </div>
       ) :
-        <Link href="/login" className='signin-btn'>Sign In</Link>
+        (showSignIn &&
+          <Link href="/login" className='signin-btn'>
+            Sign In
+          </Link>
+        )
       }
     </header>
   );

@@ -1,6 +1,6 @@
 import Aside from "@/components/Aside/Aside";
-import Footer from "@/components/footer/Footer";
-import Header from "@/components/header/Header";
+import Footer from "@/components/Footer/Footer";
+import Header from "@/components/Header/Header";
 import { auth } from "@/auth";
 import { fetchUserProfile } from "@/app/(main)/lib/data";
 
@@ -20,7 +20,8 @@ export default async function MainLayout({ children }: { children: React.ReactNo
             <div className="page__content">
                 <Header
                     isAuthenticated={isAuthenticated}
-                    userProfileImg={userProfileImg} />
+                    userProfileImg={userProfileImg}
+                    showSignIn={true} />
                 <div className="page__container">
                     <Aside isAuthenticated={isAuthenticated} />
                     <main className="main">{children}</main>

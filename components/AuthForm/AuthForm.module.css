@@ -43,15 +43,13 @@
 
 .form>button[type="submit"]:hover,
 .form button[type="button"]:hover {
-    box-shadow: 0 0 10px #2B2E37;
-    outline: 1px solid #2B2E37;
+    outline: 1px solid #6D543A;
 }
 
 .form_input:focus,
 .form>button[type="submit"]:focus,
 .form button[type="button"]:focus {
-    box-shadow: 0 0 10px #2B2E37;
-    outline: 1px solid #2B2E37;
+    outline: 1px solid #6D543A;
 }
 
 .form_text {
