@@ -9,7 +9,7 @@ import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { SignupFormSchema, AuthFormState } from "./schemas/authSchemas";
 import { ProfileSchema, ProfileFormState } from "./schemas/profileSchemas";
-import { ProductFormState, ProductSchema, UpdateProductSchema } from "./schemas/productSchema";
+import { CreateProductSchema, ProductFormState, ProductSchema, UpdateProductSchema } from "./schemas/productSchema";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -177,7 +177,17 @@ export async function createProduct(
   prevState: ProductFormState | undefined,
   formData: FormData,
 ): Promise<ProductFormState> {
-  const validatedFields = ProductSchema.safeParse({
+    console.log("createProduct called with:", {
+    product_id: formData.get("product_id")?.toString(),
+    title: formData.get("title"),
+    description: formData.get("description"),
+    image_url: formData.get("image_url"),
+    userId: formData.get("user_id")?.toString(),
+    quantity: formData.get("quantity") ? Number(formData.get("quantity")) : undefined,
+    price: formData.get("price") ? Number(formData.get("price")) : undefined,
+    category: formData.get("category"),
+  });
+  const validatedFields = CreateProductSchema.safeParse({
     title: formData.get("title"),
     description: formData.get("description"),
     image_url: formData.get("image_url"),
@@ -235,6 +245,15 @@ export async function createProduct(
     console.error("Error creating product:", error);
     return {
       message: "Error creating product. Please try again.",
+      values: {
+        title: formData.get("title")?.toString(),
+        description: formData.get("description")?.toString(),
+        image_url: formData.get("image_url")?.toString(),
+        userId: formData.get("user_id")?.toString(),
+        quantity: formData.get("quantity")?.toString(),
+        price: formData.get("price")?.toString(),
+        category: formData.get("category")?.toString(),
+      },
     };
   }
    //TODO or revalidate path where products are listed
@@ -254,6 +273,16 @@ export async function updateProduct(
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
     category: formData.get("category"),
   });  
+  console.log("updateProduct called with:", {
+    product_id: formData.get("product_id")?.toString(),
+    title: formData.get("title"),
+    description: formData.get("description"),
+    image_url: formData.get("image_url"),
+    userId: formData.get("user_id")?.toString(),
+    quantity: formData.get("quantity") ? Number(formData.get("quantity")) : undefined,
+    price: formData.get("price") ? Number(formData.get("price")) : undefined,
+    category: formData.get("category"),
+  });
   if (!validatedFields.success) {
     return {
       errors: z.prettifyError(validatedFields.error), 
@@ -301,9 +330,19 @@ export async function updateProduct(
         }
       }
   } catch (error) {
-    console.error("Error creating product:", error);
+    console.error("Error creating/updating product:", error);
     return {
-      message: "Error creating product. Please try again.",
+      message: "Error updating product. Please try again.",
+      values: {
+        product_id: formData.get("product_id")?.toString(),
+        title: formData.get("title")?.toString(),
+        description: formData.get("description")?.toString(),
+        image_url: formData.get("image_url")?.toString(),
+        userId: formData.get("user_id")?.toString(),
+        quantity: formData.get("quantity")?.toString(),
+        price: formData.get("price")?.toString(),
+        category: formData.get("category")?.toString(),
+      },
     };
   }
    //TODO or revalidate path where products are listed
