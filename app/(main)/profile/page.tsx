@@ -1,7 +1,7 @@
-import ProfileForm from "@/components/ProfileForm/ProfileForm";
+import ProfileForm from "@/components/main/ProfileForm/ProfileForm";
 import { fetchUserProfile } from "../lib/data";
 import { getLoggedInInfo } from "../lib/session";
-import ScrollableContainer from "@/components/ScrollableContainer/ScrollableContainer";
+import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
 import styles from "./page.module.css";
 
 export default async function Profile() {

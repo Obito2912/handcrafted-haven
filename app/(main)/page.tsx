@@ -1,7 +1,7 @@
 import ProductFilters from "@/components/Filters/Filter";
-import ProductCardWrapper from "@/components/Products/ProductCardWrapper";
+import ProductCardWrapper from "@/components/main/Products/ProductCardWrapper";
 import { fetchProductsByFilters } from "./lib/data";
-import ScrollableContainer from "@/components/ScrollableContainer/ScrollableContainer";
+import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
 
 type SearchParams = {
   q?: string;

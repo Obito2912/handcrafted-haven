@@ -1,8 +1,9 @@
-import ScrollableContainer from "@/components/ScrollableContainer/ScrollableContainer";
+import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
 import { fetchUserInformation, fetchUserProfile, fetchUserProducts } from "@/app/(main)/lib/data";
+import Image from "next/image";
 
 export default async function Artisans() {
-  const userId = "user123"; // Replace with dynamic ID later
+  const userId = "b9879c6e-7fea-4911-aae5-c7bfe64a7d63"; // Replace with dynamic ID later
 
   // Fetch data
   const user = await fetchUserInformation(userId);
@@ -17,7 +18,7 @@ export default async function Artisans() {
         {/* Profile Section */}
         {userProfile ? (
           <section className="artisan-profile">
-            <img src={userProfile.image_url ?? "/default-avatar.png"} alt={userProfile.name ?? "Artisan"} />
+            <Image src={userProfile.image_url ?? "/default-avatar.png"} alt={userProfile.name ?? "Artisan"} width={100} height={100} />
             <h2>{userProfile.name ?? user?.email}</h2>
             <p>{userProfile.bio ?? "No bio available"}</p>
             <p>Age: {userProfile.age ?? "N/A"}</p>
@@ -36,7 +37,7 @@ export default async function Artisans() {
             <ul className="product-list">
               {products.map((p) => (
                 <li key={p.product_id} className="product-card">
-                  <img src={p.image_url} alt={p.title} />
+                  <Image src={p.image_url} alt={p.title} width={100} height={100} />
                   <strong>{p.title}</strong> – ${p.price}
                   <p>{p.description}</p>
                 </li>

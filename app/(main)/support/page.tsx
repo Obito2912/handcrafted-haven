@@ -1,4 +1,4 @@
-import ScrollableContainer from "@/components/ScrollableContainer/ScrollableContainer";
+import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
 
 export default function Support() {
     return (

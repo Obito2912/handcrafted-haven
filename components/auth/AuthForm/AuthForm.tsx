@@ -3,7 +3,7 @@
 import styles from './AuthForm.module.css';
 import { useSearchParams } from 'next/navigation';
 import { useActionState } from 'react';
-import { handleAuth } from '../../app/(main)/lib/actions'
+import { handleAuth } from '../../../app/(main)/lib/actions'
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 
 export default function AuthForm({ signup, setSignup }: { signup: boolean; setSignup: (value: boolean) => void }) {
