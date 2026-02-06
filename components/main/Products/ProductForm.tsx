@@ -27,10 +27,11 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
             category: initialValues?.category ?? "",
         }
     };
-
     const isEditMode = !!initialValues;
     const [state, formAction] = useActionState(isEditMode ? updateProduct : createProduct, initialState);
-
+console.log("Initital values Category", initialValues?.category);
+    console.log("Initial State category", state.values.category);
+    
     if (!userId) {
         return <p className="text-red-500">You must be logged in to create a product.</p>;
     }
@@ -54,7 +55,7 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
                 <input className={`${styles.form_input}`} type="number" id="quantity" name="quantity" defaultValue={state?.values?.quantity ?? initialValues?.quantity} />
             </label>
             <label className={`${styles.form_label}`} htmlFor="category">Category
-                <select className={`${styles.form_input}`} id="category" name="category" defaultValue={state?.values?.category ?? initialValues?.category}>
+                    <select className={`${styles.form_input}`} key={state?.values?.category ?? initialValues?.category ?? ""} id="category" name="category" defaultValue={state?.values?.category ?? initialValues?.category ?? ""}>
                     <option value="" disabled>Select your category</option>
                     {ProductCategories.map((category: string) => (
                         <option key={category} value={category}>
