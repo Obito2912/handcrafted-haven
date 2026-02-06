@@ -1,7 +1,7 @@
-import EditableProductCardWrapper from "@/components/Products/EditableProductCardWrapper";
+import EditableProductCardWrapper from "@/components/main/Products/EditableProductCardWrapper";
 import { getLoggedInInfo } from "../lib/session";
 import { fetchProductDataByUser } from "../lib/data";
-import ScrollableContainer from "@/components/ScrollableContainer/ScrollableContainer";
+import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
 import Link from "next/link";
 export default async function Products() {
   const { session, userId, loggedIn } = await getLoggedInInfo();

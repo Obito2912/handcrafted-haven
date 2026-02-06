@@ -2,7 +2,7 @@
 
 import './Header.css';
 import Image from 'next/image';
-import defaultProfileImg from '../../public/default-profile-img.png';
+import defaultProfileImg from '../../../public/default-profile-img.png';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 

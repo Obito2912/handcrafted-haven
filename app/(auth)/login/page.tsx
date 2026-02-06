@@ -3,7 +3,7 @@ import styles from './login.module.css';
 import { auth } from '@/auth';
 import { fetchUserProfile } from '@/app/(main)/lib/data';
 import Link from 'next/link';
-import AuthFormWrapper from './AuthFormWrapper';
+import AuthFormWrapper from '../../../components/auth/AuthFormWrapper/AuthFormWrapper';
 
 
 export default async function LoginPage() {

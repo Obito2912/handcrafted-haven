@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, Suspense } from 'react';
-import AuthForm from '../../../components/AuthForm/AuthForm';
+import AuthForm from '../../../components/auth/AuthForm/AuthForm';
 import './AuthFormWrapper.css';
 
 export default function AuthFormWrapper() {
