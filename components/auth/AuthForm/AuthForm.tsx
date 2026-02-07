@@ -1,6 +1,6 @@
 'use client';
 
-import styles from './AuthForm.module.css';
+import styles from "@/components/shared/Form/Form.module.css";
 import { useSearchParams } from 'next/navigation';
 import { useActionState } from 'react';
 import { handleAuth } from '../../../app/(main)/lib/actions'

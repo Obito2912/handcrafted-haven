@@ -1,4 +1,4 @@
-.product-card__wrapper {
+/* .product-card__wrapper {
     display: flex;
     flex-wrap: wrap;
     gap: 1em;
@@ -9,7 +9,6 @@
     border: 3px solid #fff;
     border-radius: 12px;
     padding: 1em;
-    /* background-color: rgb(41, 41, 41); */
     background-color: rgba(32, 78, 28, 0.842);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -101,4 +100,4 @@
     border-radius: 6px;
     cursor: pointer;
     font-size: 1rem;
-}
+} */

@@ -1,6 +1,7 @@
 "use client"
 
-import styles from "./ProductForm.module.css";
+
+import styles from "@/components/shared/Form/Form.module.css";
 import { useActionState } from "react";
 import { createProduct, updateProduct } from "@/app/(main)/lib/actions";
 import { ProductFormState, ProductValue } from "@/app/(main)/lib/schemas/productSchema";
@@ -45,7 +46,7 @@ console.log("Initital values Category", initialValues?.category);
             <label className={`${styles.form_label}`} htmlFor="description">Description
                 <textarea className={`${styles.form_input}`} id="description" name="description" rows={3} defaultValue={state?.values?.description ?? initialValues?.description} />
             </label>
-            <label htmlFor="image_url">Image URL
+            <label className={`${styles.form_label}`} htmlFor="image_url">Image URL
                 <input className={`${styles.form_input}`} type="text" id="image_url" name="image_url" autoComplete="image_url" defaultValue={state?.values?.image_url ?? initialValues?.image_url} />
             </label>
             <label className={`${styles.form_label}`} htmlFor="price">Price
@@ -54,12 +55,15 @@ console.log("Initital values Category", initialValues?.category);
             <label className={`${styles.form_label}`} htmlFor="quantity">Quantity
                 <input className={`${styles.form_input}`} type="number" id="quantity" name="quantity" defaultValue={state?.values?.quantity ?? initialValues?.quantity} />
             </label>
+            {/* <label className={`${styles.form_label}`} htmlFor="image_file">Upload Image                
+                <input type="file" id="image_file" name="image_file" accept="image/*" className={`${styles.form_input}`} defaultValue={state?.values?.image_file ?? initialValues?.image_file}/>
+            </label>             */}
             <label className={`${styles.form_label}`} htmlFor="category">Category
                     <select className={`${styles.form_input}`} key={state?.values?.category ?? initialValues?.category ?? ""} id="category" name="category" defaultValue={state?.values?.category ?? initialValues?.category ?? ""}>
                     <option value="" disabled>Select your category</option>
                     {ProductCategories.map((category: string) => (
                         <option key={category} value={category}>
-                            {category}
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
                         </option>
                     ))}
                 </select>
