@@ -11,7 +11,7 @@ export default async function Artisans() {
   const products = await fetchUserProducts(userId);
 
   return (
-    <main className="artisans">
+    <>
       <ScrollableContainer>
         <h1>Artisan Profile</h1>
 
@@ -48,7 +48,7 @@ export default async function Artisans() {
           )}
         </section>
       </ScrollableContainer>
-    </main>
+    </>
   );
 }
 

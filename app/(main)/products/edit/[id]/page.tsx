@@ -18,10 +18,10 @@ export default async function EditProduct(
         return <div>Product not found.</div>;
     }
     return (
-        <main className="edit-product">
+        <>
             <ScrollableContainer>
                 <ProductForm initialValues={product} userId={userId} />
             </ScrollableContainer>
-        </main>
+        </>
     );
 }

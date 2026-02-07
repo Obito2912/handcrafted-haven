@@ -11,10 +11,10 @@ export default async function CreateProduct(
         return <div>Please log in to create products.</div>;
     }
     return (
-        <main className="create-product">
+        <>
             <ScrollableContainer>
                 <ProductForm initialValues={undefined} userId={userId} />
             </ScrollableContainer>
-        </main>
+        </>
     );
 }

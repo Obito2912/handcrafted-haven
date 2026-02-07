@@ -3,6 +3,8 @@ import { getLoggedInInfo } from "../lib/session";
 import { fetchProductDataByUser } from "../lib/data";
 import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
 import Link from "next/link";
+import styles from "./productPage.module.css";
+
 export default async function Products() {
   const { session, userId, loggedIn } = await getLoggedInInfo();
   if (!userId) {
@@ -10,13 +12,17 @@ export default async function Products() {
   }
   const { productData } = await fetchProductDataByUser(userId);
   return (
-    <main className="products">
-      <ScrollableContainer>
-        <h1>My Products</h1>
-        <p>This is the products page. Here you can find your products and manage them.</p>
-        <Link href="/products/create">Create New Product</Link>
+    <>
 
-        <EditableProductCardWrapper products={productData} />
+      <ScrollableContainer>
+        <div className={styles.content}>
+          <h1>My Products</h1>
+          <p>This is the products page. Here you can find your products and manage them.</p>
+          <Link href="/products/create">Create New Product</Link>
+
+          <EditableProductCardWrapper products={productData} />
+      </div>
       </ScrollableContainer>
-    </main>)
+    
+    </>);
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./ProfileForm.module.css";
+import styles from "@/components/shared/Form/Form.module.css";
 import { useActionState } from "react";
 import { updateUserProfile } from "@/app/(main)/lib/actions";
 import type { ProfileFormState } from "@/app/(main)/lib/schemas/profileSchemas";

@@ -31,7 +31,7 @@ export default async function Home({
     category: category || undefined,
   });
   return (
-    <main>
+    <>
       <ProductFilters
         query={query}
         minPrice={minPriceValue}
@@ -41,6 +41,6 @@ export default async function Home({
       <ScrollableContainer>
         <ProductCardWrapper products={productData} />
       </ScrollableContainer>
-    </main>
+      </>
   );
 }

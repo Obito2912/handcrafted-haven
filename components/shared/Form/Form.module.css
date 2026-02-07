@@ -1,4 +1,4 @@
-/* .form {
+.form {
     color: #2B2E37;
     padding: 1rem;
     border: 1px solid #c7c7c7;
@@ -43,13 +43,15 @@
 
 .form>button[type="submit"]:hover,
 .form button[type="button"]:hover {
-    outline: 1px solid #6D543A;
+    box-shadow: 0 0 10px #2B2E37;
+    outline: 1px solid #2B2E37;
 }
 
 .form_input:focus,
 .form>button[type="submit"]:focus,
 .form button[type="button"]:focus {
-    outline: 1px solid #6D543A;
+    box-shadow: 0 0 10px #2B2E37;
+    outline: 1px solid #2B2E37;
 }
 
 .form_text {
@@ -60,4 +62,4 @@
     height: 1.5rem;
     width: 1.5rem;
     color: #ef4444;
-} */
+}

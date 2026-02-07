@@ -28,3 +28,5 @@ export function toProductValue(product: Product | null): ProductValue {
     category: product?.category || ProductCategories[0],
   };
 }
+
+
