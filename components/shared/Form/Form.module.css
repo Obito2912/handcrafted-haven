@@ -58,6 +58,23 @@
     font-size: .9rem;
 }
 
+.form_error {
+    display: flex;
+    align-items: flex-end;
+    gap: .25rem;
+    min-height: 2rem;
+}
+.form_error_icon {
+    height: 1.5em;
+    width: 1.5rem;
+    color: #ef4444;
+}
+.form_error_text {
+    color: #ef4444;
+    font-size: 1rem;
+}
+
+
 :global(.circle-icon) {
     height: 1.5rem;
     width: 1.5rem;

@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "gravatar.com",
       },
+      {
+        protocol: "https",
+        hostname: "purple-personal-impala-532.mypinata.cloud",
+      },
     ],
   },
 };

@@ -238,7 +238,7 @@ export async function fetchProductById(productId: string): Promise<ProductValue 
         `;
     console.log("Product fetched:", products);
     if (products.length === 0) {
-      throw new Error('Product not found');
+      return null;
     }
     const productValue = toProductValue(products[0]);
     return productValue;    

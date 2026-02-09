@@ -2,6 +2,7 @@ import ProductForm from "@/components/main/Products/ProductForm"
 import { getLoggedInInfo } from "@/app/(main)/lib/session";
 import { fetchProductById } from "@/app/(main)/lib/data";
 import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
+import { redirect } from "next/navigation";
 
 export default async function EditProduct(
     props: { params: Promise<{ id: string }> }
@@ -15,7 +16,8 @@ export default async function EditProduct(
     const productId = params.id;
     const product = await fetchProductById(productId);
     if (!product) {
-        return <div>Product not found.</div>;
+        // return <div>Product not found.</div>;
+        redirect("/products");
     }
     return (
         <>

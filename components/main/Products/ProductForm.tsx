@@ -2,11 +2,12 @@
 
 
 import styles from "@/components/shared/Form/Form.module.css";
-import { useActionState } from "react";
-import { createProduct, updateProduct } from "@/app/(main)/lib/actions";
+import { useActionState, useState } from "react";
+import { createProduct, updateOrDeleteProduct } from "@/app/(main)/lib/actions";
 import { ProductFormState, ProductValue } from "@/app/(main)/lib/schemas/productSchema";
 import { ProductCategories } from "@/app/(main)/lib/definitions";
 import ExclamationCircleIcon from "@heroicons/react/24/solid/esm/ExclamationCircleIcon";
+import Image from "next/image.js";
 
 type ProductFormProps = {
     initialValues?: ProductValue;
@@ -29,12 +30,12 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
         }
     };
     const isEditMode = !!initialValues;
-    const [state, formAction] = useActionState(isEditMode ? updateProduct : createProduct, initialState);
-console.log("Initital values Category", initialValues?.category);
-    console.log("Initial State category", state.values.category);
-    
+    const [state, formAction] = useActionState(isEditMode ? updateOrDeleteProduct : createProduct, initialState);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+    // const [isUploading, setIsUploading] = useState(false);
     if (!userId) {
-        return <p className="text-red-500">You must be logged in to create a product.</p>;
+        return <p className={styles.form_error_text}>You must be logged in to create a product.</p>;
     }
     return (
         <form action={formAction} className={`${styles.form}`}>
@@ -46,18 +47,36 @@ console.log("Initital values Category", initialValues?.category);
             <label className={`${styles.form_label}`} htmlFor="description">Description
                 <textarea className={`${styles.form_input}`} id="description" name="description" rows={3} defaultValue={state?.values?.description ?? initialValues?.description} />
             </label>
-            <label className={`${styles.form_label}`} htmlFor="image_url">Image URL
-                <input className={`${styles.form_input}`} type="text" id="image_url" name="image_url" autoComplete="image_url" defaultValue={state?.values?.image_url ?? initialValues?.image_url} />
-            </label>
+            {(initialValues?.image_url || previewImage) && (
+                <Image src={previewImage ?? initialValues.image_url} alt="Product Image" className="mb-4 max-h-60 object-cover" 
+                          width={128}
+                        height={128}/>
+                )}
+            <input
+            type="hidden"
+            name="image_url"
+            value={state?.values?.image_url ?? initialValues?.image_url ?? ""}
+            />                
+            <label className={`${styles.form_label}`} htmlFor="image_file"> 
+                <input type="file" id="image_file" 
+                name="image_file" 
+                accept="image/*" 
+                className={`${styles.form_input}`}
+                    onChange={(e) => {
+                        const file = e.target.files?.[0] as File | undefined;  
+                        console.log("Selected file:", file);
+                        const url = URL.createObjectURL(file);
+                        setPreviewImage(url);
+
+                }}/>
+            </label>                        
             <label className={`${styles.form_label}`} htmlFor="price">Price
                 <input className={`${styles.form_input}`} type="number" id="price" name="price" min="0" step="0.01" inputMode="decimal" defaultValue={state?.values?.price ?? initialValues?.price} />
             </label>
             <label className={`${styles.form_label}`} htmlFor="quantity">Quantity
                 <input className={`${styles.form_input}`} type="number" id="quantity" name="quantity" defaultValue={state?.values?.quantity ?? initialValues?.quantity} />
             </label>
-            {/* <label className={`${styles.form_label}`} htmlFor="image_file">Upload Image                
-                <input type="file" id="image_file" name="image_file" accept="image/*" className={`${styles.form_input}`} defaultValue={state?.values?.image_file ?? initialValues?.image_file}/>
-            </label>             */}
+
             <label className={`${styles.form_label}`} htmlFor="category">Category
                     <select className={`${styles.form_input}`} key={state?.values?.category ?? initialValues?.category ?? ""} id="category" name="category" defaultValue={state?.values?.category ?? initialValues?.category ?? ""}>
                     <option value="" disabled>Select your category</option>
@@ -70,15 +89,19 @@ console.log("Initital values Category", initialValues?.category);
             </label>
             {isEditMode && <input type="hidden" name="product_id" value={state?.values?.product_id ?? initialValues?.product_id} />}
             <input type="hidden" name="user_id" value={state?.values?.userId ?? initialValues?.userId} />
-            <button type="submit">
+            <button type="submit" name="_action" value={isEditMode ? "update" : "create"} className="bg-blue-500 text-white px-4 py-2 rounded">
                 {isEditMode ? "Update Product" : "Create Product"}
             </button>
-
-            <div className="flex h-8 items-end space-x-1">
+            {isEditMode && (
+                <button type="submit" name = "_action" value="delete">
+                    Delete Product
+                </button>
+            )}
+            <div className={styles.form_error}>
                 {state?.message && (
                     <>
-                        {state?.success ? null : <ExclamationCircleIcon className="h-5 w-5 text-red-500" />}
-                        <p className="text-sm text-red-500">{state.message}</p>
+                        {state?.success ? null : <ExclamationCircleIcon className={styles.form_error_icon} />}
+                        <p className={styles.form_error_text}>{state.message}</p>
                     </>
                 )}
             </div>

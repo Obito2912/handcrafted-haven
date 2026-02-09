@@ -13,7 +13,7 @@ export default async function EditableProductCardWrapper({
   //TODO Add Paging and Filtering
   const productData = products ?? (await fetchProductData()).productData;
   return (
-    <div className="product-card__wrapper">
+    <div className="product-card__wrapper editable-product-card__wrapper">
       {productData.map((product) => (
         <Link key={product.product_id} href={`/products/edit/${product.product_id}`}>
           <ProductCard {...product} />
