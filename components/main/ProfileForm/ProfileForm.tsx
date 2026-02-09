@@ -61,11 +61,11 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
                 Update Profile
             </button>
 
-            <div className="flex h-8 items-end space-x-1">
+            <div className={styles.form_error}>
                 {state?.message && (
                     <>
-                        {state?.success ? null : <ExclamationCircleIcon className="h-5 w-5 text-red-500" />}
-                        <p className="text-sm text-red-500">{state.message}</p>
+                        {state?.success ? null : <ExclamationCircleIcon className={styles.form_error_icon} />}
+                        <p className={styles.form_error_text}>{state.message}</p>
                     </>
                 )}
             </div>

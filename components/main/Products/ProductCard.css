@@ -122,3 +122,15 @@
     transform: translateX(4px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
+
+.editable-product-card__wrapper a {
+  display: inline-block;    /* or block */
+  text-decoration: none;
+  color: inherit;
+}
+
+.editable-product-card__wrapper a:hover,
+.editable-product-card__wrapper a:focus {
+  text-decoration: none;
+  color: inherit;
+}

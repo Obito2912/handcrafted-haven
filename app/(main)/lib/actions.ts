@@ -10,6 +10,7 @@ import { AuthError } from "next-auth";
 import { SignupFormSchema, AuthFormState } from "./schemas/authSchemas";
 import { ProfileSchema, ProfileFormState } from "./schemas/profileSchemas";
 import { CreateProductSchema, ProductFormState, ProductSchema, UpdateProductSchema } from "./schemas/productSchema";
+import { pinata } from "@/components/utils/pinataConfig";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -99,7 +100,7 @@ export async function updateUserProfile(
   prevState: ProfileFormState,
   formData: FormData,
 ): Promise<ProfileFormState> {
-  const validatedFields = ProfileSchema.safeParse({
+   const validatedFields = ProfileSchema.safeParse({
     user_id: formData.get("user_id")?.toString(),
     name: formData.get("name"),
     age: formData.get("age"),
@@ -181,16 +182,43 @@ export async function createProduct(
     product_id: formData.get("product_id")?.toString(),
     title: formData.get("title"),
     description: formData.get("description"),
-    image_url: formData.get("image_url"),
+    //image_url: formData.get(),
     userId: formData.get("user_id")?.toString(),
     quantity: formData.get("quantity") ? Number(formData.get("quantity")) : undefined,
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
     category: formData.get("category"),
   });
+
+  const imageFile = formData.get("image_file") as File | null;
+  let imageUrl = "";
+  console.log("Received image file:", imageFile);
+  if (imageFile) {
+    try {
+      const uploadResult = await uploadImageToPinata(imageFile);
+      console.log("Image uploaded to Pinata:", uploadResult);
+      imageUrl = uploadResult;
+    }
+    catch (error) {
+      console.log("Error uploading image:", error);
+      return {
+        errors: "Error uploading image. Please try again.",
+        message: "Error uploading image. Please try again.",
+      values: {
+        title: formData.get("title")?.toString(),
+        description: formData.get("description")?.toString(),
+        image_url: "test.jpg",//formData.get("image_url")?.toString(),
+        userId: formData.get("user_id")?.toString(),
+        quantity: formData.get("quantity")?.toString(),
+        price: formData.get("price")?.toString(),
+        category: formData.get("category")?.toString(),
+      },        
+    };
+  }
+  }
   const validatedFields = CreateProductSchema.safeParse({
     title: formData.get("title"),
     description: formData.get("description"),
-    image_url: formData.get("image_url"),
+    image_url: imageUrl,
     userId: formData.get("user_id")?.toString(),
     quantity: formData.get("quantity") ? Number(formData.get("quantity")) : undefined,
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
@@ -203,7 +231,7 @@ export async function createProduct(
       values: {
         title: formData.get("title")?.toString(),
         description: formData.get("description")?.toString(),
-        image_url: formData.get("image_url")?.toString(),
+        image_url: imageUrl,
         userId: formData.get("user_id")?.toString(),
         quantity: formData.get("quantity")?.toString(),
         price: formData.get("price")?.toString(),
@@ -259,15 +287,66 @@ export async function createProduct(
    //TODO or revalidate path where products are listed
  };
 
-export async function updateProduct(
+export async function updateOrDeleteProduct(
   prevState: ProductFormState | undefined,
   formData: FormData,
 ): Promise<ProductFormState> {
+  const intent = formData.get("_action");
+  console.log("Intent:", intent);
+  if (intent === "update") {
+    return await updateProduct(prevState, formData);
+  }
+  else if (intent === "delete") {
+    const productId = formData.get("product_id")?.toString();
+    if (!productId) {
+      return {
+        message: "Product ID is required for deletion.",
+        success: false,
+      };
+    }
+    return await deleteProduct(prevState, formData);
+  }
+}
+
+async function updateProduct(
+  prevState: ProductFormState | undefined,
+  formData: FormData,
+): Promise<ProductFormState> {
+  const existingUrl = formData.get("image_url")?.toString() || null;
+  const imageFile = formData.get("image_file") as File | null;
+  console.log("existingUrl:", existingUrl);
+  console.log("imageFile:", imageFile); 
+  console.log(imageFile && console.log("Image file is here"));
+  let imageUrl = existingUrl;
+  console.log("Received image file for update:", imageFile);
+  if (imageFile && imageFile.size > 0) {
+    try {
+      const uploadResult = await uploadImageToPinata(imageFile);
+      console.log("Image uploaded to Pinata:", uploadResult);
+      imageUrl = uploadResult;
+    } catch (error) {
+      console.log("Error uploading image:", error);
+      return {
+        errors: "Error uploading image. Please try again.",
+        message: "Error uploading image. Please try again.",
+        values: {
+          product_id: formData.get("product_id")?.toString(),
+          title: formData.get("title")?.toString(),
+          description: formData.get("description")?.toString(),
+          image_url: imageUrl,
+          userId: formData.get("user_id")?.toString(),
+          quantity: formData.get("quantity")?.toString(),
+          price: formData.get("price")?.toString(),
+          category: formData.get("category")?.toString(),
+        },
+      };
+    }
+  }
   const validatedFields = UpdateProductSchema.safeParse({
     product_id: formData.get("product_id")?.toString(),
     title: formData.get("title"),
     description: formData.get("description"),
-    image_url: formData.get("image_url"),
+    image_url: imageUrl,
     userId: formData.get("user_id")?.toString(),
     quantity: formData.get("quantity") ? Number(formData.get("quantity")) : undefined,
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
@@ -277,7 +356,7 @@ export async function updateProduct(
     product_id: formData.get("product_id")?.toString(),
     title: formData.get("title"),
     description: formData.get("description"),
-    image_url: formData.get("image_url"),
+    image_url: imageUrl,
     userId: formData.get("user_id")?.toString(),
     quantity: formData.get("quantity") ? Number(formData.get("quantity")) : undefined,
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
@@ -291,7 +370,7 @@ export async function updateProduct(
         product_id: formData.get("product_id")?.toString(),
         title: formData.get("title")?.toString(),
         description: formData.get("description")?.toString(),
-        image_url: formData.get("image_url")?.toString(),
+        image_url: imageUrl,
         userId: formData.get("user_id")?.toString(),
         quantity: formData.get("quantity")?.toString(),
         price: formData.get("price")?.toString(),
@@ -337,7 +416,7 @@ export async function updateProduct(
         product_id: formData.get("product_id")?.toString(),
         title: formData.get("title")?.toString(),
         description: formData.get("description")?.toString(),
-        image_url: formData.get("image_url")?.toString(),
+        image_url: imageUrl,
         userId: formData.get("user_id")?.toString(),
         quantity: formData.get("quantity")?.toString(),
         price: formData.get("price")?.toString(),
@@ -347,3 +426,61 @@ export async function updateProduct(
   }
    //TODO or revalidate path where products are listed
  };
+
+ async function deleteProduct(
+  prevState: ProductFormState | undefined,
+  formData: FormData,
+): Promise<ProductFormState> {
+  const productId = formData.get("product_id")?.toString();
+  if (!productId) {
+    return {
+      message: "Product ID is required for deletion.",
+      success: false,
+      values: {
+      }
+    }
+  }
+  try {
+    await sql`
+            DELETE FROM products WHERE product_id = ${productId}`;
+
+        revalidatePath("/products");
+        redirect("/products");
+      }
+   catch (error) {
+    console.error("Error creating/updating product:", error);
+    return {
+      message: "Error updating product. Please try again.",
+      values: {
+        product_id: formData.get("product_id")?.toString(),
+        title: formData.get("title")?.toString(),
+        description: formData.get("description")?.toString(),
+        image_url: formData.get("image_url")?.toString(),
+        userId: formData.get("user_id")?.toString(),
+        quantity: formData.get("quantity")?.toString(),
+        price: formData.get("price")?.toString(),
+        category: formData.get("category")?.toString(),
+      },
+    };
+
+  }
+  
+};
+
+ //https://www.youtube.com/watch?v=SjkGWyWEVjI
+ //From File & Image Uploads in Next.js 15 Are Easy Now
+ //ByteGrad
+ async function uploadImageToPinata(file: File): Promise<string> { 
+    try {
+      // const data = new FormData();
+      // data.set("file", file);
+      const uploadData = await pinata.upload.public.file(file).group(process.env.PINATA_GROUP_ID || "handcrafted-haven-group");
+      const cid = (uploadData as any).cid ?? (uploadData as any).IpfsHash; // Adjust based on actual response structure
+      const imageUrl = `https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`;
+      console.log("Pinata upload url:", imageUrl);
+      return imageUrl;
+    } catch (error) {
+        console.error("Error uploading file to Pinata:", error);
+        throw new Error("Failed to upload image. Please try again.");
+    }
+  }

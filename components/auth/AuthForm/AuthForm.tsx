@@ -38,11 +38,11 @@ export default function AuthForm({ signup, setSignup }: { signup: boolean; setSi
                 <span className={`${styles.form_text}`}>{signup ? 'Already have an account?' : 'New here? Join the community'}</span>
                 <button type="button" onClick={() => setSignup(!signup)}>{signup ? 'Login' : 'Sign Up'}</button>
             </div>
-            <div className="flex h-8 items-end space-x-1">
+            <div className={styles.form_error}>
                 {state?.message && (
                     <>
-                        <ExclamationCircleIcon className="circle-icon" />
-                        <p className="text-sm text-red-500">{state.message}</p>
+                        <ExclamationCircleIcon className={styles.form_error_icon} />
+                        <p className={styles.form_error_text}>{state.message}</p>
                     </>
                 )}
             </div>
