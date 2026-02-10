@@ -24,7 +24,7 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
     );
 
     return (
-        <form action={formAction} className={`${styles.form}`}>
+        <form action={formAction} className={`${styles.form}`} key={initialValues?.user_type}>
             <label className={`${styles.form_label}`} htmlFor="name">Name
                 <input className={`${styles.form_input}`}
                     type="text" id="name" name="name" autoComplete="name"
