@@ -11,6 +11,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
     const userProfileData = session?.user?.id
         ? await fetchUserProfile(session.user.id)
         : null;
+    const userType = userProfileData?.userProfile?.user_type ?? null;
     const userProfileImg = userProfileData?.userProfile?.image_url ?? null;
 
     console.log('Session in layout:', session); // Debug log
@@ -23,7 +24,9 @@ export default async function MainLayout({ children }: { children: React.ReactNo
                     userProfileImg={userProfileImg}
                     showSignIn={true} />
                 <div className="page__container">
-                    <Aside isAuthenticated={isAuthenticated} />
+                    <Aside
+                        isAuthenticated={isAuthenticated}
+                        userType={userType} />
                     <main className="main">{children}</main>
                 </div>
                 <Footer />

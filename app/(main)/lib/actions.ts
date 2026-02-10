@@ -9,7 +9,12 @@ import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { SignupFormSchema, AuthFormState } from "./schemas/authSchemas";
 import { ProfileSchema, ProfileFormState } from "./schemas/profileSchemas";
-import { CreateProductSchema, ProductFormState, ProductSchema, UpdateProductSchema } from "./schemas/productSchema";
+import {
+  CreateProductSchema,
+  ProductFormState,
+  ProductSchema,
+  UpdateProductSchema,
+} from "./schemas/productSchema";
 import { pinata } from "@/components/utils/pinataConfig";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
@@ -78,29 +83,29 @@ async function createUserProfile(
 }
 
 async function authenticate(formData: FormData) {
-    console.log('authenticate called');
-    try {
-        await signIn('credentials', formData,{ redirectTo: "/" });
-  } catch (error) {        
+  console.log("authenticate called");
+  try {
+    await signIn("credentials", formData, { redirectTo: "/" });
+  } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
-        case 'CredentialsSignin':
-          return { message: 'Invalid credentials.' };
+        case "CredentialsSignin":
+          return { message: "Invalid credentials." };
         default:
-          return { message: 'Something went wrong.' };
+          return { message: "Something went wrong." };
       }
     }
 
     // Let NEXT_REDIRECT and other framework errors propagate so redirects work
     throw error;
-    }
+  }
 }
 
 export async function updateUserProfile(
   prevState: ProfileFormState,
   formData: FormData,
 ): Promise<ProfileFormState> {
-   const validatedFields = ProfileSchema.safeParse({
+  const validatedFields = ProfileSchema.safeParse({
     user_id: formData.get("user_id")?.toString(),
     name: formData.get("name"),
     age: formData.get("age"),
@@ -127,18 +132,19 @@ export async function updateUserProfile(
     };
   }
 
-  const { user_id, name, age, gender, bio, image_url, user_type } = validatedFields.data;
+  const { user_id, name, age, gender, bio, image_url, user_type } =
+    validatedFields.data;
   const date = new Date().toISOString().split("T")[0];
-console.log("UPDATE values:", {
-  user_id,
-  name,
-  age,
-  gender,
-  bio,
-  image_url,
-  user_type,
-  date
-});
+  console.log("UPDATE values:", {
+    user_id,
+    name,
+    age,
+    gender,
+    bio,
+    image_url,
+    user_type,
+    date,
+  });
   try {
     await sql`
             UPDATE user_profiles 
@@ -151,6 +157,7 @@ console.log("UPDATE values:", {
                 user_type = ${user_type}
             WHERE user_id = ${user_id}
         `;
+    revalidatePath("/(main)", "layout");
   } catch (error) {
     console.error("Error updating user:", error);
     return {
@@ -178,13 +185,15 @@ export async function createProduct(
   prevState: ProductFormState | undefined,
   formData: FormData,
 ): Promise<ProductFormState> {
-    console.log("createProduct called with:", {
+  console.log("createProduct called with:", {
     product_id: formData.get("product_id")?.toString(),
     title: formData.get("title"),
     description: formData.get("description"),
     //image_url: formData.get(),
     userId: formData.get("user_id")?.toString(),
-    quantity: formData.get("quantity") ? Number(formData.get("quantity")) : undefined,
+    quantity: formData.get("quantity")
+      ? Number(formData.get("quantity"))
+      : undefined,
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
     category: formData.get("category"),
   });
@@ -197,36 +206,37 @@ export async function createProduct(
       const uploadResult = await uploadImageToPinata(imageFile);
       console.log("Image uploaded to Pinata:", uploadResult);
       imageUrl = uploadResult;
-    }
-    catch (error) {
+    } catch (error) {
       console.log("Error uploading image:", error);
       return {
         errors: "Error uploading image. Please try again.",
         message: "Error uploading image. Please try again.",
-      values: {
-        title: formData.get("title")?.toString(),
-        description: formData.get("description")?.toString(),
-        image_url: "test.jpg",//formData.get("image_url")?.toString(),
-        userId: formData.get("user_id")?.toString(),
-        quantity: formData.get("quantity")?.toString(),
-        price: formData.get("price")?.toString(),
-        category: formData.get("category")?.toString(),
-      },        
-    };
-  }
+        values: {
+          title: formData.get("title")?.toString(),
+          description: formData.get("description")?.toString(),
+          image_url: "test.jpg", //formData.get("image_url")?.toString(),
+          userId: formData.get("user_id")?.toString(),
+          quantity: formData.get("quantity")?.toString(),
+          price: formData.get("price")?.toString(),
+          category: formData.get("category")?.toString(),
+        },
+      };
+    }
   }
   const validatedFields = CreateProductSchema.safeParse({
     title: formData.get("title"),
     description: formData.get("description"),
     image_url: imageUrl,
     userId: formData.get("user_id")?.toString(),
-    quantity: formData.get("quantity") ? Number(formData.get("quantity")) : undefined,
+    quantity: formData.get("quantity")
+      ? Number(formData.get("quantity"))
+      : undefined,
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
     category: formData.get("category"),
-  });  
+  });
   if (!validatedFields.success) {
     return {
-      errors: z.prettifyError(validatedFields.error), 
+      errors: z.prettifyError(validatedFields.error),
       message: z.prettifyError(validatedFields.error),
       values: {
         title: formData.get("title")?.toString(),
@@ -239,10 +249,11 @@ export async function createProduct(
       },
     };
   }
-  const { title, description, image_url, userId, quantity, price, category } = validatedFields.data;
+  const { title, description, image_url, userId, quantity, price, category } =
+    validatedFields.data;
   const date = new Date().toISOString().split("T")[0];
   try {
-    const [product] =await sql`
+    const [product] = await sql`
             INSERT INTO products (title, description, image_url, user_id, quantity, price, category, created_at)
             VALUES (${title}, ${description}, ${image_url}, ${userId}, ${quantity}, ${price}, ${category}, ${date})
             RETURNING product_id,
@@ -254,21 +265,20 @@ export async function createProduct(
               price,
               category;
         `;
-      return {
-        message: "Product created successfully.",
-        success: true,
-        values: {
-          product_id: product.product_id,
-          title: product.title,
-          description: product.description,
-          image_url: product.image_url,
-          userId: product.user_id,
-          quantity: product.quantity,
-          price: product.price,
-          category: product.category,
-
-        }
-      }
+    return {
+      message: "Product created successfully.",
+      success: true,
+      values: {
+        product_id: product.product_id,
+        title: product.title,
+        description: product.description,
+        image_url: product.image_url,
+        userId: product.user_id,
+        quantity: product.quantity,
+        price: product.price,
+        category: product.category,
+      },
+    };
   } catch (error) {
     console.error("Error creating product:", error);
     return {
@@ -284,8 +294,8 @@ export async function createProduct(
       },
     };
   }
-   //TODO or revalidate path where products are listed
- };
+  //TODO or revalidate path where products are listed
+}
 
 export async function updateOrDeleteProduct(
   prevState: ProductFormState | undefined,
@@ -295,8 +305,7 @@ export async function updateOrDeleteProduct(
   console.log("Intent:", intent);
   if (intent === "update") {
     return await updateProduct(prevState, formData);
-  }
-  else if (intent === "delete") {
+  } else if (intent === "delete") {
     const productId = formData.get("product_id")?.toString();
     if (!productId) {
       return {
@@ -315,7 +324,7 @@ async function updateProduct(
   const existingUrl = formData.get("image_url")?.toString() || null;
   const imageFile = formData.get("image_file") as File | null;
   console.log("existingUrl:", existingUrl);
-  console.log("imageFile:", imageFile); 
+  console.log("imageFile:", imageFile);
   console.log(imageFile && console.log("Image file is here"));
   let imageUrl = existingUrl;
   console.log("Received image file for update:", imageFile);
@@ -348,23 +357,27 @@ async function updateProduct(
     description: formData.get("description"),
     image_url: imageUrl,
     userId: formData.get("user_id")?.toString(),
-    quantity: formData.get("quantity") ? Number(formData.get("quantity")) : undefined,
+    quantity: formData.get("quantity")
+      ? Number(formData.get("quantity"))
+      : undefined,
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
     category: formData.get("category"),
-  });  
+  });
   console.log("updateProduct called with:", {
     product_id: formData.get("product_id")?.toString(),
     title: formData.get("title"),
     description: formData.get("description"),
     image_url: imageUrl,
     userId: formData.get("user_id")?.toString(),
-    quantity: formData.get("quantity") ? Number(formData.get("quantity")) : undefined,
+    quantity: formData.get("quantity")
+      ? Number(formData.get("quantity"))
+      : undefined,
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
     category: formData.get("category"),
   });
   if (!validatedFields.success) {
     return {
-      errors: z.prettifyError(validatedFields.error), 
+      errors: z.prettifyError(validatedFields.error),
       message: z.prettifyError(validatedFields.error),
       values: {
         product_id: formData.get("product_id")?.toString(),
@@ -378,10 +391,19 @@ async function updateProduct(
       },
     };
   }
-  const { product_id, title, description, image_url, userId, quantity, price, category } = validatedFields.data;
+  const {
+    product_id,
+    title,
+    description,
+    image_url,
+    userId,
+    quantity,
+    price,
+    category,
+  } = validatedFields.data;
   const date = new Date().toISOString().split("T")[0];
   try {
-    const [product] =await sql`
+    const [product] = await sql`
             UPDATE products SET title = ${title}, description = ${description}, image_url = ${image_url}, user_id = ${userId}, quantity = ${quantity}, price = ${price}, category = ${category}, updated_at = ${date}
             WHERE product_id = ${product_id}
             RETURNING product_id,
@@ -393,21 +415,20 @@ async function updateProduct(
               price,
               category;
         `;
-      return {
-        message: "Product created successfully.",
-        success: true,
-        values: {
-          product_id: product.product_id,
-          title: product.title,
-          description: product.description,
-          image_url: product.image_url,
-          userId: product.user_id,
-          quantity: product.quantity,
-          price: product.price,
-          category: product.category,
-
-        }
-      }
+    return {
+      message: "Product created successfully.",
+      success: true,
+      values: {
+        product_id: product.product_id,
+        title: product.title,
+        description: product.description,
+        image_url: product.image_url,
+        userId: product.user_id,
+        quantity: product.quantity,
+        price: product.price,
+        category: product.category,
+      },
+    };
   } catch (error) {
     console.error("Error creating/updating product:", error);
     return {
@@ -424,10 +445,10 @@ async function updateProduct(
       },
     };
   }
-   //TODO or revalidate path where products are listed
- };
+  //TODO or revalidate path where products are listed
+}
 
- async function deleteProduct(
+async function deleteProduct(
   prevState: ProductFormState | undefined,
   formData: FormData,
 ): Promise<ProductFormState> {
@@ -436,18 +457,16 @@ async function updateProduct(
     return {
       message: "Product ID is required for deletion.",
       success: false,
-      values: {
-      }
-    }
+      values: {},
+    };
   }
   try {
     await sql`
             DELETE FROM products WHERE product_id = ${productId}`;
 
-        revalidatePath("/products");
-        redirect("/products");
-      }
-   catch (error) {
+    revalidatePath("/products");
+    redirect("/products");
+  } catch (error) {
     console.error("Error creating/updating product:", error);
     return {
       message: "Error updating product. Please try again.",
@@ -462,25 +481,25 @@ async function updateProduct(
         category: formData.get("category")?.toString(),
       },
     };
-
   }
-  
-};
+}
 
- //https://www.youtube.com/watch?v=SjkGWyWEVjI
- //From File & Image Uploads in Next.js 15 Are Easy Now
- //ByteGrad
- async function uploadImageToPinata(file: File): Promise<string> { 
-    try {
-      // const data = new FormData();
-      // data.set("file", file);
-      const uploadData = await pinata.upload.public.file(file).group(process.env.PINATA_GROUP_ID || "handcrafted-haven-group");
-      const cid = (uploadData as any).cid ?? (uploadData as any).IpfsHash; // Adjust based on actual response structure
-      const imageUrl = `https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`;
-      console.log("Pinata upload url:", imageUrl);
-      return imageUrl;
-    } catch (error) {
-        console.error("Error uploading file to Pinata:", error);
-        throw new Error("Failed to upload image. Please try again.");
-    }
+//https://www.youtube.com/watch?v=SjkGWyWEVjI
+//From File & Image Uploads in Next.js 15 Are Easy Now
+//ByteGrad
+async function uploadImageToPinata(file: File): Promise<string> {
+  try {
+    // const data = new FormData();
+    // data.set("file", file);
+    const uploadData = await pinata.upload.public
+      .file(file)
+      .group(process.env.PINATA_GROUP_ID || "handcrafted-haven-group");
+    const cid = (uploadData as any).cid ?? (uploadData as any).IpfsHash; // Adjust based on actual response structure
+    const imageUrl = `https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`;
+    console.log("Pinata upload url:", imageUrl);
+    return imageUrl;
+  } catch (error) {
+    console.error("Error uploading file to Pinata:", error);
+    throw new Error("Failed to upload image. Please try again.");
   }
+}
