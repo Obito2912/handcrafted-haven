@@ -7,8 +7,8 @@ import { usePathname } from 'next/navigation';
 const links = [
   { name: 'Home', href: '/', loggedIn: false },
   { name: 'Support', href: '/support', loggedIn: false },
+  { name: 'Artisans', href: '/artisans', loggedIn: false },
   { name: 'Purchases', href: '/purchases', loggedIn: true },
-  { name: 'Artisans', href: '/artisans', loggedIn: true },
 ];
 
 export default function Navigation({
