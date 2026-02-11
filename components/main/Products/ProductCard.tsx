@@ -1,9 +1,14 @@
 import { Product } from "@/app/(main)/lib/definitions";
 import Image from "next/image";
+import Link from "next/link";
 import "../../shared/Card/Card.css";
 
+type ProductCardProps = Product & {
+  disableTitleLink?: boolean;
+};
 
-export default function ProductCard(product: Product) {
+export default function ProductCard({ disableTitleLink = false, ...product }: ProductCardProps) {
+  const titleContent = <h2 className="card__title">{product.title}</h2>;
   return (
     <div className="card">
       <div className="card__image-container">
@@ -18,7 +23,11 @@ export default function ProductCard(product: Product) {
           <i className="fa-regular fa-heart"></i>
         </button>
       </div>
-      <h2 className="card__title">{product.title}</h2>
+      {disableTitleLink ? (
+        titleContent
+      ) : (
+        <Link href={`/products/view/${product.product_id}`}>{titleContent}</Link>
+      )}
       <div className="rating-stock">
         <div className="card__icon-container">
           <i className="fa-solid fa-star"></i>4.6

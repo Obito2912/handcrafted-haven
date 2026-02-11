@@ -16,7 +16,7 @@ export default async function EditableProductCardWrapper({
     <div className="card__wrapper editable-card__wrapper">
       {productData.map((product) => (
         <Link key={product.product_id} href={`/products/edit/${product.product_id}`}>
-          <ProductCard {...product} />
+          <ProductCard disableTitleLink {...product} />
         </Link>
       ))}
     </div>
