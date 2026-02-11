@@ -4,6 +4,7 @@ import { fetchProductDataByUser } from "../lib/data";
 import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
 import Link from "next/link";
 import styles from "./productPage.module.css";
+import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
 
 export default async function Products() {
   const { session, userId, loggedIn } = await getLoggedInInfo();
@@ -13,7 +14,12 @@ export default async function Products() {
   const { productData } = await fetchProductDataByUser(userId);
   return (
     <>
-
+      <Breadcrumbs
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Manage Shop", href: "/products" },
+        ]}
+      />
       <ScrollableContainer>
         <div className={styles.content}>
           <h1>My Products</h1>

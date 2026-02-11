@@ -10,8 +10,7 @@ export default async function LoginPage() {
     const session = await auth();
     console.log("Session:", session);
     console.log("User ID:", session?.user?.id);
-    const userProfileData = session?.user?.id ? await fetchUserProfile(session.user.id) : null;
-    const userProfile = userProfileData?.userProfile;
+    const userProfile = session?.user?.id ? await fetchUserProfile(session.user.id) : null;
     console.log("User profile fetched on login page:", userProfile);
 
     return (

@@ -12,7 +12,7 @@ export default async function Artisans(
   console.log(`Fetching artisan profile for user ID ${params.id}...`);
   // Fetch data
   const user = await fetchUserInformation(params.id);
-  const { userProfile } = await fetchUserProfile(params.id);
+  const userProfile = await fetchUserProfile(params.id);
   const products = await fetchUserProducts(params.id);
 
   return (
@@ -34,5 +34,3 @@ export default async function Artisans(
   );
 }
 
-//TODO Marco
-//Create Artisan Profile Page

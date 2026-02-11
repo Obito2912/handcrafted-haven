@@ -1,7 +1,7 @@
 import ProductForm from "@/components/main/Products/ProductForm"
 import { getLoggedInInfo } from "@/app/(main)/lib/session";
-import { fetchProductById } from "@/app/(main)/lib/data";
 import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
+import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
 
 export default async function CreateProduct(
     props: { params: Promise<{ id: string }> }
@@ -12,6 +12,13 @@ export default async function CreateProduct(
     }
     return (
         <>
+        <Breadcrumbs
+                breadcrumbs={[
+                  { label: "Home", href: "/" },
+                  { label: "Manage Shop", href: "/products" },
+                  { label: `Create Product`, href: `/products/create`, active: true },
+                ]}
+              />                
             <ScrollableContainer>
                 <ProductForm initialValues={undefined} userId={userId} />
             </ScrollableContainer>

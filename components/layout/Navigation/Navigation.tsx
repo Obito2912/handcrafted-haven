@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const links = [
-  { name: 'Home', href: '/', loggedIn: false },
-  { name: 'Support', href: '/support', loggedIn: false },
+  { name: 'Home', href: '/', loggedIn: false },  
   { name: 'Artisans', href: '/artisans', loggedIn: false },
   { name: 'Purchases', href: '/purchases', loggedIn: true },
+  { name: 'Support', href: '/support', loggedIn: false },
 ];
 
 export default function Navigation({
@@ -39,7 +39,7 @@ export default function Navigation({
         {userType === 'seller' && (
           <li className='nav__list-item'>
             <Link href="/products" className={pathname === '/products' ? 'active' : ''}>
-              Products
+              Manage Shop
             </Link>
           </li>
         )}

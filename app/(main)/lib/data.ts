@@ -279,7 +279,7 @@ export async function fetchProductDataByUser(userId: string): Promise<{
 
 export async function fetchUserProfile(
   userId: string,
-): Promise<{ userProfile: UserProfileValue }> {
+): Promise<UserProfileValue | undefined> {
   try {
     console.log("Fetching user profile...");
     // await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -301,7 +301,7 @@ export async function fetchUserProfile(
     console.log("Profile data fetched:", userProfiles.length);
     const userProfile = userProfiles[0] || null;
     const userProfileValues = toUserProfileValues(userProfile);
-    return { userProfile: userProfileValues };
+    return userProfileValues;
   } catch (error) {
     console.error("Error fetching user profile:", error);
     return undefined;

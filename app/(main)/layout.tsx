@@ -8,11 +8,11 @@ export default async function MainLayout({ children }: { children: React.ReactNo
     const session = await auth();
     const isAuthenticated = !!session?.user;
 
-    const userProfileData = session?.user?.id
+    const userProfile = session?.user?.id
         ? await fetchUserProfile(session.user.id)
         : null;
-    const userType = userProfileData?.userProfile?.user_type ?? null;
-    const userProfileImg = userProfileData?.userProfile?.image_url ?? null;
+    const userType = userProfile?.user_type ?? null;
+    const userProfileImg = userProfile?.image_url ?? null;
 
     console.log('Session in layout:', session); // Debug log
 
