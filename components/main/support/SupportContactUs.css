@@ -1,0 +1,63 @@
+.support__contact_title {
+    /* font-weight: 500; */
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #6D543A;
+    text-align: center;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+}
+
+.support__contact::before {
+    content: '';
+    display: block;
+    width: 80%;
+    height: 2px;
+    background-color: #6D543A;
+    margin: 30px auto 20px;
+}
+
+.support__contact_container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-evenly;
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #6D543A;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.support__contact_email,
+.support__contact_chat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    border: 1px solid #6D543A;
+    border-radius: 8px;
+    padding: 1em;
+}
+
+.support__contact_email_title,
+.support__contact_chat_title {
+    color: #6D543A;
+}
+
+.support__contact_email-link {
+    color: #495867;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.support__contact_chat-button {
+    margin-top: 10px;
+    background-color: #6D543A;
+    color: #fff;
+    border: none;
+    padding: .5em 1em;
+    border-radius: 8px;
+    cursor: pointer;
+}
