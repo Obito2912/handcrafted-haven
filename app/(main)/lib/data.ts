@@ -1,5 +1,12 @@
 import postgres from "postgres";
-import { Product, ProductCategory, User, UserProfile } from "./definitions";
+import {
+  Product,
+  ProductCategory,
+  ProductRatingSummary,
+  RatingsByProduct,
+  User,
+  UserProfile,
+} from "./definitions";
 
 import { UserProfileValue } from "./schemas/profileSchemas";
 import { ProductValue } from "./schemas/productSchema";
@@ -7,10 +14,21 @@ import { toUserProfileValues, toProductValue } from "./mappers";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
+async function hasProductRatingsTable(): Promise<boolean> {
+  // Guard for environments where the ratings table is not seeded yet.
+  const [{ exists: ratingsTableExists } = { exists: null }] = await sql<
+    { exists: string | null }[]
+  >`
+    SELECT to_regclass('public.product_ratings') AS exists
+  `;
+
+  return Boolean(ratingsTableExists);
+}
+
 export async function fetchProductData(): Promise<{
   productData: Product[];
   rating: number;
-  ratingsByProduct: Record<string, number | null>; // Nefi added the rating by average by product
+  ratingsByProduct: RatingsByProduct; // Nefi added the rating by average by product
 }> {
   try {
     // Artificially delay a response for demo purposes.
@@ -36,30 +54,22 @@ export async function fetchProductData(): Promise<{
     //TODO Stacy create product ratings table
     //TODO Nefi get all the ratings for each product and calculate average rating
     //table defined in lib/definitions.ts
-    const [{ exists: ratingsTableExists } = { exists: null }] = await sql<
-      { exists: string | null }[]
-    >`
-        SELECT to_regclass('public.product_ratings') AS exists
-      `;
+    // Pull per-product averages so cards can render star ratings.
+    const ratingRows: ProductRatingSummary[] = (await hasProductRatingsTable())
+      ? await sql`
+          SELECT product_id, AVG(rating) AS avg_rating, COUNT(*) AS rating_count
+          FROM product_ratings
+          GROUP BY product_id
+        `
+      : [];
 
-    const ratingRows: { product_id: string; avg_rating: number | null }[] =
-      ratingsTableExists
-        ? await sql`
-            SELECT product_id, AVG(rating) AS avg_rating
-            FROM product_ratings
-            GROUP BY product_id
-          `
-        : [];
+    const ratingsByProduct = ratingRows.reduce<RatingsByProduct>((acc, row) => {
+      acc[row.product_id] =
+        row.avg_rating === null ? null : Number(row.avg_rating);
+      return acc;
+    }, {});
 
-    const ratingsByProduct = ratingRows.reduce<Record<string, number | null>>(
-      (acc, row) => {
-        acc[row.product_id] =
-          row.avg_rating === null ? null : Number(row.avg_rating);
-        return acc;
-      },
-      {},
-    );
-
+    // Overall average used when needed in summary views.
     const rating = ratingRows.length
       ? ratingRows.reduce((sum, row) => sum + Number(row.avg_rating ?? 0), 0) /
         ratingRows.length
@@ -81,7 +91,7 @@ export type ProductFilters = {
 export async function fetchProductsByFilters(filters: ProductFilters): Promise<{
   productData: Product[];
   rating: number;
-  ratingsByProduct: Record<string, number | null>;
+  ratingsByProduct: RatingsByProduct;
 }> {
   try {
     console.log("Fetching filtered product data...");
@@ -129,29 +139,20 @@ export async function fetchProductsByFilters(filters: ProductFilters): Promise<{
             ${whereClause}
             ORDER BY created_at DESC
         `;
-    const [{ exists: ratingsTableExists } = { exists: null }] = await sql<
-      { exists: string | null }[]
-    >`
-        SELECT to_regclass('public.product_ratings') AS exists
-      `;
+    // Same ratings lookup for filtered lists.
+    const ratingRows: ProductRatingSummary[] = (await hasProductRatingsTable())
+      ? await sql`
+          SELECT product_id, AVG(rating) AS avg_rating, COUNT(*) AS rating_count
+          FROM product_ratings
+          GROUP BY product_id
+        `
+      : [];
 
-    const ratingRows: { product_id: string; avg_rating: number | null }[] =
-      ratingsTableExists
-        ? await sql`
-            SELECT product_id, AVG(rating) AS avg_rating
-            FROM product_ratings
-            GROUP BY product_id
-          `
-        : [];
-
-    const ratingsByProduct = ratingRows.reduce<Record<string, number | null>>(
-      (acc, row) => {
-        acc[row.product_id] =
-          row.avg_rating === null ? null : Number(row.avg_rating);
-        return acc;
-      },
-      {},
-    );
+    const ratingsByProduct = ratingRows.reduce<RatingsByProduct>((acc, row) => {
+      acc[row.product_id] =
+        row.avg_rating === null ? null : Number(row.avg_rating);
+      return acc;
+    }, {});
 
     const rating = ratingRows.length
       ? ratingRows.reduce((sum, row) => sum + Number(row.avg_rating ?? 0), 0) /
@@ -220,7 +221,9 @@ export async function fetchUserProducts(userId: string): Promise<Product[]> {
   }
 }
 
-export async function fetchProductById(productId: string): Promise<ProductValue | null> {
+export async function fetchProductById(
+  productId: string,
+): Promise<ProductValue | null> {
   try {
     console.log(`Fetching product for id ${productId}...`);
     const products: Product[] = await sql<Product[]>`
@@ -241,10 +244,82 @@ export async function fetchProductById(productId: string): Promise<ProductValue 
       return null;
     }
     const productValue = toProductValue(products[0]);
-    return productValue;    
+    return productValue;
   } catch (error) {
     console.error("Error fetching product:", error);
     throw new Error("Failed to fetch product.");
+  }
+}
+
+export async function fetchProductDetail(productId: string): Promise<{
+  product: Product | null;
+  rating: number | null;
+  ratingCount: number;
+}> {
+  try {
+    console.log(`Fetching product detail for id ${productId}...`);
+    const products: Product[] = await sql<Product[]>`
+      SELECT 
+        product_id,
+        title,
+        description,
+        image_url,
+        user_id,
+        quantity,
+        price,
+        category,
+        created_at
+      FROM products
+      WHERE product_id = ${productId}
+    `;
+
+    const product = products[0] ?? null;
+    if (!product) {
+      return { product: null, rating: null, ratingCount: 0 };
+    }
+
+    // If ratings table is missing, keep the detail view usable.
+    if (!(await hasProductRatingsTable())) {
+      return { product, rating: null, ratingCount: 0 };
+    }
+
+    const [summary] = await sql<ProductRatingSummary[]>`
+      SELECT product_id, AVG(rating) AS avg_rating, COUNT(*) AS rating_count
+      FROM product_ratings
+      WHERE product_id = ${productId}
+      GROUP BY product_id
+    `;
+
+    return {
+      product,
+      rating: summary?.avg_rating ? Number(summary.avg_rating) : null,
+      ratingCount: summary?.rating_count ? Number(summary.rating_count) : 0,
+    };
+  } catch (error) {
+    console.error("Error fetching product detail:", error);
+    throw new Error("Failed to fetch product detail.");
+  }
+}
+
+export async function fetchUserProductRating(
+  productId: string,
+  userId: string,
+): Promise<number | null> {
+  try {
+    if (!(await hasProductRatingsTable())) {
+      return null;
+    }
+
+    const [row] = await sql<{ rating: number }[]>`
+      SELECT rating
+      FROM product_ratings
+      WHERE product_id = ${productId} AND user_id = ${userId}
+    `;
+
+    return row?.rating ?? null;
+  } catch (error) {
+    console.error("Error fetching user rating:", error);
+    throw new Error("Failed to fetch user rating.");
   }
 }
 

@@ -1,0 +1,74 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 1px solid #e4d3c1;
+  border-radius: 16px;
+  background: #fffaf4;
+  max-width: 480px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #3f2a18;
+}
+
+.select {
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid #d7c3ae;
+  font-size: 1rem;
+}
+
+.stars {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.star,
+.starActive {
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.star i,
+.starActive i {
+  color: #ad1e1e;
+}
+
+.starActive i {
+  filter: drop-shadow(0 0 6px rgba(173, 30, 30, 0.35));
+}
+
+.submit {
+  align-self: flex-start;
+  padding: 0.7rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  background: #6d543a;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submit:hover,
+.submit:focus {
+  background: #543f2a;
+}
+
+.success {
+  color: #2b7a39;
+  font-weight: 600;
+}
+
+.error {
+  color: #ad1e1e;
+  font-weight: 600;
+}

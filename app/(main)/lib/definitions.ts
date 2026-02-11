@@ -51,6 +51,12 @@ export type ProductRating = {
   product_id: string;
   user_id: string;
   rating: number; // 1 to 5
-  review: string | null;
-  created_at: string; // ISO date string
+};
+
+export type RatingsByProduct = Record<string, number | null>;
+
+export type ProductRatingSummary = {
+  product_id: string;
+  avg_rating: number | null;
+  rating_count: number;
 };

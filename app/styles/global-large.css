@@ -1,3 +1,4 @@
+/* Responsive: desktop and laptop baseline is the default styles. */
 @media (max-width: 1024px) {
   .page__content {
     padding: 12px;
@@ -8,6 +9,7 @@
   }
 }
 
+/* Responsive: tablets. */
 @media (max-width: 768px) {
   .page__content {
     grid-template-rows: minmax(64px, 72px) auto minmax(32px, 48px);
@@ -21,6 +23,7 @@
   }
 }
 
+/* Responsive: smartphones. */
 @media (max-width: 480px) {
   .page {
     padding: 6px 0;

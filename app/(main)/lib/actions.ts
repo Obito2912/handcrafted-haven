@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import postgres from "postgres";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcrypt";
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { SignupFormSchema, AuthFormState } from "./schemas/authSchemas";
 import { ProfileSchema, ProfileFormState } from "./schemas/profileSchemas";
@@ -18,6 +18,12 @@ import {
 import { pinata } from "@/components/utils/pinataConfig";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+
+export type RateProductResult = {
+  success: boolean;
+  message: string;
+  rating?: number;
+};
 
 export async function handleAuth(
   prevState: AuthFormState | undefined,
@@ -295,6 +301,109 @@ export async function createProduct(
     };
   }
   //TODO or revalidate path where products are listed
+}
+
+export async function rateProduct(data: {
+  productId: string;
+  rating: number;
+}): Promise<RateProductResult> {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  if (!userId) {
+    return { success: false, message: "You must be logged in to rate." };
+  }
+
+  // Normalize clicks/inputs and keep the DB constraint intact.
+  const rating = Math.round(Number(data.rating));
+  if (!Number.isFinite(rating) || rating < 1 || rating > 5) {
+    return { success: false, message: "Rating must be between 1 and 5." };
+  }
+
+  try {
+    // Upsert so each user keeps a single rating per product.
+    await sql`
+      INSERT INTO product_ratings (product_id, user_id, rating)
+      VALUES (${data.productId}, ${userId}, ${rating})
+      ON CONFLICT (product_id, user_id)
+      DO UPDATE SET rating = EXCLUDED.rating
+    `;
+
+    revalidatePath("/");
+    revalidatePath(`/products/view/${data.productId}`);
+    return { success: true, message: "Thanks for your rating!", rating };
+  } catch (error) {
+    console.error("Error saving rating:", error);
+    return { success: false, message: "Unable to save rating." };
+  }
+}
+
+export async function rateProductFromForm(
+  prevState: {
+    message: string | null;
+    success: boolean;
+    rating: number | null;
+  },
+  formData: FormData,
+) {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  if (!userId) {
+    return {
+      message: "You must be logged in to rate.",
+      success: false,
+      rating: prevState.rating ?? null,
+    };
+  }
+
+  // Read form inputs and apply the same validation used by the inline stars.
+  const productId = formData.get("product_id")?.toString();
+  const ratingValue = Number(formData.get("rating"));
+  const rating = Math.round(ratingValue);
+
+  if (!productId) {
+    return {
+      message: "Missing product.",
+      success: false,
+      rating: prevState.rating ?? null,
+    };
+  }
+
+  if (!Number.isFinite(rating) || rating < 1 || rating > 5) {
+    return {
+      message: "Rating must be between 1 and 5.",
+      success: false,
+      rating: prevState.rating ?? null,
+    };
+  }
+
+  try {
+    // Same upsert path as the inline rating action.
+    await sql`
+      INSERT INTO product_ratings (product_id, user_id, rating)
+      VALUES (${productId}, ${userId}, ${rating})
+      ON CONFLICT (product_id, user_id)
+      DO UPDATE SET rating = EXCLUDED.rating
+    `;
+
+    revalidatePath("/");
+    revalidatePath(`/products/view/${productId}`);
+    revalidatePath(`/products/view/${productId}/review`);
+
+    return {
+      message: "Review saved.",
+      success: true,
+      rating,
+    };
+  } catch (error) {
+    console.error("Error saving rating:", error);
+    return {
+      message: "Unable to save rating.",
+      success: false,
+      rating: prevState.rating ?? null,
+    };
+  }
 }
 
 export async function updateOrDeleteProduct(
