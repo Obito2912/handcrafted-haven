@@ -213,6 +213,7 @@ export async function fetchUserProducts(userId: string): Promise<Product[]> {
       WHERE user_id = ${userId}
       ORDER BY created_at DESC
     `;
+    console.log(`Fetched ${products.length} products for user ${userId}`);
     return products;
   } catch (error) {
     console.error("Error fetching user products:", error);
@@ -280,9 +281,6 @@ export async function fetchUserProfile(
   userId: string,
 ): Promise<{ userProfile: UserProfileValue }> {
   try {
-    // Artificially delay a response for demo purposes.
-    // Don't do this in production :)
-
     console.log("Fetching user profile...");
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -306,6 +304,32 @@ export async function fetchUserProfile(
     return { userProfile: userProfileValues };
   } catch (error) {
     console.error("Error fetching user profile:", error);
+    return undefined;
+  }
+}
+
+export async function fetchSellerUserProfiles(
+): Promise<UserProfileValue[] | undefined> {
+  try {
+    
+    const userProfiles: UserProfile[] = await sql<UserProfile[]>`
+            SELECT 
+                user_id,
+                name,
+                age,
+                gender,
+                bio,
+                image_url,
+                user_type
+            FROM user_profiles
+           WHERE user_type = 'seller'
+            ORDER BY name
+        `;
+    console.log("Profile data fetched:", userProfiles.length);    
+    const userProfileValues = userProfiles.map( (p) => toUserProfileValues(p));
+    return userProfileValues;
+  } catch (error) {
+    console.error("Error fetching user profiles:", error);
     return undefined;
   }
 }
