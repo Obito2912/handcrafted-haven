@@ -12,7 +12,7 @@ export default async function ProductCardWrapper({
   //TODO Add Paging and Filtering
   const productData = products ?? (await fetchProductData()).productData;
   return (
-    <div className="product-card__wrapper">
+    <div className="card__wrapper">
       {productData.map((product) => (
         <ProductCard key={product.product_id} {...product} />
       ))}

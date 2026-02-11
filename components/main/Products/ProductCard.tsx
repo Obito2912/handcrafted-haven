@@ -1,6 +1,6 @@
 import { Product } from "@/app/(main)/lib/definitions";
 import Image from "next/image";
-import "./ProductCard.css";
+import "../../shared/Card/Card.css";
 
 
 export default function ProductCard(product: Product) {

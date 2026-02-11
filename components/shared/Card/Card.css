@@ -1,4 +1,4 @@
-.product-card__wrapper {
+.card__wrapper {
     display: flex;
     flex-wrap: wrap;
     gap: 1em;
@@ -17,6 +17,7 @@
     max-width: 250px;
     position: relative;
     color: #6D543A;
+    min-width: 200px;
 }
 
 .card__image-container {
@@ -114,23 +115,23 @@
     text-decoration: none;
 }
 
-.product-card__wrapper a .card {
+.card__wrapper a .card {
     transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.product-card__wrapper a .card:hover {
+.card__wrapper a .card:hover {
     transform: translateX(4px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
-.editable-product-card__wrapper a {
+.editable-card__wrapper a {
   display: inline-block;    /* or block */
   text-decoration: none;
   color: inherit;
 }
 
-.editable-product-card__wrapper a:hover,
-.editable-product-card__wrapper a:focus {
+.editable-card__wrapper a:hover,
+.editable-card__wrapper a:focus {
   text-decoration: none;
   color: inherit;
 }
