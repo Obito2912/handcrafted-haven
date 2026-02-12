@@ -35,3 +35,18 @@
 .sign-out:active {
     scale: 1.05;
 }
+
+/* Responsive: tablet and down. */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    max-height: none;
+    padding: 0.75em 0.5em;
+    flex: 0 0 auto;
+  }
+
+  .sign-out {
+    position: static;
+    margin-top: 0.75em;
+  }
+}

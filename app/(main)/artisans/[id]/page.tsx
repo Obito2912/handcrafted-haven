@@ -13,7 +13,7 @@ export default async function Artisans(
   // Fetch data
   const user = await fetchUserInformation(params.id);
   const userProfile = await fetchUserProfile(params.id);
-  const products = await fetchUserProducts(params.id);
+  const { productData, averageRatings, allRatings } = await fetchUserProducts(params.id);
 
   return (
     <>
@@ -27,7 +27,7 @@ export default async function Artisans(
       <ScrollableContainer>
         <div className={styles.content}>
         <ArtisansDisplay userProfile={userProfile} user={user}></ArtisansDisplay>
-        <ArtisansProductDisplay products={products}></ArtisansProductDisplay>
+        <ArtisansProductDisplay products={productData} productRatings={averageRatings}></ArtisansProductDisplay>
         </div>
       </ScrollableContainer>
     </>

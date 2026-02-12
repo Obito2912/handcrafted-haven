@@ -42,3 +42,28 @@
 .nav__list-item a.active:after {
     background: #6D543A;
 }
+
+/* Responsive: tablet and down. */
+@media (max-width: 768px) {
+  .nav__list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25em 0.75em;
+  }
+
+  .nav__list-item {
+    padding: 0.25em 0.4em;
+  }
+
+  .nav__list-item a {
+    font-size: 1.15rem;
+  }
+}
+
+/* Responsive: smartphones. */
+@media (max-width: 480px) {
+  .nav__list-item a {
+    font-size: 1rem;
+  }
+}
