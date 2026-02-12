@@ -1,9 +1,0 @@
-.products {
-    padding: 20px;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem; /* space between h1, p, link, cards */
-}

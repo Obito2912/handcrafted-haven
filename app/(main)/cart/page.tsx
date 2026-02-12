@@ -15,7 +15,7 @@ export default async function Cart() {
   return (
     <div className={styles.cart}>
       <ScrollableContainer>
-        <h1 className={''}>Shopping Cart</h1>
+        <h1 className={styles.cart__title}>Shopping Cart</h1>
         <CartPageContent userId={session.user.id} />
       </ScrollableContainer>
     </div>

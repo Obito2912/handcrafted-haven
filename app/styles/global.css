@@ -34,9 +34,20 @@
   margin: 20px 0;
 }
 
+::-webkit-scrollbar {
+  width: 6px;
+  background-color: #000;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+  border-radius: 3px;
+}
+
 .main {
-
-
-
   flex: 1;
+  display: flex;
+  height: calc(100vh - 240px);
+  /* or calc(100vh - header-height) */
 }

@@ -1,13 +1,13 @@
 .nav {
-    display: block;
-    margin-bottom: 1.5rem;
+  display: block;
+  /* margin-bottom: 1.5rem; */
 }
 
 .ol {
-    display: flex;
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    list-style: none;
+  display: flex;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  list-style: none;
 }
 
 @media (min-width: 768px) {
@@ -20,19 +20,24 @@
 .active {
   color: rgb(17 24 39);
 }
-.link{
-    color: inherit;
-    text-decoration: none;
+
+.link {
+  color: inherit;
+  text-decoration: none;
 }
+
 .link:visited {
-    color: inherit;
+  color: inherit;
 }
+
 .link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
+
 .inactive {
   color: rgb(107 114 128);
 }
+
 .separator {
   display: inline-block;
   margin-left: 0.75rem;
