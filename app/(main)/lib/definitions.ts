@@ -73,3 +73,25 @@ export type CartItem = {
 export type CartItemWithProduct = CartItem & {
   product: Product;
 };
+
+export type ProductAverageRating = {
+  product_id: string;  
+  average_rating: number; // 1 to 5
+};
+
+
+export type RateProductResult = {
+  success: boolean;
+  message: string;
+  rating?: number;
+};
+
+export type ProductRatingDisplay = {
+  productId: string;
+  userId: string;
+  userName: string;
+  userImageUrl: string | null;
+  rating: number; // 1 to 5
+  review: string | null;
+  createdAt: string; // ISO date string
+};

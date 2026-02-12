@@ -24,7 +24,7 @@ export default async function Home({
   const minPrice = minPriceValue === "" ? undefined : Number(minPriceValue);
   const maxPrice = maxPriceValue === "" ? undefined : Number(maxPriceValue);
   const category = resolvedSearchParams?.category?.trim() || "";
-  const { productData } = await fetchProductsByFilters({
+  const { productData, ratingRows } = await fetchProductsByFilters({
     query: query || undefined,
     minPrice: Number.isFinite(minPrice) ? minPrice : undefined,
     maxPrice: Number.isFinite(maxPrice) ? maxPrice : undefined,
@@ -32,17 +32,15 @@ export default async function Home({
   });
   return (
     <>
-      <main className="main">
-        <ScrollableContainer>
-          <ProductFilters
-            query={query}
-            minPrice={minPriceValue}
-            maxPrice={maxPriceValue}
-            category={category}
-          />
-          <ProductCardWrapper products={productData} />
-        </ScrollableContainer>
-      </main>
-    </>
+      <ProductFilters
+        query={query}
+        minPrice={minPriceValue}
+        maxPrice={maxPriceValue}
+        category={category}
+      />
+      <ScrollableContainer>
+        <ProductCardWrapper products={productData} productRatings={ratingRows} />
+      </ScrollableContainer>
+      </>
   );
 }

@@ -3,9 +3,18 @@
 import { Product } from "@/app/(main)/lib/definitions";
 import { useCart } from "@/app/context/CartContext";
 import Image from "next/image";
+import Link from "next/link";
 import "../../shared/Card/Card.css";
+import RatingStars from "@/components/shared/RatingStars/RatingStars";
+type ProductCardProps = {
+  product: Product,
+  disableTitleLink?: boolean,
+  average_rating?: number
+};
 
-export default function ProductCard(product: Product) {
+export default function ProductCard({ disableTitleLink = false, product, average_rating }: ProductCardProps) {
+console.log("Rendering ProductCard with product:", product.title, " and average rating: ", average_rating);
+  const titleContent = <h2 className="card__title">{product.title}</h2>;
   const { addToCart, isLoading } = useCart();
 
   const handleAddToCart = async () => {
@@ -26,10 +35,14 @@ export default function ProductCard(product: Product) {
           <i className="fa-regular fa-heart"></i>
         </button>
       </div>
-      <h2 className="card__title">{product.title}</h2>
+      {disableTitleLink ? (
+        titleContent
+      ) : (
+        <Link href={`/products/view/${product.product_id}`}>{titleContent}</Link>
+      )}
       <div className="rating-stock">
         <div className="card__icon-container">
-          <i className="fa-solid fa-star"></i>4.6
+          {<RatingStars rating={average_rating} />}
         </div>
         <span className="card__product-stock">Only X left!</span>
       </div>

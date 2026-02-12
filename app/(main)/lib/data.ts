@@ -1,7 +1,9 @@
 import postgres from "postgres";
 import {
   Product,
+  ProductAverageRating, 
   ProductCategory,
+  ProductRatingDisplay, 
   User,
   UserProfile,
   Cart,
@@ -17,13 +19,9 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 export async function fetchProductData(): Promise<{
   productData: Product[];
-  rating: number;
-  ratingsByProduct: Record<string, number | null>; // Nefi added the rating by average by product
+  ratingRows: ProductAverageRating[];
 }> {
   try {
-    // Artificially delay a response for demo purposes.
-    // Don't do this in production :)
-
     console.log("Fetching product data...");
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -41,38 +39,14 @@ export async function fetchProductData(): Promise<{
             ORDER BY created_at DESC
         `;
     console.log("Product data fetched:", productData.length);
-    //TODO Stacy create product ratings table
-    //TODO Nefi get all the ratings for each product and calculate average rating
-    //table defined in lib/definitions.ts
-    const [{ exists: ratingsTableExists } = { exists: null }] = await sql<
-      { exists: string | null }[]
-    >`
-        SELECT to_regclass('public.product_ratings') AS exists
-      `;
-
-    const ratingRows: { product_id: string; avg_rating: number | null }[] =
-      ratingsTableExists
-        ? await sql`
-            SELECT product_id, AVG(rating) AS avg_rating
+    
+    const ratingRows: ProductAverageRating [] = await sql`
+            SELECT product_id, AVG(rating) AS average_rating
             FROM product_ratings
             GROUP BY product_id
-          `
-        : [];
-
-    const ratingsByProduct = ratingRows.reduce<Record<string, number | null>>(
-      (acc, row) => {
-        acc[row.product_id] =
-          row.avg_rating === null ? null : Number(row.avg_rating);
-        return acc;
-      },
-      {},
-    );
-
-    const rating = ratingRows.length
-      ? ratingRows.reduce((sum, row) => sum + Number(row.avg_rating ?? 0), 0) /
-        ratingRows.length
-      : 0;
-    return { productData, rating, ratingsByProduct }; //Return rating also
+          `;
+    
+    return { productData, ratingRows }; //Return rating also
   } catch (error) {
     console.error("Error fetching product data:", error);
     throw new Error("Failed to fetch product data.");
@@ -88,8 +62,7 @@ export type ProductFilters = {
 
 export async function fetchProductsByFilters(filters: ProductFilters): Promise<{
   productData: Product[];
-  rating: number;
-  ratingsByProduct: Record<string, number | null>;
+  ratingRows: ProductAverageRating[];
 }> {
   try {
     console.log("Fetching filtered product data...");
@@ -137,35 +110,15 @@ export async function fetchProductsByFilters(filters: ProductFilters): Promise<{
             ${whereClause}
             ORDER BY created_at DESC
         `;
-    const [{ exists: ratingsTableExists } = { exists: null }] = await sql<
-      { exists: string | null }[]
-    >`
-        SELECT to_regclass('public.product_ratings') AS exists
-      `;
 
-    const ratingRows: { product_id: string; avg_rating: number | null }[] =
-      ratingsTableExists
-        ? await sql`
-            SELECT product_id, AVG(rating) AS avg_rating
+    const ratingRows: ProductAverageRating[] =
+       await sql`
+            SELECT product_id, ROUND(AVG(rating)) AS average_rating
             FROM product_ratings
             GROUP BY product_id
-          `
-        : [];
+          `;
 
-    const ratingsByProduct = ratingRows.reduce<Record<string, number | null>>(
-      (acc, row) => {
-        acc[row.product_id] =
-          row.avg_rating === null ? null : Number(row.avg_rating);
-        return acc;
-      },
-      {},
-    );
-
-    const rating = ratingRows.length
-      ? ratingRows.reduce((sum, row) => sum + Number(row.avg_rating ?? 0), 0) /
-        ratingRows.length
-      : 0;
-    return { productData, rating, ratingsByProduct };
+    return { productData, ratingRows };
   } catch (error) {
     console.error("Error fetching filtered product data:", error);
     throw new Error("Failed to fetch filtered product data.");
@@ -203,7 +156,11 @@ export async function fetchUserInformation(
  * - Queries the `products` table by user ID
  * - Returns an array of Product objects
  */
-export async function fetchUserProducts(userId: string): Promise<Product[]> {
+export async function fetchUserProducts(userId: string): Promise<{
+  productData: Product[];
+  averageRatings: ProductAverageRating[];
+  allRatings: ProductRatingDisplay[];
+}> {
   try {
     console.log("Fetching products for user:", userId);
     const products = await sql<Product[]>`
@@ -222,7 +179,37 @@ export async function fetchUserProducts(userId: string): Promise<Product[]> {
       ORDER BY created_at DESC
     `;
     console.log(`Fetched ${products.length} products for user ${userId}`);
-    return products;
+
+    const averageRatings = await sql<ProductAverageRating[]>`
+            SELECT product_id, ROUND(AVG(rating)) AS average_rating
+FROM product_ratings
+WHERE product_id IN (
+  SELECT product_id 
+  FROM products 
+  WHERE user_id = ${userId}
+)
+GROUP BY product_id`;
+
+    const allRatings = await sql<ProductRatingDisplay[]>`
+            SELECT 
+                a.product_id as ProductId,
+                b.user_id as UserId,
+                name as UserName,
+                c.image_url as UserImageUrl,
+                rating,
+                review,
+                a.created_at as CreatedAt
+            FROM product_ratings a
+            INNER JOIN products b on a.product_id = b.product_id
+            INNER JOIN user_profiles c ON b.user_id = c.user_id
+            WHERE a.product_id IN (
+              SELECT product_id 
+              FROM products 
+              WHERE user_id = ${userId}
+            )
+        `;
+
+    return { productData: products, averageRatings, allRatings };
   } catch (error) {
     console.error("Error fetching user products:", error);
     throw new Error("Failed to fetch user products.");
@@ -247,7 +234,7 @@ export async function fetchProductById(
             FROM products
             WHERE product_id = ${productId}
         `;
-    console.log("Product fetched:", products);
+
     if (products.length === 0) {
       return null;
     }
@@ -259,8 +246,62 @@ export async function fetchProductById(
   }
 }
 
+export async function fetchProductDetail(productId: string): Promise<{
+  productValue: ProductValue | null;
+  averageRating: number | null;
+  allRatings: ProductRatingDisplay[];
+}> {
+  try {
+    console.log(`Fetching product for id ${productId}...`);
+    const products: Product[] = await sql<Product[]>`
+            SELECT 
+                product_id,
+                title,
+                description,
+                image_url,
+                user_id,
+                quantity,
+                price,
+                created_at
+            FROM products
+            WHERE product_id = ${productId}
+        `;
+    console.log("Product fetched:", products);
+ 
+    if (products.length === 0) {
+      return { productValue: null, averageRating: null, allRatings: [] };
+    }
+   const averageRatings = await sql<ProductAverageRating[]>`
+            SELECT ROUND(AVG(rating)) AS average_rating
+            FROM product_ratings
+            WHERE product_id = ${productId}
+        `;
+    const averageRating = averageRatings[0]?.average_rating || null;
+    const allRatings = await sql<ProductRatingDisplay[]>`
+            SELECT 
+                a.product_id as "productId",
+                b.user_id as "userId",
+                name as "userName",
+                c.image_url as "userImageUrl",
+                rating,
+                review,
+                a.created_at as "createdAt"
+            FROM product_ratings a
+            INNER JOIN products b on a.product_id = b.product_id
+            INNER JOIN user_profiles c ON b.user_id = c.user_id
+            WHERE a.product_id = ${productId}
+        `;    
+    const productValue = toProductValue(products[0]);
+    return { productValue, averageRating, allRatings };    
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    throw new Error("Failed to fetch product.");
+  }
+}
+
 export async function fetchProductDataByUser(userId: string): Promise<{
-  productData: Product[];
+  productData: Product[]
+  averageRatings: ProductAverageRating[];
 }> {
   try {
     console.log(`Fetching product data for user ${userId}...`);
@@ -280,7 +321,34 @@ export async function fetchProductDataByUser(userId: string): Promise<{
             ORDER BY created_at DESC
         `;
     console.log("Product  fetched:", productData.length);
-    return { productData };
+    if (productData.length === 0) {
+      return { productData: [], averageRatings: []};
+    }
+    const averageRatings = await sql<ProductAverageRating[]>`
+            SELECT product_id, ROUND(AVG(rating)) AS average_rating
+            FROM product_ratings
+            WHERE product_id IN (
+              SELECT product_id 
+              FROM products 
+              WHERE user_id = ${userId}
+            )
+            GROUP BY product_id`;
+
+    // const ratings: ProductRating[] = await sql<ProductRating[]>`
+    //         SELECT 
+    //             product_id,
+    //             user_id,
+    //             rating,
+    //             review
+    //         FROM product_ratings
+    //         WHERE product_id IN (
+    //           SELECT product_id 
+    //           FROM products 
+    //           WHERE user_id = ${userId}
+    //         )
+    //     `;    
+    // const productDataValues = productData.map( (p) => toProductValue(p));
+    return { productData, averageRatings };
   } catch (error) {
     console.error("Error fetching product data:", error);
     throw new Error("Failed to fetch product data.");
@@ -289,7 +357,7 @@ export async function fetchProductDataByUser(userId: string): Promise<{
 
 export async function fetchUserProfile(
   userId: string,
-): Promise<{ userProfile: UserProfileValue }> {
+): Promise<UserProfileValue | undefined> {
   try {
     console.log("Fetching user profile...");
     // await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -311,7 +379,7 @@ export async function fetchUserProfile(
     console.log("Profile data fetched:", userProfiles.length);
     const userProfile = userProfiles[0] || null;
     const userProfileValues = toUserProfileValues(userProfile);
-    return { userProfile: userProfileValues };
+    return userProfileValues;
   } catch (error) {
     console.error("Error fetching user profile:", error);
     return undefined;

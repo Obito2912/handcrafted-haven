@@ -20,7 +20,7 @@ export default async function Profile() {
         <main className={styles.profile}>
             <div className={styles.profile__container}>
                 <ScrollableContainer>
-                    <ProfileForm initialValues={userProfile?.userProfile ?? undefined} />
+                    <ProfileForm initialValues={userProfile ?? undefined} />
                 </ScrollableContainer>
             </div>
         </main>
