@@ -50,12 +50,21 @@ async function seedProductsTable() {
 
 async function seedProductRatingsTable() {
   await sql`CREATE TABLE IF NOT EXISTS product_ratings (
-        product_id UUID NOT NULL REFERENCES products(product_id) ON DELETE CASCADE,
-        user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-        rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
-        review TEXT,
-        created_at TIMESTAMP DEFAULT now(),
-        PRIMARY KEY (product_id, user_id)
+        product_id UUID NOT NULL,
+        user_id UUID NOT NULL,
+        rating INT NOT NULL,
+        CONSTRAINT pk_product_ratings
+          PRIMARY KEY (product_id, user_id),
+        CONSTRAINT fk_product_ratings_products
+          FOREIGN KEY (product_id)
+          REFERENCES products(product_id)
+          ON DELETE CASCADE,
+        CONSTRAINT fk_product_ratings_users
+          FOREIGN KEY (user_id)
+          REFERENCES users(id)
+          ON DELETE CASCADE,
+        CONSTRAINT rating_range
+          CHECK (rating BETWEEN 1 AND 5)
     )`;
   // Seed initial product ratings
 }
