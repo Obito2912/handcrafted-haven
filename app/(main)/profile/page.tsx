@@ -9,7 +9,7 @@ export default async function Profile() {
     console.log("User ID in Profile page:", userId);
     if (!userId) {
         return (
-            <main className={styles.main}>
+            <main className={styles.profile}>
                 <p>You must be logged in to view this data.</p>
             </main>
         )
@@ -17,8 +17,8 @@ export default async function Profile() {
     const userProfile = await fetchUserProfile(userId);
 
     return (
-        <main className={styles.main}>
-            <div className={styles.profile}>
+        <main className={styles.profile}>
+            <div className={styles.profile__container}>
                 <ScrollableContainer>
                     <ProfileForm initialValues={userProfile?.userProfile ?? undefined} />
                 </ScrollableContainer>

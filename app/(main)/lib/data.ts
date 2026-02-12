@@ -1,5 +1,13 @@
 import postgres from "postgres";
-import { Product, ProductCategory, User, UserProfile } from "./definitions";
+import {
+  Product,
+  ProductCategory,
+  User,
+  UserProfile,
+  Cart,
+  CartItem,
+  CartItemWithProduct,
+} from "./definitions";
 
 import { UserProfileValue } from "./schemas/profileSchemas";
 import { ProductValue } from "./schemas/productSchema";
@@ -221,7 +229,9 @@ export async function fetchUserProducts(userId: string): Promise<Product[]> {
   }
 }
 
-export async function fetchProductById(productId: string): Promise<ProductValue | null> {
+export async function fetchProductById(
+  productId: string,
+): Promise<ProductValue | null> {
   try {
     console.log(`Fetching product for id ${productId}...`);
     const products: Product[] = await sql<Product[]>`
@@ -242,7 +252,7 @@ export async function fetchProductById(productId: string): Promise<ProductValue 
       return null;
     }
     const productValue = toProductValue(products[0]);
-    return productValue;    
+    return productValue;
   } catch (error) {
     console.error("Error fetching product:", error);
     throw new Error("Failed to fetch product.");
@@ -308,10 +318,10 @@ export async function fetchUserProfile(
   }
 }
 
-export async function fetchSellerUserProfiles(
-): Promise<UserProfileValue[] | undefined> {
+export async function fetchSellerUserProfiles(): Promise<
+  UserProfileValue[] | undefined
+> {
   try {
-    
     const userProfiles: UserProfile[] = await sql<UserProfile[]>`
             SELECT 
                 user_id,
@@ -325,8 +335,8 @@ export async function fetchSellerUserProfiles(
            WHERE user_type = 'seller'
             ORDER BY name
         `;
-    console.log("Profile data fetched:", userProfiles.length);    
-    const userProfileValues = userProfiles.map( (p) => toUserProfileValues(p));
+    console.log("Profile data fetched:", userProfiles.length);
+    const userProfileValues = userProfiles.map((p) => toUserProfileValues(p));
     return userProfileValues;
   } catch (error) {
     console.error("Error fetching user profiles:", error);
@@ -334,11 +344,198 @@ export async function fetchSellerUserProfiles(
   }
 }
 
-//TODO Marco
-//Look at data.ts for table structure that Stacy will add to app\seed\route.ts
-//Add fetchUserInformation
-//Add fetchUserProducts
-//Look at financial dashboard app\lib\data.ts
+async function getOrCreateCart(userId: string): Promise<string> {
+  try {
+    // Try to get existing cart
+    const existingCart = await sql<Cart[]>`
+      SELECT cart_id FROM carts WHERE user_id = ${userId}
+    `;
 
-//TODO Nefi
-//Add fetchProductsByFilters
+    if (existingCart.length > 0) {
+      return existingCart[0].cart_id;
+    }
+
+    // Create new cart if none exists
+    const newCart = await sql<Cart[]>`
+      INSERT INTO carts (user_id)
+      VALUES (${userId})
+      RETURNING cart_id
+    `;
+
+    return newCart[0].cart_id;
+  } catch (error) {
+    console.error("Error getting or creating cart:", error);
+    throw new Error("Failed to get or create cart");
+  }
+}
+
+/**
+ * Fetch all cart items for a user with product details
+ */
+export async function fetchCartItems(
+  userId: string,
+): Promise<CartItemWithProduct[]> {
+  try {
+    // Use a different type for the raw SQL result
+    const rawCartItems = await sql<
+      {
+        cart_item_id: string;
+        cart_id: string;
+        product_id: string;
+        quantity: number;
+        added_at: string;
+        title: string;
+        description: string;
+        image_url: string;
+        product_user_id: string;
+        price: number;
+        category: string;
+        product_created_at: string;
+        product_updated_at: string;
+      }[]
+    >`
+      SELECT 
+        ci.cart_item_id,
+        ci.cart_id,
+        ci.product_id,
+        ci.quantity,
+        ci.added_at,
+        p.title,
+        p.description,
+        p.image_url,
+        p.user_id as product_user_id,
+        p.price,
+        p.category,
+        p.created_at as product_created_at,
+        p.updated_at as product_updated_at
+      FROM cart_items ci
+      JOIN carts c ON ci.cart_id = c.cart_id
+      JOIN products p ON ci.product_id = p.product_id
+      WHERE c.user_id = ${userId}
+      ORDER BY ci.added_at DESC
+    `;
+
+    // Transform the flat result into the expected structure
+    return rawCartItems.map((item) => ({
+      cart_item_id: item.cart_item_id,
+      cart_id: item.cart_id,
+      product_id: item.product_id,
+      quantity: item.quantity,
+      added_at: item.added_at,
+      product: {
+        product_id: item.product_id,
+        title: item.title,
+        description: item.description,
+        image_url: item.image_url,
+        user_id: item.product_user_id,
+        quantity: item.quantity,
+        price: item.price,
+        category: item.category as ProductCategory,
+        created_at: item.product_created_at,
+        updated_at: item.product_updated_at,
+      },
+    }));
+  } catch (error) {
+    console.error("Error fetching cart items:", error);
+    throw new Error("Failed to fetch cart items");
+  }
+}
+
+/**
+ * Add item to cart or update quantity if it already exists
+ */
+export async function addToCart(
+  userId: string,
+  productId: string,
+  quantity: number = 1,
+): Promise<void> {
+  try {
+    const cartId = await getOrCreateCart(userId);
+
+    // Check if item already exists in cart
+    const existingItem = await sql<CartItem[]>`
+      SELECT cart_item_id, quantity 
+      FROM cart_items 
+      WHERE cart_id = ${cartId} AND product_id = ${productId}
+    `;
+
+    if (existingItem.length > 0) {
+      // Update existing item quantity
+      await sql`
+        UPDATE cart_items 
+        SET quantity = quantity + ${quantity}
+        WHERE cart_item_id = ${existingItem[0].cart_item_id}
+      `;
+    } else {
+      // Add new item to cart
+      await sql`
+        INSERT INTO cart_items (cart_id, product_id, quantity)
+        VALUES (${cartId}, ${productId}, ${quantity})
+      `;
+    }
+
+    // Update cart timestamp
+    await sql`
+      UPDATE carts SET updated_at = now() WHERE cart_id = ${cartId}
+    `;
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    throw new Error("Failed to add item to cart");
+  }
+}
+
+/**
+ * Remove item from cart
+ */
+export async function removeFromCart(cartItemId: string): Promise<void> {
+  try {
+    await sql`
+      DELETE FROM cart_items 
+      WHERE cart_item_id = ${cartItemId}
+    `;
+  } catch (error) {
+    console.error("Error removing from cart:", error);
+    throw new Error("Failed to remove item from cart");
+  }
+}
+
+/**
+ * Update cart item quantity
+ */
+export async function updateCartItemQuantity(
+  cartItemId: string,
+  quantity: number,
+): Promise<void> {
+  try {
+    if (quantity <= 0) {
+      // Remove item if quantity is 0 or less
+      await removeFromCart(cartItemId);
+    } else {
+      await sql`
+        UPDATE cart_items 
+        SET quantity = ${quantity}
+        WHERE cart_item_id = ${cartItemId}
+      `;
+    }
+  } catch (error) {
+    console.error("Error updating cart item quantity:", error);
+    throw new Error("Failed to update cart item quantity");
+  }
+}
+
+/**
+ * Clear all items from user's cart
+ */
+export async function clearCart(userId: string): Promise<void> {
+  try {
+    await sql`
+      DELETE FROM cart_items 
+      WHERE cart_id IN (
+        SELECT cart_id FROM carts WHERE user_id = ${userId}
+      )
+    `;
+  } catch (error) {
+    console.error("Error clearing cart:", error);
+    throw new Error("Failed to clear cart");
+  }
+}

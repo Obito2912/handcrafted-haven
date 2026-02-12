@@ -54,3 +54,22 @@ export type ProductRating = {
   review: string | null;
   created_at: string; // ISO date string
 };
+
+export type Cart = {
+  cart_id: string;
+  user_id: string;
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
+};
+
+export type CartItem = {
+  cart_item_id: string;
+  cart_id: string;
+  product_id: string;
+  quantity: number;
+  added_at: string; // ISO date string
+};
+
+export type CartItemWithProduct = CartItem & {
+  product: Product;
+};

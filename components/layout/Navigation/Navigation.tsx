@@ -9,6 +9,7 @@ const links = [
   { name: 'Support', href: '/support', loggedIn: false },
   { name: 'Artisans', href: '/artisans', loggedIn: false },
   { name: 'Purchases', href: '/purchases', loggedIn: true },
+  { name: 'Shopping Cart', href: '/cart', loggedIn: true },
 ];
 
 export default function Navigation({

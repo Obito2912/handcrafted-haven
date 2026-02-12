@@ -1,6 +1,5 @@
 "use client"
 
-
 import styles from "@/components/shared/Form/Form.module.css";
 import { useActionState, useState } from "react";
 import { createProduct, updateOrDeleteProduct } from "@/app/(main)/lib/actions";
@@ -48,28 +47,28 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
                 <textarea className={`${styles.form_input}`} id="description" name="description" rows={3} defaultValue={state?.values?.description ?? initialValues?.description} />
             </label>
             {(initialValues?.image_url || previewImage) && (
-                <Image src={previewImage ?? initialValues.image_url} alt="Product Image" className="mb-4 max-h-60 object-cover" 
-                          width={128}
-                        height={128}/>
-                )}
+                <Image src={previewImage ?? initialValues.image_url} alt="Product Image" className="mb-4 max-h-60 object-cover"
+                    width={128}
+                    height={128} />
+            )}
             <input
-            type="hidden"
-            name="image_url"
-            value={state?.values?.image_url ?? initialValues?.image_url ?? ""}
-            />                
-            <label className={`${styles.form_label}`} htmlFor="image_file"> 
-                <input type="file" id="image_file" 
-                name="image_file" 
-                accept="image/*" 
-                className={`${styles.form_input}`}
+                type="hidden"
+                name="image_url"
+                value={state?.values?.image_url ?? initialValues?.image_url ?? ""}
+            />
+            <label className={`${styles.form_label}`} htmlFor="image_file">
+                <input type="file" id="image_file"
+                    name="image_file"
+                    accept="image/*"
+                    className={`${styles.form_input}`}
                     onChange={(e) => {
-                        const file = e.target.files?.[0] as File | undefined;  
+                        const file = e.target.files?.[0] as File | undefined;
                         console.log("Selected file:", file);
                         const url = URL.createObjectURL(file);
                         setPreviewImage(url);
 
-                }}/>
-            </label>                        
+                    }} />
+            </label>
             <label className={`${styles.form_label}`} htmlFor="price">Price
                 <input className={`${styles.form_input}`} type="number" id="price" name="price" min="0" step="0.01" inputMode="decimal" defaultValue={state?.values?.price ?? initialValues?.price} />
             </label>
@@ -78,11 +77,11 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
             </label>
 
             <label className={`${styles.form_label}`} htmlFor="category">Category
-                    <select className={`${styles.form_input}`} key={state?.values?.category ?? initialValues?.category ?? ""} id="category" name="category" defaultValue={state?.values?.category ?? initialValues?.category ?? ""}>
+                <select className={`${styles.form_input}`} key={state?.values?.category ?? initialValues?.category ?? ""} id="category" name="category" defaultValue={state?.values?.category ?? initialValues?.category ?? ""}>
                     <option value="" disabled>Select your category</option>
                     {ProductCategories.map((category: string) => (
                         <option key={category} value={category}>
-                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                            {category.charAt(0).toUpperCase() + category.slice(1)}
                         </option>
                     ))}
                 </select>
@@ -93,7 +92,7 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
                 {isEditMode ? "Update Product" : "Create Product"}
             </button>
             {isEditMode && (
-                <button type="submit" name = "_action" value="delete">
+                <button type="submit" name="_action" value="delete">
                     Delete Product
                 </button>
             )}
