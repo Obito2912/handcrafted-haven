@@ -3,6 +3,7 @@ import Footer from "@/components/shared/Footer/Footer";
 import Header from "@/components/shared/Header/Header";
 import { auth } from "@/auth";
 import { fetchUserProfile } from "@/app/(main)/lib/data";
+import { CartProvider } from "../context/CartContext";
 
 export default async function MainLayout({ children }: { children: React.ReactNode }) {
     const session = await auth();
@@ -19,17 +20,19 @@ export default async function MainLayout({ children }: { children: React.ReactNo
     return (
         <div className="page">
             <div className="page__content">
-                <Header
-                    isAuthenticated={isAuthenticated}
-                    userProfileImg={userProfileImg}
-                    showSignIn={true} />
-                <div className="page__container">
-                    <Aside
+                <CartProvider userId={session?.user?.id}>
+                    <Header
                         isAuthenticated={isAuthenticated}
-                        userType={userType} />
-                    <main className="main">{children}</main>
-                </div>
-                <Footer />
+                        userProfileImg={userProfileImg}
+                        showSignIn={true} />
+                    <div className="page__container">
+                        <Aside
+                            isAuthenticated={isAuthenticated}
+                            userType={userType} />
+                        <main className="main">{children}</main>
+                    </div>
+                    <Footer />
+                </CartProvider>
             </div>
         </div>
     );
