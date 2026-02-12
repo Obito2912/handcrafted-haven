@@ -4,31 +4,32 @@ import { useCart } from "@/app/context/CartContext";
 import CartItem from "../cartItem/cartItem";
 import CartSummary from "../cartSummary/cartSummary";
 import "./CartPageContent.css";
+import Link from "next/link";
 
 export default function CartPageContent({ userId }: { userId: string }) {
     const { items, totalItems, totalPrice, isLoading, clearCart } = useCart();
 
     // if (isLoading) {
     //     return (
-    //         <div className={''}>
-    //             <div className={''}>Loading cart...</div>
+    //         <div className=''>
+    //             <div className=''>Loading cart...</div>
     //         </div>
     //     );
     // }
 
     if (items.length === 0) {
         return (
-            <div className={''}>
-                <h2 className={''}>Your cart is empty</h2>
-                <p className={''}>Start shopping to add items to your cart</p>
-                <a href="/products" className={''}>Continue Shopping</a>
+            <div className='cart__empty'>
+                <h2 className='cart__empty_title'>Your cart is empty</h2>
+                <p className='cart__empty_message'>Start shopping to add items to your cart</p>
+                <Link href="/" className='cart__empty_link'>Continue Shopping</Link>
             </div>
         );
     }
 
     return (
-        <div className={'cart-items-container'}>
-            <div className={'cart-items'}>
+        <div className={'cart__items_container'}>
+            <div className={'cart__items'}>
                 {items.map((item) => (
                     <CartItem key={item.cart_item_id} item={item} />
                 ))}
@@ -36,12 +37,12 @@ export default function CartPageContent({ userId }: { userId: string }) {
             {/* Clear Cart Button */}
             <button
                 onClick={() => clearCart()}
-                className={'clear-cart-button'}
+                className={'cart__button_clear'}
                     /* disabled={isLoading} */ >
                 Clear Cart
             </button>
             {/* Cart Summary */}
-            <div className={'cart-summary'}>
+            <div className={'cart__summary'}>
                 <CartSummary
                     totalItems={totalItems}
                     totalPrice={totalPrice} />

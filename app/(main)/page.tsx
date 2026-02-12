@@ -32,15 +32,15 @@ export default async function Home({
   });
   return (
     <>
-      <ProductFilters
-        query={query}
-        minPrice={minPriceValue}
-        maxPrice={maxPriceValue}
-        category={category}
-      />
       <ScrollableContainer>
+        <ProductFilters
+          query={query}
+          minPrice={minPriceValue}
+          maxPrice={maxPriceValue}
+          category={category}
+        />
         <ProductCardWrapper products={productData} productRatings={ratingRows} />
       </ScrollableContainer>
-      </>
+    </>
   );
 }

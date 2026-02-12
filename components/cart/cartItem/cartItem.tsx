@@ -25,48 +25,50 @@ export default function CartItem({ item }: { item: CartItemWithProduct }) {
 
   return (
     <div className={'cart-item'}>
-      {/* Product Image */}
-      <div className={'cart-item-image-container'}>
-        <Image
-          src={item.product.image_url || "/placeholder-image.jpg"}
-          alt={item.product.title}
-          className={'cart-item-image'}
-          width={150}
-          height={150}
-        />
-      </div>
+      <div className="cart__item_container">
+        {/* Product Image */}
+        <div className={'cart__item_image-container'}>
+          <Image
+            src={item.product.image_url || "/placeholder-image.jpg"}
+            alt={item.product.title}
+            className={'cart__item_image'}
+            width={150}
+            height={150}
+          />
+        </div>
 
-      {/* Product Details */}
-      <div className={'cart-item-details'}>
-        <h3 className={'cart-item-title'}>{item.product.title}</h3>
-        <p className={'cart-item-description'}>
-          {item.product.description}
-        </p>
-        <p className={'cart-item-price'}>
-          ${price.toFixed(2)}
-        </p>
-      </div>
-
-      {/* Quantity Controls */}
-      <div className={'cart-item-quantity-controls'}>
-        <button
-          onClick={() => handleQuantityChange(item.quantity - 1)}
-          disabled={isLoading}
-          className={'cart-item-quantity-button'}>-</button>
-        <span className={'cart-item-quantity'}>{item.quantity}</span>
-        <button
-          onClick={() => handleQuantityChange(item.quantity + 1)}
-          disabled={isLoading}
-          className={'cart-item-quantity-button'}>+</button>
-      </div>
-
-      {/* Item Total */}
-      <div className={'cart-item-total'}>
-        <p className={'cart-item-total-price'}>${itemTotal.toFixed(2)}</p>
-        <button
-          onClick={() => removeFromCart(item.cart_item_id)}
-          disabled={isLoading}
-          className={'cart-item-remove-button'}>Remove</button>
+        <div className="cart__item_content">
+          {/* Product Details */}
+          <div className={'cart__item_details'}>
+            <h3 className={'cart__item_title'}>{item.product.title}</h3>
+            <p className={'cart__item_description'}>
+              {item.product.description}
+            </p>
+            <p className={'cart__item_price'}>
+              ${price.toFixed(2)}
+            </p>
+          </div>
+          {/* Quantity Controls */}
+          <div className={'cart__item_quantity-controls'}>
+            <button
+              onClick={() => handleQuantityChange(item.quantity - 1)}
+              disabled={isLoading}
+              className={'cart__item_quantity-button'}>-</button>
+            <span className={'cart__item_quantity'}>{item.quantity}</span>
+            <button
+              onClick={() => handleQuantityChange(item.quantity + 1)}
+              disabled={isLoading}
+              className={'cart__item_quantity-button'}>+</button>
+          </div>
+          {/* Item Total */}
+          <div className={'cart__item_total'}>
+            <p className={'cart__item_total-price'}>${itemTotal.toFixed(2)}</p>
+            <button
+              onClick={() => removeFromCart(item.cart_item_id)}
+              disabled={isLoading}
+              className={'cart__item_remove-button'}>Remove</button>
+          </div>
+        </div>
       </div>
     </div>
   );
