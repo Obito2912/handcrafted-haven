@@ -1,39 +1,44 @@
 .sidebar {
-    /* background-color: rgb(41, 41, 41); */
-    background-color: #fff;
-    border: 3px solid #6D543A;
-    flex: 0 0 200px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    max-height: 80vh;
+  /* background-color: rgb(41, 41, 41); */
+  background-color: #fff;
+  border: 3px solid #6d543a;
+  flex: 0 0 200px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  max-height: 80vh;
+}
+
+/* Mobile header wrapper - only used on mobile */
+.sidebar__mobile-header {
+  display: contents;
 }
 
 .sign-out {
-    color: #495867;
-    background: transparent;
-    border-radius: 4px;
-    outline: 1px solid #495867;
-    cursor: pointer;
-    border: none;
-    width: fit-content;
-    font-size: 1.2rem;
-    padding: .3em;
-    position: absolute;
-    bottom: 20px;
+  color: #495867;
+  background: transparent;
+  border-radius: 4px;
+  outline: 1px solid #495867;
+  cursor: pointer;
+  border: none;
+  width: fit-content;
+  font-size: 1.2rem;
+  padding: 0.3em;
+  position: absolute;
+  bottom: 20px;
 }
 
 .sign-out:hover,
 .sign-out:focus {
-    color: #AD1E1E;
-    outline: 1px solid #AD1E1E;
+  color: #ad1e1e;
+  outline: 1px solid #ad1e1e;
 }
 
 .sign-out:active {
-    scale: 1.05;
+  scale: 1.05;
 }
 
 /* Responsive: tablet and down. */
@@ -41,12 +46,33 @@
   .sidebar {
     width: 100%;
     max-height: none;
-    padding: 0.75em 0.5em;
+    padding: 0.75em 1em;
     flex: 0 0 auto;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: auto;
+    position: relative;
+  }
+
+  /* Mobile header: horizontal row with hamburger and sign out */
+  .sidebar__mobile-header {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  /* Navigation takes available space and wraps its menu */
+  .sidebar__mobile-header > :first-child {
+    flex: 1;
+    min-width: 0;
   }
 
   .sign-out {
     position: static;
-    margin-top: 0.75em;
+    margin: 0;
+    font-size: 1rem;
+    padding: 0.4em 0.8em;
+    flex-shrink: 0;
   }
 }
