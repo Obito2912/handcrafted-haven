@@ -16,7 +16,8 @@ export default async function Artisans(
   const { productData, averageRatings, allRatings } = await fetchUserProducts(params.id);
 
   return (
-    <div className="artisans">
+    <>
+    <div className={styles.artisans}>
       <Breadcrumbs
         breadcrumbs={[
           { label: "Home", href: "/" },
@@ -30,7 +31,8 @@ export default async function Artisans(
           <ArtisansProductDisplay products={productData} productRatings={averageRatings}></ArtisansProductDisplay>
         </div>
       </ScrollableContainer>
-    </div>
+      </div>
+    </>
   );
 }
 
