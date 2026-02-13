@@ -1,23 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "gravatar.com",
-      "purple-personal-impala-532.mypinata.cloud",
-      "robohash.org",
-    ],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "gravatar.com",
+        port: "",
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "robohash.org",
+        port: "",
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "purple-personal-impala-532.mypinata.cloud",
+        port: "",
+        pathname: "/**",
       },
     ],
   },

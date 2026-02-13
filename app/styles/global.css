@@ -19,7 +19,8 @@
   min-height: 95vh;
   display: grid;
   background-color: rgba(255, 255, 255, 0.612);
-  grid-template-rows: minmax(72px, 80px) auto 50px;
+  /* grid-template-rows: minmax(72px, 80px) auto 50px; */
+  grid-template-rows: minmax(72px, 80px) auto 200px;
   max-width: 1360px;
   margin: 0 auto;
   padding: 10px;
@@ -48,6 +49,6 @@
 .main {
   flex: 1;
   display: flex;
-  height: calc(100vh - 240px);
+  height: calc(100vh - 387px);
   /* or calc(100vh - header-height) */
 }
