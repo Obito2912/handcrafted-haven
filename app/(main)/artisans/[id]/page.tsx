@@ -27,8 +27,8 @@ export default async function Artisans(
       />
       <ScrollableContainer>
         <div className={styles.content}>
-        <ArtisansDisplay userProfile={userProfile} user={user}></ArtisansDisplay>
-        <ArtisansProductDisplay products={productData} productRatings={averageRatings}></ArtisansProductDisplay>
+          <ArtisansDisplay userProfile={userProfile} user={user}></ArtisansDisplay>
+          <ArtisansProductDisplay products={productData} productRatings={averageRatings}></ArtisansProductDisplay>
         </div>
       </ScrollableContainer>
       </div>
