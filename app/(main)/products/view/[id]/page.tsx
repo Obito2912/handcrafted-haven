@@ -4,7 +4,7 @@ import { getLoggedInInfo } from "@/app/(main)/lib/session";
 import ProductDisplay from "@/components/main/Products/ProductDisplay";
 import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
 import { redirect } from "next/navigation";
-
+import styles from "../../products.module.css";
 export default async function ViewProduct(
     props: { params: Promise<{ id: string }> }
 ) {
@@ -22,6 +22,7 @@ export default async function ViewProduct(
     }
     return (
         <>
+        <div className={styles.products}>
               <Breadcrumbs
                 breadcrumbs={[
                   { label: "Home", href: "/" },
@@ -29,6 +30,7 @@ export default async function ViewProduct(
                 ]}
               />
             <ProductDisplay product={productValue} productSeller={userProfile} averageRating={averageRating} allRatings={allRatings} userRating={userProductRating} userId={userId} />
+            </div>
         </>
     );
 }

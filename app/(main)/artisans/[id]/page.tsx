@@ -3,7 +3,7 @@ import { fetchUserInformation, fetchUserProfile, fetchUserProducts } from "@/app
 import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
 import ArtisansDisplay from "@/components/main/Artisans/ArtisansDisplay";
 import ArtisansProductDisplay from "@/components/main/Artisans/ArtisansProductDisplay";
-import styles from "../artisansPage.module.css";
+import styles from "../artisans.module.css";
 
 export default async function Artisans(
   props: { params: Promise<{ id: string }> }
@@ -17,6 +17,7 @@ export default async function Artisans(
 
   return (
     <>
+    <div className={styles.artisans}>
       <Breadcrumbs
         breadcrumbs={[
           { label: "Home", href: "/" },
@@ -30,6 +31,7 @@ export default async function Artisans(
         <ArtisansProductDisplay products={productData} productRatings={averageRatings}></ArtisansProductDisplay>
         </div>
       </ScrollableContainer>
+      </div>
     </>
   );
 }
