@@ -26,7 +26,11 @@
 
 .fa-house {
   font-size: 2rem;
-  color: #6D543A;
+  color: #327b2c;
+}
+
+.header__logo-container .fa-house {
+  margin-right: -5px;
 }
 
 .fa-leaf {

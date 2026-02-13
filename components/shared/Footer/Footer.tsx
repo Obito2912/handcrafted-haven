@@ -16,7 +16,7 @@ export default function Footer() {
         <Image className='footer__img' width={100} height={100} src="/footer-img.png" alt="Handcrafted Haven Footer" />
         <div className="footer__logo">
           <i className="fa-regular fa-house"></i>
-          <span className='header__title'>HandCrafted Haven</span>
+          <span className='footer__company_name'>HandCrafted Haven</span>
           <i className="fa-solid fa-leaf"></i>
         </div>
       </div>
@@ -27,6 +27,8 @@ export default function Footer() {
           </a>
         ))}
       </div>
+      {/* tag to create horizontal line */}
+      <hr className='footer__separator' />
       <p className="footer__copyright">&copy; {currentYear} Handcrafted Haven. All rights reserved.</p>
     </footer>
   );
