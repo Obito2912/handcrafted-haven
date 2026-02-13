@@ -16,8 +16,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                 <div className="page__container">
                     <main className="main">{children}</main>
                 </div>
-                <Footer />
             </div>
+            <Footer />
         </div>
     );
 }
