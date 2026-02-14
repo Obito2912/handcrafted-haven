@@ -13,7 +13,7 @@ export function AllReviewsDisplay({ allRatings }: AllReviewsDisplayProps) {
                 {allRatings && allRatings.length > 0 ? (
                     <ul className={styles.reviewsList}>
                         {allRatings.map((rating) => (
-                            <li key={`${rating.productId}-${rating.userId}`}>
+                            <li key={`${rating.productId}-${rating.userId}-${rating.createdAt}`}>
                                 <RatingCard rating={rating} />
                             </li>
                         ))}
