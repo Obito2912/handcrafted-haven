@@ -10,33 +10,33 @@ export default function CartSummary({
   totalPrice: number;
 }) {
   return (
-    <div className='summary'>
+    <aside className='summary' aria-label='order summary'>
       <h2 className='summary__title'>Order Summary</h2>
 
-      <div className=''>
-        <div className=''>
-          <span className="strong">Items ({totalItems}): </span>
-          <span>${totalPrice.toFixed(2)}</span>
+      <dl className='summary__details'>
+        <div className='summary__row'>
+          <dt className="summary__label">Items ({totalItems}):</dt>
+          <dd className="summary__value">${totalPrice.toFixed(2)}</dd>
         </div>
 
-        <div className=''>
-          <span className="strong">Shipping: </span>
-          <span>Free</span>
+        <div className='summary__row'>
+          <dt className="summary__label">Shipping:</dt>
+          <dd className="summary__value">Free</dd>
         </div>
 
-        <br />
-        <hr className='' />
-        <br />
-
-        <div className=''>
-          <span className="strong">Total: </span>
-          <span>${totalPrice.toFixed(2)}</span>
+        <div className='summary__divider' role="separator" aria-hidden="true">
+          <hr />
         </div>
-      </div>
+
+        <div className='summary__row summary__total'>
+          <dt className="summary__label">Total:</dt>
+          <dd className="summary__value">${totalPrice.toFixed(2)}</dd>
+        </div>
+      </dl>
 
       <button className='summary__checkout_button'>
         Proceed to Checkout
       </button>
-    </div>
+    </aside>
   );
 }

@@ -38,7 +38,7 @@ export default function ProductReviewForm({
   const [reviewText, setReviewText] = useState<string>(initialReview ?? "");
 
   return (
-    <form className={styles.form} action={formAction}>
+    <form className={styles.form} action={formAction} aria-label="Product Review Form">
       <input type="hidden" name="product_id" value={productId} />
       <input type="hidden" name="user_id" value={userId} />
       <input type="hidden" name="rating" value={selectedRating} />
@@ -50,7 +50,7 @@ export default function ProductReviewForm({
       <div
         className={styles.stars}
         role="radiogroup"
-        aria-label="Choose rating"
+        aria-label="Select a rating from 1 to 5 stars"
       >
         {Array.from({ length: 5 }, (_, index) => {
           const starValue = index + 1;
@@ -59,34 +59,40 @@ export default function ProductReviewForm({
             <button
               key={`review-star-${starValue}`}
               type="button"
+              role="radio"
               className={isActive ? styles.starActive : styles.star}
-              aria-pressed={isActive}
+              aria-checked={isActive}
               onClick={() => setSelectedRating(starValue)}
+              aria-label={`Rate ${starValue} star${starValue === 1 ? "" : "s"}`}
             >
               <i
                 className={isActive ? "fa-solid fa-star" : "fa-regular fa-star"}
+                aria-hidden="true"
               ></i>
             </button>
           );
         })}
       </div>
-      <div className={styles.label}>
-        Review
-      </div>
-      <textarea 
-        className={`${styles.textarea}`} 
-        id="review" 
-        name="review" 
-        rows={3} 
+      <label className={styles.label} htmlFor="review">
+        Review (optional)
+      </label>
+      <textarea
+        className={`${styles.textarea}`}
+        id="review"
+        name="review"
+        rows={3}
         value={reviewText}
+        aria-describedby="review-help"
         onChange={(e) => setReviewText(e.target.value)}
+        aria-label="Write your review"
+        placeholder="Share your experience with this product"
       />
-      <button className={styles.submit} type="submit">
+      <button className={styles.submit} type="submit" aria-label="Submit your review" disabled={selectedRating === 0} aria-disabled={selectedRating === 0}>
         Save Review
       </button>
 
       {state.message ? (
-        <p className={state.success ? styles.success : styles.error}>
+        <p className={state.success ? styles.success : styles.error} role="alert" aria-live="polite">
           {state.message}
         </p>
       ) : null}
