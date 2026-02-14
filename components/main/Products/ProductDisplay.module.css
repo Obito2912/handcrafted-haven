@@ -25,8 +25,12 @@
   padding: 1.5rem 1rem 2rem;
 }
 
+.reviewsWrapper {
+  grid-column: 1 / -1;
+}
+
 .media {
-  background: #f7f1e9;
+  background: transparent;
   border-radius: 18px;
   padding: 1.5rem;
   display: flex;
@@ -40,6 +44,7 @@
   width: 100%;
   height: auto;
   object-fit: cover;
+  max-height: 520px;
 }
 
 .details {
@@ -165,6 +170,19 @@
 }
 .reviewsSection {
   margin-top: 2rem;
+}
+
+.reviewsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.reviewsList > li {
+  flex: 1 1 260px;
 }
 .rating__card{
     display:flex;

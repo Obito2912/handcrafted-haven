@@ -13,9 +13,9 @@ export function AllReviewsDisplay({ productId, allRatings }: AllReviewsDisplayPr
     return (
         <>
             <section className={styles.reviewsSection} aria-label="Product Reviews">
-                {allRatings && allRatings.length > 0 ? (
+                {productRatings.length > 0 ? (
                     <ul className={styles.reviewsList}>
-                        {allRatings.map((rating) => (
+                        {productRatings.map((rating) => (
                             <li key={`${rating.productId}-${rating.userId}`}>
                                 <RatingCard rating={rating} />
                             </li>
