@@ -11,24 +11,23 @@ export default function Footer() {
 
 
   return (
-    <footer className="footer">
+    <footer className="footer" role="contentinfo">
       <div className="footer__image_container">
-        <Image className='footer__img' width={100} height={100} src="/footer-img.png" alt="Handcrafted Haven Footer" />
-        <div className="footer__logo">
-          <i className="fa-regular fa-house"></i>
+        <Image className='footer__img' width={100} height={100} src="/footer-img.png" alt="Handcrafted Haven logo featuring artisan crafts" />
+        <div className="footer__logo" aria-label="Handcrafted Haven logo">
+          <i className="fa-regular fa-house" aria-hidden="true"></i>
           <span className='footer__company_name'>HandCrafted Haven</span>
-          <i className="fa-solid fa-leaf"></i>
+          <i className="fa-solid fa-leaf" aria-hidden="true"></i>
         </div>
       </div>
-      <div className="footer__social-media_container">
+      <nav className="footer__social-media_container" aria-label="Handcrafted Haven social media links">
         {socialMediaArr.map((social) => (
-          <a className='footer__social_link' key={social.name} href={social.url} target="_blank" rel="noopener noreferrer">
-            <i className={social.icon}></i><span className='footer__social_name'>{social.name}</span>
+
+          <a className='footer__social_link' key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" aria-label={`Visit our ${social.name} page (Opens in new tab)`}>
+            <i className={social.icon} aria-hidden="true"></i><span className='footer__social_name'>{social.name}</span>
           </a>
         ))}
-      </div>
-      {/* tag to create horizontal line */}
-      <hr className='footer__separator' />
+      </nav>
       <p className="footer__copyright">&copy; {currentYear} Handcrafted Haven. All rights reserved.</p>
     </footer>
   );

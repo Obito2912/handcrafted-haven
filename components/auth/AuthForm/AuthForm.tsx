@@ -15,20 +15,20 @@ export default function AuthForm({ signup, setSignup }: { signup: boolean; setSi
     );
 
     return (
-        <form action={formAction} className={`${styles.form}`}>
+        <form action={formAction} className={`${styles.form}`} aria-label={signup ? 'Sign Up Form' : 'Login Form'}>
             <input type="hidden" name="mode" value={signup ? 'signup' : 'login'} />
             {signup &&
                 <>
                     <label className={`${styles.form_label}`} htmlFor="name">Name
-                        <input className={`${styles.form_input}`} type="text" id="name" name="name" autoComplete="name" defaultValue={state?.values?.name} />
+                        <input className={`${styles.form_input}`} type="text" id="name" name="name" autoComplete="name" required aria-required="true" defaultValue={state?.values?.name} />
                     </label>
                 </>
             }
             <label className={`${styles.form_label}`} htmlFor="email">Email
-                <input className={`${styles.form_input}`} type="email" id="email" name="email" autoComplete="email" defaultValue={state?.values?.email} />
+                <input className={`${styles.form_input}`} type="email" id="email" name="email" autoComplete="email" required aria-required="true" defaultValue={state?.values?.email} />
             </label>
             <label className={`${styles.form_label}`} htmlFor="password">Password
-                <input className={`${styles.form_input}`} type="password" id="password" name="password" autoComplete="current-password" />
+                <input className={`${styles.form_input}`} type="password" id="password" name="password" autoComplete="current-password" required aria-required="true" />
             </label>
             <input type="hidden" name="redirectTo" value={callbackUrl} />
             <button type="submit" disabled={isPending}>
@@ -36,12 +36,12 @@ export default function AuthForm({ signup, setSignup }: { signup: boolean; setSi
                 {signup ? 'Sign Up' : 'Login'}</button>
             <div className={`${styles.form_text_container}`}>
                 <span className={`${styles.form_text}`}>{signup ? 'Already have an account?' : 'New here? Join the community'}</span>
-                <button type="button" onClick={() => setSignup(!signup)}>{signup ? 'Login' : 'Sign Up'}</button>
+                <button type="button" onClick={() => setSignup(!signup)} aria-label={signup ? 'Switch to Login' : 'Switch to Sign Up'}>{signup ? 'Login' : 'Sign Up'}</button>
             </div>
-            <div className={styles.form_error}>
+            <div className={styles.form_error} role="alert" aria-live="polite">
                 {state?.message && (
                     <>
-                        <ExclamationCircleIcon className={styles.form_error_icon} />
+                        <ExclamationCircleIcon className={styles.form_error_icon} aria-hidden="true" />
                         <p className={styles.form_error_text}>{state.message}</p>
                     </>
                 )}

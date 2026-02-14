@@ -17,22 +17,22 @@ export default function Header({ isAuthenticated, userProfileImg, showSignIn }: 
   const isOnProfilePage = pathname === '/profile';
 
   return (
-    <header className="header">
+    <header className="header" role="banner">
       <div className='header__logo-container'>
-        <Link href="/" className="header__link">
-          <i className="fa-regular fa-house"></i>
+        <Link href="/" className="header__link" aria-label="Home">
+          <i className="fa-regular fa-house" aria-hidden="true"></i>
         </Link>
         <span className='header__title'>HandCrafted Haven</span>
-        <i className="fa-solid fa-leaf"></i>
+        <i className="fa-solid fa-leaf" aria-hidden="true"></i>
       </div>
       {isAuthenticated ? (
-        <div className='header__settings-container'>
-          <Link href="/profile" className={`header__settings-button ${isOnProfilePage ? ' active' : ''}`}>Settings</Link>
-          <Image className='header__profile-image' src={userProfileImg || defaultProfileImg} alt="Profile Image" width={44} height={44} />
-        </div>
+        <nav className='header__settings-container' aria-label="User navigation">
+          <Link href="/profile" className={`header__settings-button ${isOnProfilePage ? ' active' : ''}`} aria-label="User settings">Settings</Link>
+          <Image className='header__profile-image' src={userProfileImg || defaultProfileImg} alt="Your profile picture" width={44} height={44} />
+        </nav>
       ) :
         (showSignIn &&
-          <Link href="/login" className='signin-btn'>
+          <Link href="/login" className='signin-btn' aria-label="Sign In">
             Sign In
           </Link>
         )

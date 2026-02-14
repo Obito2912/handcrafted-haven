@@ -6,6 +6,7 @@ import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
 import { redirect } from "next/navigation";
 import styles from "../../products.module.css";
 import { Metadata } from "next";
+import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
 
 export async function generateMetadata(
     props: { params: Promise<{ id: string }> }
@@ -43,7 +44,9 @@ export default async function ViewProduct(
                         { label: productValue.title ?? "Product", href: `/products/view/${productValue.product_id}`, active: true },
                     ]}
                 />
-                <ProductDisplay product={productValue} productSeller={userProfile} averageRating={averageRating} allRatings={allRatings} userRating={userProductRating} userId={userId} />
+                <ScrollableContainer>
+                    <ProductDisplay product={productValue} productSeller={userProfile} averageRating={averageRating} allRatings={allRatings} userRating={userProductRating} userId={userId} />
+                </ScrollableContainer>
             </div>
         </>
     );

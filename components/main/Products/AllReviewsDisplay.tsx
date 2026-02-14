@@ -9,15 +9,19 @@ type AllReviewsDisplayProps = {
 export function AllReviewsDisplay({ allRatings }: AllReviewsDisplayProps) {
     return (
         <>
-            <div className={styles.reviewsSection}>
+            <section className={styles.reviewsSection} aria-label="Product Reviews">
                 {allRatings && allRatings.length > 0 ? (
-                    allRatings.map((rating) => (
-                        <RatingCard key={`${rating.productId}-${rating.userId}`} rating={rating} />
-                    ))
+                    <ul className={styles.reviewsList}>
+                        {allRatings.map((rating) => (
+                            <li key={`${rating.productId}-${rating.userId}`}>
+                                <RatingCard rating={rating} />
+                            </li>
+                        ))}
+                    </ul>
                 ) : (
-                    <p>No reviews available.</p>
+                    <p role="status">No reviews available.</p>
                 )}
-            </div>
+            </section>
         </>
     );
 }

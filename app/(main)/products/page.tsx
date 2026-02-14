@@ -31,6 +31,35 @@ export default async function Products() {
           <div className={styles.content}>
             <h1>My Products</h1>
             <p>This is the products page. Here you can find your products and manage them.</p>
+            {/* generate random text */}
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium maxime pariatur unde, at aliquam, magnam modi et repudiandae odio debitis assumenda provident quia totam sunt dolores vitae officia dolorum? Vero.
             <Link href="/products/create">Create New Product</Link>
             <EditableProductCardWrapper products={productData} productRatings={averageRatings} />
           </div>

@@ -11,16 +11,14 @@ export const metadata: Metadata = {
 
 export default function Support() {
     return (
-        <main className={styles.main}>
-            <div className={styles.support}>
-                <ScrollableContainer>
-                    <h1 className={styles.support__title}>Support Center</h1>
-                    <section className={styles.support__cards_container}>
-                        <SupportCard />
-                    </section>
-                    <SupportContactUs />
-                </ScrollableContainer>
-            </div>
-        </main>
+        <div className={styles.support}>
+            <ScrollableContainer>
+                <h1 className={styles.support__title}>Support Center</h1>
+                <section className={styles.support__cards_container}>
+                    <SupportCard />
+                </section>
+                <SupportContactUs />
+            </ScrollableContainer>
+        </div>
     );
 }
