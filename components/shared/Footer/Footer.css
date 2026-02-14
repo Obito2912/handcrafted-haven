@@ -33,7 +33,7 @@
         "image-container separator"
         "image-container copyright";
     /* background-image: linear-gradient(to bottom, rgba(109, 84, 58, 0.503), rgba(109, 84, 58, 0.738)); */
-    background-color: rgba(255, 255, 255, 0.612);
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.612), rgb(131, 86, 28));
     border: 1px solid #000;
     border-radius: 8px;
     margin-bottom: 20px;
@@ -75,7 +75,6 @@
     height: auto;
     /* height: 100%; This is a test, uncomment when finished */
     border-radius: 8px;
-    filter: blur(1px);
 }
 
 .footer__social-media_container {
@@ -88,14 +87,14 @@
 
 .fa-brands {
     font-size: 2.5rem;
-    color: #495867;
+    color: #6D543A;
     transition: color 0.3s ease;
 }
 
 .footer__social_link {
     display: flex;
     align-items: center;
-    color: #495867;
+    color: #000;
     transition: color 0.3s ease;
     text-decoration: none;
     font-weight: bold;
@@ -108,16 +107,13 @@
 .footer__copyright {
     grid-area: copyright;
     text-align: center;
-    color: #495867;
+    color: #fff;
     font-size: 1.3rem;
     font-weight: bold;
 }
 
 .footer__separator {
-    display: block;
     grid-area: separator;
-    height: 2px;
     width: 70%;
     margin-inline: auto;
-    background-color: #6d543a;
 }

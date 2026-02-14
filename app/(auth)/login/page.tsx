@@ -4,7 +4,12 @@ import { auth } from '@/auth';
 import { fetchUserProfile } from '@/app/(main)/lib/data';
 import Link from 'next/link';
 import AuthFormWrapper from '../../../components/auth/AuthFormWrapper/AuthFormWrapper';
+import { Metadata } from 'next';
 
+export const metadata: Metadata = {
+    title: 'Login',
+    description: 'Login to your Handcrafted Haven account to access personalized features and manage your profile.',
+};
 
 export default async function LoginPage() {
     const session = await auth();

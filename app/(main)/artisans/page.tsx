@@ -3,6 +3,12 @@ import ScrollableContainer from "@/components/shared/ScrollableContainer/Scrolla
 import styles from "./artisans.module.css";
 import ProfileCardWrapper from "@/components/main/ProfileForm/ProfileCardWrapper";
 import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Artisans",
+  description: "Meet the talented artisans behind the unique handmade products at Handcrafted Haven.",
+};
 
 export default async function Artisans() {
   const userProfiles = await fetchSellerUserProfiles();

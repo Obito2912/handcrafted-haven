@@ -3,6 +3,12 @@ import { getLoggedInInfo } from "@/app/(main)/lib/session";
 import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
 import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
 import styles from "./create.module.css";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Create Product",
+    description: "Create a new handmade product to sell in your shop at Handcrafted Haven.",
+}
 
 export default async function CreateProduct(
     props: { params: Promise<{ id: string }> }

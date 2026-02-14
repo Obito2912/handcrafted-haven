@@ -3,6 +3,12 @@ import ProductCardWrapper from "@/components/main/Products/ProductCardWrapper";
 import { fetchProductsByFilters } from "./lib/data";
 import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
 import styles from "./main.module.css";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description: "Discover unique handmade products crafted with love at Handcrafted Haven.",
+};
 
 type SearchParams = {
   q?: string;
