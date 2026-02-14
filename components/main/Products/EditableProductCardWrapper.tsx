@@ -24,7 +24,7 @@ export default async function EditableProductCardWrapper({
 
   return (
     <section className="card__wrapper editable-card__wrapper" aria-label="Your Products">
-      <ul className='card__wrapper__list'>
+      <ul className='card__wrapper'>
         {products.map((product) => {
           const rating = productRatings?.find((r) => r.product_id === product.product_id);
           console.log("Found rating for product:", product.product_id, rating);

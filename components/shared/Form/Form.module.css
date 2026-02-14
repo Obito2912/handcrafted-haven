@@ -3,6 +3,7 @@
     padding: 1rem;
     border: 1px solid #c7c7c7;
     border-radius: 8px;
+    background:#fffaf4;
 }
 
 .form_input {
@@ -79,4 +80,15 @@
     height: 1.5rem;
     width: 1.5rem;
     color: #ef4444;
+}
+
+.buttonsAcross{
+    display: flex;
+    gap: .5rem;
+}
+
+.form a{
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
 }

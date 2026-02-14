@@ -18,6 +18,8 @@ type ProductDisplayProps = {
 };
 
 export default function ProductDisplay({ product, productSeller, averageRating, allRatings, userRating, userId }: ProductDisplayProps) {
+  const reviewCount = allRatings?.length ?? 0;
+
   return (
     <>
       {product ? (
@@ -41,7 +43,7 @@ export default function ProductDisplay({ product, productSeller, averageRating, 
               <div className={styles.ratingRow} aria-label="Product Rating">
                 <RatingStars rating={averageRating} />
                 <span className={styles.ratingCount}>
-                  {allRatings.length} review{allRatings.length === 1 ? "" : "s"}
+                  {reviewCount} review{reviewCount === 1 ? "" : "s"}
                 </span>
               </div>
               {userRating ? (
@@ -67,8 +69,8 @@ export default function ProductDisplay({ product, productSeller, averageRating, 
               ) : null}
             </div>
           </div>
-          <section className={styles.wrapper} aria-label="All Reviews">
-            <AllReviewsDisplay allRatings={allRatings} />
+          <section className={styles.reviewsWrapper} aria-label="All Reviews">
+            <AllReviewsDisplay productId={product.product_id} allRatings={allRatings} />
           </section>
         </article>
       ) : (
@@ -77,15 +79,3 @@ export default function ProductDisplay({ product, productSeller, averageRating, 
     </>
   )
 }
-
-
-
-// <div className={styles.productDetails}>
-//   {product.image_url && <Image src={product.image_url ?? "/products/default.png"} alt={product.title ?? "Product"} width={100} height={100} />}
-//   <h2>{product.title}</h2>
-//   {product.description && <p>{product.description}</p>}
-//   <p>Price: ${product.price}</p>
-//   <p>Quantity: {product.quantity}</p>
-//   <p>Category: {product.category.charAt(0).toUpperCase() + product.category.slice(1)}</p>
-//   <p>Seller: <a href={`/artisans/${productSeller.user_id}`}>{productSeller.name}</a></p>
-// </div>

@@ -5,6 +5,7 @@ import ScrollableContainer from "@/components/shared/ScrollableContainer/Scrolla
 import { redirect } from "next/navigation";
 import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
 import { Metadata } from "next";
+import styles from "../../products.module.css";
 
 export async function generateMetadata(
     props: { params: Promise<{ id: string }> }
@@ -35,6 +36,7 @@ export default async function EditProduct(
     }
     return (
         <>
+        <div className={styles.products__container}>
             <Breadcrumbs
                 breadcrumbs={[
                     { label: "Home", href: "/" },
@@ -45,6 +47,7 @@ export default async function EditProduct(
             <ScrollableContainer>
                 <ProductForm initialValues={product} userId={userId} />
             </ScrollableContainer>
+        </div>
         </>
     );
 }

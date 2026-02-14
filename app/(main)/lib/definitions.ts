@@ -47,6 +47,11 @@ export type UserProducts = {
   product_id: string;
 };
 
+export type UserFavoriteProduct = {
+  user_id: string;
+  product_id: string;
+};
+
 export type ProductRating = {
   product_id: string;
   user_id: string;
