@@ -4,6 +4,19 @@ import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
 import ArtisansDisplay from "@/components/main/Artisans/ArtisansDisplay";
 import ArtisansProductDisplay from "@/components/main/Artisans/ArtisansProductDisplay";
 import styles from "../artisans.module.css";
+import { Metadata } from "next";
+
+export async function generateMetadata(
+  props: { params: Promise<{ id: string }> }
+): Promise<Metadata> {
+  const params = await props.params;
+  const userProfile = await fetchUserProfile(params.id);
+
+  return {
+    title: userProfile?.name ?? "Artisan",
+    description: `Discover ${userProfile?.name ?? "this artisan"}'s unique handmade products and craftsmanship at Handcrafted Haven.`,
+  };
+}
 
 export default async function Artisans(
   props: { params: Promise<{ id: string }> }
@@ -17,20 +30,20 @@ export default async function Artisans(
 
   return (
     <>
-    <div className={styles.artisans}>
-      <Breadcrumbs
-        breadcrumbs={[
-          { label: "Home", href: "/" },
-          { label: "Artisans", href: "/artisans" },
-          { label: userProfile?.name ?? "Artisan", href: `/artisans/${params.id}`, active: true },
-        ]}
-      />
-      <ScrollableContainer>
-        <div className={styles.content}>
-        <ArtisansDisplay userProfile={userProfile} user={user}></ArtisansDisplay>
-        <ArtisansProductDisplay products={productData} productRatings={averageRatings}></ArtisansProductDisplay>
-        </div>
-      </ScrollableContainer>
+      <div className={styles.artisans}>
+        <Breadcrumbs
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "Artisans", href: "/artisans" },
+            { label: userProfile?.name ?? "Artisan", href: `/artisans/${params.id}`, active: true },
+          ]}
+        />
+        <ScrollableContainer>
+          <div className={styles.content}>
+            <ArtisansDisplay userProfile={userProfile} user={user}></ArtisansDisplay>
+            <ArtisansProductDisplay products={productData} productRatings={averageRatings}></ArtisansProductDisplay>
+          </div>
+        </ScrollableContainer>
       </div>
     </>
   );

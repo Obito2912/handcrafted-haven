@@ -9,19 +9,19 @@ type RatingCardProps = {
 export function RatingCard({ rating }: RatingCardProps) {
     console.log("Rendering RatingCard for rating:", rating);
     return (
-        <div className={styles.rating__card}>
-            <div className={styles.rating__card_user}>
-                             {rating.userImageUrl && <Image
-                      src={rating.userImageUrl}
-                      alt={rating.userName}
-                      width={128}
-                      height={128}
-                      className={styles.rating__card_image}
-                    />}
-                <p>{rating.userName}</p>                
-            </div>
+        <article className={styles.rating__card}>
+            <header className={styles.rating__card_user}>
+                {rating.userImageUrl && <Image
+                    src={rating.userImageUrl}
+                    alt={`${rating.userName}'s profile picture`}
+                    width={128}
+                    height={128}
+                    className={styles.rating__card_image}
+                />}
+                <p>{rating.userName}</p>
+            </header>
             <RatingStars rating={rating.rating} />
             <p>Review: {rating.review}</p>
-        </div>
+        </article>
     );
 }

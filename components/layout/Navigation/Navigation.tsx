@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const links = [
-  { name: 'Home', href: '/', loggedIn: false },  
+  { name: 'Home', href: '/', loggedIn: false },
   { name: 'Artisans', href: '/artisans', loggedIn: false },
   { name: 'Purchases', href: '/purchases', loggedIn: true },
   { name: 'Shopping Cart', href: '/cart', loggedIn: true },
@@ -22,14 +22,14 @@ export default function Navigation({
   const pathname = usePathname();
 
   return (
-    <nav className='nav'>
+    <nav className='nav' aria-label="Main Navigation">
       <ul className='nav__list'>
         {links.map((link) => {
           const shouldShow = loggedIn ? true : !link.loggedIn;
 
           return shouldShow && (
             <li key={link.name} className='nav__list-item'>
-              <Link href={link.href} className={pathname === link.href ? 'active' : ''}>
+              <Link href={link.href} className={pathname === link.href ? 'active' : ''} aria-current={pathname === link.href ? 'page' : undefined}>
                 {link.name}
               </Link>
             </li>
@@ -39,7 +39,7 @@ export default function Navigation({
         {/* Artisans link - only show to sellers */}
         {userType === 'seller' && (
           <li className='nav__list-item'>
-            <Link href="/products" className={pathname === '/products' ? 'active' : ''}>
+            <Link href="/products" className={pathname === '/products' ? 'active' : ''} aria-current={pathname === '/products' ? 'page' : undefined}>
               Manage Shop
             </Link>
           </li>

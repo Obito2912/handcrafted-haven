@@ -24,13 +24,13 @@ export default function CartItem({ item }: { item: CartItemWithProduct }) {
   const itemTotal = item.quantity * price;
 
   return (
-    <div className={'cart-item'}>
+    <article className={'cart-item'}>
       <div className="cart__item_container">
         {/* Product Image */}
         <div className={'cart__item_image-container'}>
           <Image
             src={item.product.image_url || "/placeholder-image.jpg"}
-            alt={item.product.title}
+            alt={`${item.product.title} image`}
             className={'cart__item_image'}
             width={150}
             height={150}
@@ -49,16 +49,16 @@ export default function CartItem({ item }: { item: CartItemWithProduct }) {
             </p>
           </div>
           {/* Quantity Controls */}
-          <div className={'cart__item_quantity-controls'}>
+          <div className={'cart__item_quantity-controls'} aria-label={`Quantity controls for ${item.product.title}`} role="group">
             <button
               onClick={() => handleQuantityChange(item.quantity - 1)}
               disabled={isLoading}
-              className={'cart__item_quantity-button'}>-</button>
+              className={'cart__item_quantity-button'} aria-label={`Decrease quantity of ${item.product.title}`}>-</button>
             <span className={'cart__item_quantity'}>{item.quantity}</span>
             <button
               onClick={() => handleQuantityChange(item.quantity + 1)}
               disabled={isLoading}
-              className={'cart__item_quantity-button'}>+</button>
+              className={'cart__item_quantity-button'} aria-label={`Increase quantity of ${item.product.title}`}>+</button>
           </div>
           {/* Item Total */}
           <div className={'cart__item_total'}>
@@ -66,10 +66,10 @@ export default function CartItem({ item }: { item: CartItemWithProduct }) {
             <button
               onClick={() => removeFromCart(item.cart_item_id)}
               disabled={isLoading}
-              className={'cart__item_remove-button'}>Remove</button>
+              className={'cart__item_remove-button'} aria-label={`Remove ${item.product.title} from cart`}>Remove</button>
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

@@ -1,6 +1,6 @@
-.profile__container {
+.profile {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 240px);
+    height: calc(100vh - 165px);
     /* or calc(100vh - header-height) */
 }

@@ -5,13 +5,14 @@
     margin-right: 20px;
 }
 
-.cart__items {
+.cart__items_section {
     flex: 2;
+}
+
+.cart__items {
     display: flex;
     flex-direction: column;
     margin-inline: auto;
-    /* Create 4 columns by default that can shrink and grow */
-    /* grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); */
     gap: 5px;
 }
 
@@ -28,8 +29,8 @@
     font-weight: bold;
 }
 
-.cart__summary {
-    flex: .7;
+.cart__summary_section {
+    flex: 1;
     padding: 1rem;
     border: 1px solid #6D543A;
     border-radius: 8px;

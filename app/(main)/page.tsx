@@ -2,6 +2,13 @@ import ProductFilters from "@/components/Filters/Filter";
 import ProductCardWrapper from "@/components/main/Products/ProductCardWrapper";
 import { fetchProductsByFilters } from "./lib/data";
 import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
+import styles from "./main.module.css";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description: "Discover unique handmade products crafted with love at Handcrafted Haven.",
+};
 
 type SearchParams = {
   q?: string;
@@ -31,16 +38,16 @@ export default async function Home({
     category: category || undefined,
   });
   return (
-    <>
+    <div className={styles.home}>
+      <ProductFilters
+        query={query}
+        minPrice={minPriceValue}
+        maxPrice={maxPriceValue}
+        category={category}
+      />
       <ScrollableContainer>
-        <ProductFilters
-          query={query}
-          minPrice={minPriceValue}
-          maxPrice={maxPriceValue}
-          category={category}
-        />
         <ProductCardWrapper products={productData} productRatings={ratingRows} />
       </ScrollableContainer>
-    </>
+    </div>
   );
 }

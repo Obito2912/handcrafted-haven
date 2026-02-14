@@ -12,15 +12,19 @@ export function AllReviewsDisplay({ productId, allRatings }: AllReviewsDisplayPr
     console.log("All reviews for product", productId, ":", productRatings);
     return (
         <>
-            <div className={styles.reviewsSection}>
-                {productRatings.length > 0 ? (
-                    productRatings.map((rating) => (
-                        <RatingCard key={`${rating.productId}-${rating.userId}`} rating={rating} />
-                    ))
+            <section className={styles.reviewsSection} aria-label="Product Reviews">
+                {allRatings && allRatings.length > 0 ? (
+                    <ul className={styles.reviewsList}>
+                        {allRatings.map((rating) => (
+                            <li key={`${rating.productId}-${rating.userId}`}>
+                                <RatingCard rating={rating} />
+                            </li>
+                        ))}
+                    </ul>
                 ) : (
-                    <p>No reviews available.</p>
+                    <p role="status">No reviews available.</p>
                 )}
-            </div>
+            </section>
         </>
     );
 }

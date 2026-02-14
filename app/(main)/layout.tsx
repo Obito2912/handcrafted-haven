@@ -31,9 +31,9 @@ export default async function MainLayout({ children }: { children: React.ReactNo
                             userType={userType} />
                         <main className="main">{children}</main>
                     </div>
-                    <Footer />
                 </CartProvider>
             </div>
+            <Footer />
         </div>
     );
 }

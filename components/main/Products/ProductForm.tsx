@@ -35,20 +35,20 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
 
     // const [isUploading, setIsUploading] = useState(false);
     if (!userId) {
-        return <p className={styles.form_error_text}>You must be logged in to create a product.</p>;
+        return <p role="alert" className={styles.form_error_text}>You must be logged in to create a product.</p>;
     }
     return (
-        <form action={formAction} className={`${styles.form}`}>
+        <form action={formAction} className={`${styles.form}`} aria-label={isEditMode ? "Edit Product Form" : "Create Product Form"}>
             <label className={`${styles.form_label}`} htmlFor="title">Name
                 <input className={`${styles.form_input}`}
-                    type="text" id="title" name="title" autoComplete="title"
+                    type="text" id="title" name="title" autoComplete="false" required aria-required="true"
                     defaultValue={state?.values?.title ?? initialValues?.title} />
             </label>
             <label className={`${styles.form_label}`} htmlFor="description">Description
-                <textarea className={`${styles.form_input}`} id="description" name="description" rows={6} defaultValue={state?.values?.description ?? initialValues?.description} />
+                <textarea className={`${styles.form_input}`} id="description" name="description" rows={3} required aria-required="true" defaultValue={state?.values?.description ?? initialValues?.description} />
             </label>
             {(initialValues?.image_url || previewImage) && (
-                <Image src={previewImage ?? initialValues.image_url} alt="Product Image" className="mb-4 max-h-60 object-cover"
+                <Image src={previewImage ?? initialValues.image_url} alt={`Preview of ${state?.values?.title ?? initialValues?.title}`} className="mb-4 max-h-60 object-cover"
                     width={128}
                     height={128} />
             )}
@@ -62,13 +62,14 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
                     name="image_file"
                     accept="image/*"
                     className={`${styles.form_input}`}
+                    aria-describedby="imageUploadHelp"
                     onChange={(e) => {
                         const file = e.target.files?.[0] as File | undefined;
                         console.log("Selected file:", file);
                         const url = URL.createObjectURL(file);
                         setPreviewImage(url);
-
                     }} />
+                <span id="imageUploadHelp" className={styles.form_help_text}>Upload an image to represent your product. Accepted formats: JPG, PNG, GIF.</span>
             </label>
             <label className={`${styles.form_label}`} htmlFor="price">Price
                 <input className={`${styles.form_input}`} type="number" id="price" name="price" min="0" step="0.01" inputMode="decimal" defaultValue={state?.values?.price ?? initialValues?.price} />
@@ -79,7 +80,7 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
 
             <label className={`${styles.form_label}`} htmlFor="category">Category
                 <select className={`${styles.form_input}`} key={state?.values?.category ?? initialValues?.category ?? ""} id="category" name="category" defaultValue={state?.values?.category ?? initialValues?.category ?? ""}>
-                    <option value="" disabled>Select your category</option>
+                    <option value="" disabled>Select a category</option>
                     {ProductCategories.map((category: string) => (
                         <option key={category} value={category}>
                             {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -95,7 +96,7 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
             </button>
 
             {isEditMode && (
-                <button type="submit" name="_action" value="delete">
+                <button type="submit" name="_action" value="delete" aria-label="Delete this product permanently">
                     Delete Product
                 </button>
             )}
@@ -105,10 +106,10 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
                 </Link>
             </button>            
             </div>
-            <div className={styles.form_error}>
+            <div className={styles.form_error} role="alert" aria-live="polite">
                 {state?.message && (
                     <>
-                        {state?.success ? null : <ExclamationCircleIcon className={styles.form_error_icon} />}
+                        {state?.success ? null : <ExclamationCircleIcon className={styles.form_error_icon} aria-hidden="true" />}
                         <p className={styles.form_error_text}>{state.message}</p>
                     </>
                 )}

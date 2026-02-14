@@ -1,8 +1,91 @@
 .footer {
-    /* background-color: rgb(41, 41, 41); */
-    background-color: #fff;
-    border: 3px solid #6D543A;
-    border-radius: 10px;
-    padding: 10px;
+    width: 100%;
+    max-width: 1360px;
+    flex: 4;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 2fr 1.4fr;
+    grid-template-areas:
+        "image-container social-container copyright";
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.612), rgb(160, 162, 138));
+    border: 1px solid #000;
+    border-radius: 8px;
+    margin-bottom: 20px;
     color: #495867;
+}
+
+.footer__company_name {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.footer__image_container {
+    display: flex;
+    grid-area: image-container;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.footer__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    background-color: rgba(255, 255, 255, 0.705);
+    padding: .5em 1em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.footer__img {
+    object-fit: contain;
+    object-position: center;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.footer__social-media_container {
+    display: flex;
+    grid-area: social-container;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.fa-brands {
+    font-size: 2.5rem;
+    color: rgb(181, 130, 108);
+    transition: color 0.3s ease;
+}
+
+.footer__social_link {
+    display: flex;
+    align-items: center;
+    /* color: rgb(129, 163, 57); */
+    color: rgb(74, 89, 43);
+    transition: color 0.3s ease;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.footer__social_name {
+    text-decoration: underline;
+}
+
+.footer__copyright {
+    grid-area: copyright;
+    text-align: center;
+    color: rgb(74, 89, 43);
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.footer__separator {
+    grid-area: separator;
+    width: 70%;
+    margin-inline: auto;
 }
