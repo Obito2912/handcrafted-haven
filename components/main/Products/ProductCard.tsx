@@ -44,7 +44,7 @@ console.log("Rendering ProductCard with product:", product.title, " and average 
         <div className="card__icon-container">
           {<RatingStars rating={average_rating} />}
         </div>
-        <span className="card__product-stock">Only X left!</span>
+        <span className="card__product-stock">Only {product.quantity} left!</span>
       </div>
       <div className="card__details">
         <p className="card__price">${product.price}</p>

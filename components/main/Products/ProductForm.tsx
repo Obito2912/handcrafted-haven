@@ -7,6 +7,7 @@ import { ProductFormState, ProductValue } from "@/app/(main)/lib/schemas/product
 import { ProductCategories } from "@/app/(main)/lib/definitions";
 import ExclamationCircleIcon from "@heroicons/react/24/solid/esm/ExclamationCircleIcon";
 import Image from "next/image.js";
+import Link from "next/link";
 
 type ProductFormProps = {
     initialValues?: ProductValue;
@@ -44,7 +45,7 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
                     defaultValue={state?.values?.title ?? initialValues?.title} />
             </label>
             <label className={`${styles.form_label}`} htmlFor="description">Description
-                <textarea className={`${styles.form_input}`} id="description" name="description" rows={3} defaultValue={state?.values?.description ?? initialValues?.description} />
+                <textarea className={`${styles.form_input}`} id="description" name="description" rows={6} defaultValue={state?.values?.description ?? initialValues?.description} />
             </label>
             {(initialValues?.image_url || previewImage) && (
                 <Image src={previewImage ?? initialValues.image_url} alt="Product Image" className="mb-4 max-h-60 object-cover"
@@ -88,14 +89,22 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
             </label>
             {isEditMode && <input type="hidden" name="product_id" value={state?.values?.product_id ?? initialValues?.product_id} />}
             <input type="hidden" name="user_id" value={state?.values?.userId ?? initialValues?.userId} />
-            <button type="submit" name="_action" value={isEditMode ? "update" : "create"} className="bg-blue-500 text-white px-4 py-2 rounded">
+            <div className={styles.buttonsAcross}>
+            <button type="submit" name="_action" value={isEditMode ? "update" : "create"} >
                 {isEditMode ? "Update Product" : "Create Product"}
             </button>
+
             {isEditMode && (
                 <button type="submit" name="_action" value="delete">
                     Delete Product
                 </button>
             )}
+            <button type="button" name="_action" value="link">
+                <Link href="/products">
+                    {"Go Back"}
+                </Link>
+            </button>            
+            </div>
             <div className={styles.form_error}>
                 {state?.message && (
                     <>

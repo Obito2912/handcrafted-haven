@@ -68,7 +68,7 @@ export default function ProductDisplay({ product, productSeller, averageRating, 
           </div>
         </div>
         <div className={styles.wrapper}>
-        <AllReviewsDisplay allRatings={allRatings} />
+        <AllReviewsDisplay productId={product.product_id} allRatings={allRatings} />
       </div>
       </div>
 

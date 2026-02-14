@@ -80,3 +80,14 @@
     width: 1.5rem;
     color: #ef4444;
 }
+
+.buttonsAcross{
+    display: flex;
+    gap: .5rem;
+}
+
+.form a{
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
