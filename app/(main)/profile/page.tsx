@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 
 export default async function Profile() {
     const { userId } = await getLoggedInInfo();
-    console.log("User ID in Profile page:", userId);
     if (!userId) {
         return (
             <div className={styles.profile__message_container}>

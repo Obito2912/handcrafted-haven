@@ -24,7 +24,6 @@ export async function fetchProductData(userId?: string): Promise<{
   userFavorites: UserFavoriteProduct[];
 }> {
   try {
-    console.log("Fetching product data...");
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const productData: Product[] = await sql<Product[]>`
@@ -40,8 +39,7 @@ export async function fetchProductData(userId?: string): Promise<{
             FROM products
             ORDER BY created_at DESC
         `;
-    console.log("Product data fetched:", productData.length);
-    
+
     const ratingRows: ProductAverageRating [] = await sql`
             SELECT product_id, AVG(rating) AS average_rating
             FROM product_ratings
@@ -75,8 +73,6 @@ export async function fetchProductsByFilters(filters: ProductFilters, userId?: s
   userFavorites: UserFavoriteProduct[];
 }> {
   try {
-    console.log("Fetching filtered product data...");
-
     const conditions = [] as ReturnType<typeof sql>[];
 
     if (filters.query) {
@@ -135,8 +131,6 @@ export async function fetchProductsByFilters(filters: ProductFilters, userId?: s
               WHERE user_id =${userId}
           `;
     }
-    console.log("UserId" + userId);
-    console.log("Filtered user favorite products fetched:", userFavorites.length);
     return { productData, ratingRows, userFavorites };
   } catch (error) {
     console.error("Error fetching filtered product data:", error);
@@ -153,7 +147,6 @@ export async function fetchUserInformation(
   userId: string,
 ): Promise<User | null> {
   try {
-    console.log("Fetching user information...");
     const [user] = await sql<User[]>`
       SELECT 
         id,
@@ -182,7 +175,6 @@ export async function fetchUserProducts(userId: string): Promise<{
   userFavorites: UserFavoriteProduct[];
 }> {
   try {
-    console.log("Fetching products for user:", userId);
     const products = await sql<Product[]>`
       SELECT 
         product_id,
@@ -198,7 +190,6 @@ export async function fetchUserProducts(userId: string): Promise<{
       WHERE user_id = ${userId}
       ORDER BY created_at DESC
     `;
-    console.log(`Fetched ${products.length} products for user ${userId}`);
 
     const averageRatings = await sql<ProductAverageRating[]>`
             SELECT product_id, ROUND(AVG(rating)) AS average_rating
@@ -247,7 +238,6 @@ export async function fetchProductById(
   productId: string,
 ): Promise<ProductValue | null> {
   try {
-    console.log(`Fetching product for id ${productId}...`);
     const products: Product[] = await sql<Product[]>`
             SELECT 
                 product_id,
@@ -280,7 +270,6 @@ export async function fetchProductDetail(productId: string, userId?: string): Pr
   userFavorites: UserFavoriteProduct[];
 }> {
   try {
-    console.log(`Fetching product for id ${productId}...`);
     const products: Product[] = await sql<Product[]>`
             SELECT 
                 product_id,
@@ -294,8 +283,6 @@ export async function fetchProductDetail(productId: string, userId?: string): Pr
             FROM products
             WHERE product_id = ${productId}
         `;
-    console.log("Product fetched:", products);
- 
     if (products.length === 0) {
       return { productValue: null, averageRating: null, allRatings: [], userFavorites: [] };
     }
@@ -342,8 +329,6 @@ export async function fetchProductDataByUser(userId: string): Promise<{
   userFavorites: UserFavoriteProduct[];
 }> {
   try {
-    console.log(`Fetching product data for user ${userId}...`);
-
     const productData: Product[] = await sql<Product[]>`
             SELECT 
                 product_id,
@@ -358,7 +343,6 @@ export async function fetchProductDataByUser(userId: string): Promise<{
             WHERE user_id = ${userId}
             ORDER BY created_at DESC
         `;
-    console.log("Product  fetched:", productData.length);    
     if (productData.length === 0) {
       return { productData: [], averageRatings: [], userFavorites: [] };
     }
@@ -394,7 +378,6 @@ export async function fetchUserFavoriteProducts(userId: string): Promise<{
   userFavorites: UserFavoriteProduct[];
 }> {
   try {
-    console.log("Fetching products for user:", userId);
     const products = await sql<Product[]>`
       SELECT 
         product_id,
@@ -413,7 +396,6 @@ export async function fetchUserFavoriteProducts(userId: string): Promise<{
         WHERE user_id = ${userId})
       ORDER BY created_at DESC
     `;
-    console.log(`Fetched ${products.length} products for user ${userId}`);
 
     const averageRatings = await sql<ProductAverageRating[]>`
             SELECT product_id, ROUND(AVG(rating)) AS average_rating
@@ -463,7 +445,6 @@ export async function fetchUserProfile(
   userId: string,
 ): Promise<UserProfileValue | undefined> {
   try {
-    console.log("Fetching user profile...");
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const userProfiles: UserProfile[] = await sql<UserProfile[]>`
@@ -480,7 +461,6 @@ export async function fetchUserProfile(
             ORDER BY created_at DESC
             LIMIT 1
         `;
-    console.log("Profile data fetched:", userProfiles.length);
     const userProfile = userProfiles[0] || null;
     const userProfileValues = toUserProfileValues(userProfile);
     return userProfileValues;
@@ -507,7 +487,6 @@ export async function fetchSellerUserProfiles(): Promise<
            WHERE user_type = 'seller'
             ORDER BY name
         `;
-    console.log("Profile data fetched:", userProfiles.length);
     const userProfileValues = userProfiles.map((p) => toUserProfileValues(p));
     return userProfileValues;
   } catch (error) {

@@ -3,7 +3,6 @@ import "./ProfileCard.css";
 import { UserProfileValue } from "@/app/(main)/lib/schemas/profileSchemas";
 
 export default function ProfileCard(userProfile: UserProfileValue) {
-    console.log("Rendering ProfileCard for user:", userProfile);
     return (
         <article className="card">
             <div className="card__image-container">

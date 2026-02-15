@@ -7,7 +7,6 @@ type RatingCardProps = {
 };
 
 export function RatingCard({ rating }: RatingCardProps) {
-    console.log("Rendering RatingCard for rating:", rating);
     return (
         <article className={styles.rating__card}>
             <header className={styles.rating__card_user}>

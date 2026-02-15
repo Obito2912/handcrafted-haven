@@ -27,7 +27,6 @@ export default async function EditProduct(
         return <div>Please log in to view your products.</div>;
     }
     const params = await props.params;
-    console.log(`Fetching product for id ${params.id}...`);
     const productId = params.id;
     const product = await fetchProductById(productId);
     if (!product) {

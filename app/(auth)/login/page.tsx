@@ -13,10 +13,7 @@ export const metadata: Metadata = {
 
 export default async function LoginPage() {
     const session = await auth();
-    console.log("Session:", session);
-    console.log("User ID:", session?.user?.id);
     const userProfile = session?.user?.id ? await fetchUserProfile(session.user.id) : null;
-    console.log("User profile fetched on login page:", userProfile);
 
     return (
         <div className={styles.login}>

@@ -13,9 +13,6 @@ export default async function EditableProductCardWrapper({
   productRatings,
 }: EditableProductCardWrapperProps = {}) {
 
-  console.log("EditableProductCardWrapper received products:", products);
-  console.log("EditableProductCardWrapper received productRatings:", productRatings);
-
   if (!products) {
     const { productData, ratingRows } = await fetchProductData();
     products = productData;
@@ -27,7 +24,6 @@ export default async function EditableProductCardWrapper({
       <ul className='card__wrapper'>
         {products.map((product) => {
           const rating = productRatings?.find((r) => r.product_id === product.product_id);
-          console.log("Found rating for product:", product.product_id, rating);
           return (
             <li key={product.product_id}>
               <Link href={`/products/edit/${product.product_id}`} aria-label={`Edit ${product.title || 'product'}`}>

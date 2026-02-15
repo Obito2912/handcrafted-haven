@@ -26,7 +26,6 @@ export default async function ViewProduct(
     const { session, userId, loggedIn } = await getLoggedInInfo();
 
     const params = await props.params;
-    console.log(`Fetching product for id ${params.id}...`);
     const productId = params.id;
     const { productValue, averageRating, allRatings } = await fetchProductDetail(productId);
     const userProductRating = allRatings?.find(r => r.productId === productId && r.userId === userId)?.rating;
