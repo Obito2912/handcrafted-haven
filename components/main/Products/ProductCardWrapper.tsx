@@ -23,7 +23,6 @@ export default async function ProductCardWrapper({
     productRatings = ratingRows;
     userFavoriteProducts = userFavorites;
   }
-  console.log("ProductCardWrapper received user favorite products:", userFavoriteProducts);
   userFavoriteProducts = userFavoriteProducts ?? [];
   
   return (
@@ -32,7 +31,6 @@ export default async function ProductCardWrapper({
         {products.map((product) => {
           const rating = productRatings?.find((r) => r.product_id === product.product_id);
           const isFavorite = userFavoriteProducts.some((fav) => fav.product_id === product.product_id);
-          console.log(`Product ${product.product_id} is favorite:`, isFavorite);
           return (
             <li key={product.product_id} className="product__card_item">
               {/* <Link href={`/products/${product.product_id}`}></Link> */}

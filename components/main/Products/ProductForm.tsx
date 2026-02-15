@@ -65,7 +65,6 @@ export default function ProductForm({ initialValues, userId }: ProductFormProps)
                     aria-describedby="imageUploadHelp"
                     onChange={(e) => {
                         const file = e.target.files?.[0] as File | undefined;
-                        console.log("Selected file:", file);
                         const url = URL.createObjectURL(file);
                         setPreviewImage(url);
                     }} />

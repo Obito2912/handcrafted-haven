@@ -9,7 +9,6 @@ type AllReviewsDisplayProps = {
 
 export function AllReviewsDisplay({ productId, allRatings }: AllReviewsDisplayProps) {
     const productRatings = allRatings?.filter((rating) => rating.productId === productId) ?? [];
-    console.log("All reviews for product", productId, ":", productRatings);
     return (
         <>
             <section className={styles.reviewsSection} aria-label="Product Reviews">

@@ -24,11 +24,7 @@ export async function handleAuth(
   prevState: AuthFormState | undefined,
   formData: FormData,
 ) {
-  console.log("handleAuth called");
-  console.log("Form data:", Object.fromEntries(formData));
-
   const mode = formData.get("mode");
-  console.log("Mode:", mode);
 
   if (mode === "signup") {
     return await createUserProfile(prevState, formData);
@@ -136,16 +132,16 @@ export async function updateUserProfile(
   const { user_id, name, age, gender, bio, image_url, user_type } =
     validatedFields.data;
   const date = new Date().toISOString().split("T")[0];
-  console.log("UPDATE values:", {
-    user_id,
-    name,
-    age,
-    gender,
-    bio,
-    image_url,
-    user_type,
-    date,
-  });
+  // console.log("UPDATE values:", {
+  //   user_id,
+  //   name,
+  //   age,
+  //   gender,
+  //   bio,
+  //   image_url,
+  //   user_type,
+  //   date,
+  // });
   try {
     await sql`
             UPDATE user_profiles 
@@ -186,29 +182,28 @@ export async function createProduct(
   prevState: ProductFormState | undefined,
   formData: FormData,
 ): Promise<ProductFormState> {
-  console.log("createProduct called with:", {
-    product_id: formData.get("product_id")?.toString(),
-    title: formData.get("title"),
-    description: formData.get("description"),
-    //image_url: formData.get(),
-    userId: formData.get("user_id")?.toString(),
-    quantity: formData.get("quantity")
-      ? Number(formData.get("quantity"))
-      : undefined,
-    price: formData.get("price") ? Number(formData.get("price")) : undefined,
-    category: formData.get("category"),
-  });
+  // console.log("createProduct called with:", {
+  //   product_id: formData.get("product_id")?.toString(),
+  //   title: formData.get("title"),
+  //   description: formData.get("description"),
+  //   //image_url: formData.get(),
+  //   userId: formData.get("user_id")?.toString(),
+  //   quantity: formData.get("quantity")
+  //     ? Number(formData.get("quantity"))
+  //     : undefined,
+  //   price: formData.get("price") ? Number(formData.get("price")) : undefined,
+  //   category: formData.get("category"),
+  // });
 
   const imageFile = formData.get("image_file") as File | null;
   let imageUrl = "";
-  console.log("Received image file:", imageFile);
+
   if (imageFile) {
     try {
       const uploadResult = await uploadImageToPinata(imageFile);
-      console.log("Image uploaded to Pinata:", uploadResult);
+      // console.log("Image uploaded to Pinata:", uploadResult);
       imageUrl = uploadResult;
     } catch (error) {
-      console.log("Error uploading image:", error);
       return {
         errors: "Error uploading image. Please try again.",
         message: "Error uploading image. Please try again.",
@@ -303,7 +298,6 @@ export async function updateOrDeleteProduct(
   formData: FormData,
 ): Promise<ProductFormState> {
   const intent = formData.get("_action");
-  console.log("Intent:", intent);
   if (intent === "update") {
     return await updateProduct(prevState, formData);
   } else if (intent === "delete") {
@@ -324,18 +318,13 @@ async function updateProduct(
 ): Promise<ProductFormState> {
   const existingUrl = formData.get("image_url")?.toString() || null;
   const imageFile = formData.get("image_file") as File | null;
-  console.log("existingUrl:", existingUrl);
-  console.log("imageFile:", imageFile);
-  console.log(imageFile && console.log("Image file is here"));
   let imageUrl = existingUrl;
-  console.log("Received image file for update:", imageFile);
   if (imageFile && imageFile.size > 0) {
     try {
       const uploadResult = await uploadImageToPinata(imageFile);
-      console.log("Image uploaded to Pinata:", uploadResult);
+      
       imageUrl = uploadResult;
     } catch (error) {
-      console.log("Error uploading image:", error);
       return {
         errors: "Error uploading image. Please try again.",
         message: "Error uploading image. Please try again.",
@@ -364,18 +353,18 @@ async function updateProduct(
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
     category: formData.get("category"),
   });
-  console.log("updateProduct called with:", {
-    product_id: formData.get("product_id")?.toString(),
-    title: formData.get("title"),
-    description: formData.get("description"),
-    image_url: imageUrl,
-    userId: formData.get("user_id")?.toString(),
-    quantity: formData.get("quantity")
-      ? Number(formData.get("quantity"))
-      : undefined,
-    price: formData.get("price") ? Number(formData.get("price")) : undefined,
-    category: formData.get("category"),
-  });
+  // console.log("updateProduct called with:", {
+  //   product_id: formData.get("product_id")?.toString(),
+  //   title: formData.get("title"),
+  //   description: formData.get("description"),
+  //   image_url: imageUrl,
+  //   userId: formData.get("user_id")?.toString(),
+  //   quantity: formData.get("quantity")
+  //     ? Number(formData.get("quantity"))
+  //     : undefined,
+  //   price: formData.get("price") ? Number(formData.get("price")) : undefined,
+  //   category: formData.get("category"),
+  // });
   if (!validatedFields.success) {
     return {
       errors: z.prettifyError(validatedFields.error),
@@ -497,7 +486,6 @@ async function uploadImageToPinata(file: File): Promise<string> {
       .group(process.env.PINATA_GROUP_ID || "handcrafted-haven-group");
     const cid = (uploadData as any).cid ?? (uploadData as any).IpfsHash; // Adjust based on actual response structure
     const imageUrl = `https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`;
-    console.log("Pinata upload url:", imageUrl);
     return imageUrl;
   } catch (error) {
     console.error("Error uploading file to Pinata:", error);
@@ -551,12 +539,12 @@ export async function rateProductFromForm(
 ) {
   const session = await auth();
   const userId = session?.user?.id;
-console.log("rateProductFromForm called with:", {
-  product_id: formData.get("product_id")?.toString(),
-  rating: formData.get("rating")?.toString(),
-  review: formData.get("review")?.toString(),
-  user_id: formData.get("user_id")?.toString(),
-});
+// console.log("rateProductFromForm called with:", {
+//   product_id: formData.get("product_id")?.toString(),
+//   rating: formData.get("rating")?.toString(),
+//   review: formData.get("review")?.toString(),
+//   user_id: formData.get("user_id")?.toString(),
+// });
   const productId = formData.get("product_id")?.toString();
   const ratingValue = Number(formData.get("rating"));
   const rating = Math.round(ratingValue);
