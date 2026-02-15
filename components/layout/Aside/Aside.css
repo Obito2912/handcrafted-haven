@@ -12,6 +12,11 @@
   /* max-height: 80vh; */
 }
 
+/* Mobile header wrapper - only used on mobile */
+.sidebar__mobile-header {
+  display: contents;
+}
+
 .sign-out {
   color: #495867;
   background: transparent;
@@ -41,12 +46,33 @@
   .sidebar {
     width: 100%;
     max-height: none;
-    padding: 0.75em 0.5em;
+    padding: 0.75em 1em;
     flex: 0 0 auto;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: auto;
+    position: relative;
+  }
+
+  /* Mobile header: horizontal row with hamburger and sign out */
+  .sidebar__mobile-header {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  /* Navigation takes available space and wraps its menu */
+  .sidebar__mobile-header > :first-child {
+    flex: 1;
+    min-width: 0;
   }
 
   .sign-out {
     position: static;
-    margin-top: 0.75em;
+    margin: 0;
+    font-size: 1rem;
+    padding: 0.4em 0.8em;
+    flex-shrink: 0;
   }
 }

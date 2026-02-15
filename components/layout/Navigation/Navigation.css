@@ -1,69 +1,203 @@
+/* Navigation container */
+.nav {
+  position: relative;
+  width: 100%;
+}
+
+/* Hamburger button - hidden on desktop */
+.nav__hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 100;
+}
+
+.nav__hamburger:focus {
+  outline: 2px solid #6d543a;
+  outline-offset: 4px;
+}
+
+/* Hamburger icon lines */
+.nav__hamburger-line {
+  width: 2rem;
+  height: 0.25rem;
+  background: #495867;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Hamburger animation when menu is open */
+.nav__hamburger--open .nav__hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translateY(0.6rem);
+}
+
+.nav__hamburger--open .nav__hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.nav__hamburger--open .nav__hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translateY(-0.6rem);
+}
+
+/* Navigation list */
 .nav__list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .nav__list-item {
-    list-style: none;
-    padding: .5em;
+  list-style: none;
+  padding: 0.5em;
 }
 
 .nav__list-item a {
-    text-decoration: none;
-    color: #495867;
-    font-size: 1.5rem;
-    border: none;
+  text-decoration: none;
+  color: #495867;
+  font-size: 1.5rem;
+  border: none;
 }
 
+/* Underline animation for links */
 .nav__list-item a:after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 2px;
-    background: #6D543A;
-    transition: width .3s;
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #6d543a;
+  transition: width 0.3s;
 }
 
 .nav__list-item a:hover:after,
 .nav__list-item a:focus:after,
 .nav__list-item a.active:after {
-    width: 100%;
+  width: 100%;
 }
 
 .nav__list-item a:hover,
 .nav__list-item a:focus,
 .nav__list-item a.active {
-    color: #6D543A;
+  color: #6d543a;
 }
 
-/* When link is active, update background of :after to match active color */
+/* Active link styling */
 .nav__list-item a.active:after {
-    background: #6D543A;
+  background: #6d543a;
 }
 
-/* Responsive: tablet and down. */
-@media (max-width: 768px) {
+/* Desktop view - show full menu vertically */
+@media (min-width: 769px) {
+  .nav__hamburger {
+    display: none !important;
+  }
+
   .nav__list {
-    flex-direction: row;
+    flex-direction: column;
+  }
+}
+
+/* Mobile/Tablet view - hamburger menu with dropdown */
+@media (max-width: 768px) {
+  .nav {
+    display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.25em 0.75em;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  /* Show hamburger button on the left */
+  .nav__hamburger {
+    display: flex;
+    margin: 0;
+  }
+
+  /* Navigation list - starts hidden and slides down when open */
+  /* Takes full width to force a new line */
+  .nav__list {
+    flex-basis: 100%;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition:
+      max-height 0.4s ease-in-out,
+      padding 0.4s ease-in-out;
+    padding: 0;
+    margin: 0;
+    order: 10;
+  }
+
+  /* Menu expanded state - slides down smoothly */
+  .nav__list--open {
+    max-height: 500px;
+    padding: 0.5rem 0;
   }
 
   .nav__list-item {
-    padding: 0.25em 0.4em;
+    width: 100%;
+    text-align: center;
+    padding: 0.6em 1em;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeInDown 0.3s ease forwards;
+  }
+
+  /* Stagger animation for each menu item */
+  .nav__list--open .nav__list-item:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+
+  .nav__list--open .nav__list-item:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .nav__list--open .nav__list-item:nth-child(3) {
+    animation-delay: 0.15s;
+  }
+
+  .nav__list--open .nav__list-item:nth-child(4) {
+    animation-delay: 0.2s;
+  }
+
+  .nav__list--open .nav__list-item:nth-child(5) {
+    animation-delay: 0.25s;
+  }
+
+  .nav__list--open .nav__list-item:nth-child(6) {
+    animation-delay: 0.3s;
+  }
+
+  /* Fade in and slide down animation for menu items */
+  @keyframes fadeInDown {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .nav__list-item a {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
+    display: block;
   }
 }
 
-/* Responsive: smartphones. */
+/* Smartphone optimizations */
 @media (max-width: 480px) {
   .nav__list-item a {
-    font-size: 1rem;
+    font-size: 1.15rem;
+  }
+
+  .nav__list-item {
+    padding: 0.5em 0.8em;
   }
 }

@@ -1,9 +1,9 @@
 import postgres from "postgres";
 import {
   Product,
-  ProductAverageRating, 
+  ProductAverageRating,
   ProductCategory,
-  ProductRatingDisplay, 
+  ProductRatingDisplay,
   User,
   UserProfile,
   Cart,
@@ -65,6 +65,7 @@ export type ProductFilters = {
   minPrice?: number;
   maxPrice?: number;
   category?: ProductCategory | string;
+  rating?: number;
 };
 
 export async function fetchProductsByFilters(filters: ProductFilters, userId?: string): Promise<{
@@ -89,6 +90,15 @@ export async function fetchProductsByFilters(filters: ProductFilters, userId?: s
 
     if (filters.maxPrice !== undefined) {
       conditions.push(sql`price <= ${filters.maxPrice}`);
+    }
+
+    if (filters.rating !== undefined) {
+      conditions.push(sql`product_id IN (
+        SELECT product_id 
+        FROM product_ratings 
+        GROUP BY product_id 
+        HAVING ROUND(AVG(rating)) = ${filters.rating}
+      )`);
     }
 
     let whereClause = sql``;
@@ -117,8 +127,7 @@ export async function fetchProductsByFilters(filters: ProductFilters, userId?: s
             ORDER BY created_at DESC
         `;
 
-    const ratingRows: ProductAverageRating[] =
-       await sql`
+    const ratingRows: ProductAverageRating[] = await sql`
             SELECT product_id, ROUND(AVG(rating)) AS average_rating
             FROM product_ratings
             GROUP BY product_id
@@ -286,7 +295,7 @@ export async function fetchProductDetail(productId: string, userId?: string): Pr
     if (products.length === 0) {
       return { productValue: null, averageRating: null, allRatings: [], userFavorites: [] };
     }
-   const averageRatings = await sql<ProductAverageRating[]>`
+    const averageRatings = await sql<ProductAverageRating[]>`
             SELECT ROUND(AVG(rating)) AS average_rating
             FROM product_ratings
             WHERE product_id = ${productId}
@@ -324,7 +333,7 @@ export async function fetchProductDetail(productId: string, userId?: string): Pr
 }
 
 export async function fetchProductDataByUser(userId: string): Promise<{
-  productData: Product[]
+  productData: Product[];
   averageRatings: ProductAverageRating[];
   userFavorites: UserFavoriteProduct[];
 }> {

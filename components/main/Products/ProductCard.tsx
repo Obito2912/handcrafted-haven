@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { useActionState } from "react";
 import { Product } from "@/app/(main)/lib/definitions"
@@ -59,13 +59,22 @@ export default function ProductCard({
       {disableTitleLink ? (
         titleContent
       ) : (
-        <Link href={`/products/view/${product.product_id}`}>{titleContent}</Link>
+        <Link href={`/products/view/${product.product_id}`}>
+          {titleContent}
+        </Link>
       )}
       <div className="rating-stock">
         <div className="card__icon-container">
           {<RatingStars rating={average_rating} />}
         </div>
-        <span className="card__product-stock" role="status">Only {product.quantity} left!</span>
+        <span
+          // Product is considered low stock if quantity is less than 11
+          // Change text color to red if stock is low, green otherwise
+          className="card__product-stock"
+          style={{ color: product.quantity < 11 ? "#ef4444" : "#22c55e" }}
+        >
+          Only {product.quantity} left!
+        </span>
       </div>
       <div className="card__details">
         <p className="card__price">${product.price}</p>

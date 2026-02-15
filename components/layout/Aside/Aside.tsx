@@ -1,25 +1,33 @@
-'use client';
+"use client";
 
-import './Aside.css';
+import "./Aside.css";
 import Navigation from "../Navigation/Navigation";
-import { signOut } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
+import { signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 type AsideProps = {
-    isAuthenticated: boolean;
-    userType: "buyer" | "seller";
-}
+  isAuthenticated: boolean;
+  userType: "buyer" | "seller";
+};
 
 export default function Aside({ isAuthenticated, userType }: AsideProps) {
-    const pathname = usePathname();
+  const pathname = usePathname();
 
-    return <aside className="sidebar" aria-label="Sidebar with navigation and user actions">
-        <Navigation
-            loggedIn={isAuthenticated}
-            userType={userType} />
+  return (
+    <aside className="sidebar" aria-label="Sidebar with navigation and user actions">
+      {/* Mobile header bar with hamburger and sign out */}
+      <div className="sidebar__mobile-header">
+        <Navigation loggedIn={isAuthenticated} userType={userType} />
         {/* Show sign out only if user is authenticated */}
-        {isAuthenticated &&
-            <button className='sign-out' onClick={() => signOut({ redirect: true, callbackUrl: pathname })} aria-label="Sign Out">Sign Out</button>
-        }
-    </aside>;
+        {isAuthenticated && (
+          <button
+            className="sign-out"
+            onClick={() => signOut({ redirect: true, callbackUrl: pathname })} aria-label="Sign Out"
+          >
+            Sign Out
+          </button>
+        )}
+      </div>
+    </aside>
+  );
 }
