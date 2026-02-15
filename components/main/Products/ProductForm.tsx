@@ -1,109 +1,218 @@
-"use client"
+"use client";
 
 import styles from "@/components/shared/Form/Form.module.css";
 import { useActionState, useState } from "react";
 import { createProduct, updateOrDeleteProduct } from "@/app/(main)/lib/actions";
-import { ProductFormState, ProductValue } from "@/app/(main)/lib/schemas/productSchema";
+import {
+  ProductFormState,
+  ProductValue,
+} from "@/app/(main)/lib/schemas/productSchema";
 import { ProductCategories } from "@/app/(main)/lib/definitions";
 import ExclamationCircleIcon from "@heroicons/react/24/solid/esm/ExclamationCircleIcon";
 import Image from "next/image.js";
 
 type ProductFormProps = {
-    initialValues?: ProductValue;
-    userId?: string;
+  initialValues?: ProductValue;
+  userId?: string;
 };
 
-export default function ProductForm({ initialValues, userId }: ProductFormProps) {
-    const initialState: ProductFormState = {
-        message: null,
-        errors: null,
-        values: {
-            product_id: initialValues?.product_id ?? "",
-            title: initialValues?.title ?? "",
-            description: initialValues?.description ?? "",
-            image_url: initialValues?.image_url ?? "",
-            userId: initialValues?.userId ?? userId ?? "",
-            quantity: initialValues?.quantity?.toString() ?? "",
-            price: initialValues?.price?.toString() ?? "",
-            category: initialValues?.category ?? "",
-        }
-    };
-    const isEditMode = !!initialValues;
-    const [state, formAction] = useActionState(isEditMode ? updateOrDeleteProduct : createProduct, initialState);
-    const [previewImage, setPreviewImage] = useState<string | null>(null);
+export default function ProductForm({
+  initialValues,
+  userId,
+}: ProductFormProps) {
+  const initialState: ProductFormState = {
+    message: null,
+    errors: null,
+    values: {
+      product_id: initialValues?.product_id ?? "",
+      title: initialValues?.title ?? "",
+      description: initialValues?.description ?? "",
+      image_url: initialValues?.image_url ?? "",
+      userId: initialValues?.userId ?? userId ?? "",
+      quantity: initialValues?.quantity?.toString() ?? "",
+      price: initialValues?.price?.toString() ?? "",
+      category: initialValues?.category ?? "",
+    },
+  };
+  const isEditMode = !!initialValues;
+  const [state, formAction] = useActionState(
+    isEditMode ? updateOrDeleteProduct : createProduct,
+    initialState,
+  );
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-    // const [isUploading, setIsUploading] = useState(false);
-    if (!userId) {
-        return <p className={styles.form_error_text}>You must be logged in to create a product.</p>;
-    }
+  // const [isUploading, setIsUploading] = useState(false);
+  if (!userId) {
     return (
-        <form action={formAction} className={`${styles.form}`}>
-            <label className={`${styles.form_label}`} htmlFor="title">Name
-                <input className={`${styles.form_input}`}
-                    type="text" id="title" name="title" autoComplete="title"
-                    defaultValue={state?.values?.title ?? initialValues?.title} />
-            </label>
-            <label className={`${styles.form_label}`} htmlFor="description">Description
-                <textarea className={`${styles.form_input}`} id="description" name="description" rows={3} defaultValue={state?.values?.description ?? initialValues?.description} />
-            </label>
-            {(initialValues?.image_url || previewImage) && (
-                <Image src={previewImage ?? initialValues.image_url} alt="Product Image" className="mb-4 max-h-60 object-cover"
-                    width={128}
-                    height={128} />
-            )}
-            <input
-                type="hidden"
-                name="image_url"
-                value={state?.values?.image_url ?? initialValues?.image_url ?? ""}
-            />
-            <label className={`${styles.form_label}`} htmlFor="image_file">
-                <input type="file" id="image_file"
-                    name="image_file"
-                    accept="image/*"
-                    className={`${styles.form_input}`}
-                    onChange={(e) => {
-                        const file = e.target.files?.[0] as File | undefined;
-                        console.log("Selected file:", file);
-                        const url = URL.createObjectURL(file);
-                        setPreviewImage(url);
-
-                    }} />
-            </label>
-            <label className={`${styles.form_label}`} htmlFor="price">Price
-                <input className={`${styles.form_input}`} type="number" id="price" name="price" min="0" step="0.01" inputMode="decimal" defaultValue={state?.values?.price ?? initialValues?.price} />
-            </label>
-            <label className={`${styles.form_label}`} htmlFor="quantity">Quantity
-                <input className={`${styles.form_input}`} type="number" id="quantity" name="quantity" defaultValue={state?.values?.quantity ?? initialValues?.quantity} />
-            </label>
-
-            <label className={`${styles.form_label}`} htmlFor="category">Category
-                <select className={`${styles.form_input}`} key={state?.values?.category ?? initialValues?.category ?? ""} id="category" name="category" defaultValue={state?.values?.category ?? initialValues?.category ?? ""}>
-                    <option value="" disabled>Select your category</option>
-                    {ProductCategories.map((category: string) => (
-                        <option key={category} value={category}>
-                            {category.charAt(0).toUpperCase() + category.slice(1)}
-                        </option>
-                    ))}
-                </select>
-            </label>
-            {isEditMode && <input type="hidden" name="product_id" value={state?.values?.product_id ?? initialValues?.product_id} />}
-            <input type="hidden" name="user_id" value={state?.values?.userId ?? initialValues?.userId} />
-            <button type="submit" name="_action" value={isEditMode ? "update" : "create"} className="bg-blue-500 text-white px-4 py-2 rounded">
-                {isEditMode ? "Update Product" : "Create Product"}
-            </button>
-            {isEditMode && (
-                <button type="submit" name="_action" value="delete">
-                    Delete Product
-                </button>
-            )}
-            <div className={styles.form_error}>
-                {state?.message && (
-                    <>
-                        {state?.success ? null : <ExclamationCircleIcon className={styles.form_error_icon} />}
-                        <p className={styles.form_error_text}>{state.message}</p>
-                    </>
-                )}
-            </div>
-        </form>
+      <p className={styles.form_error_text}>
+        You must be logged in to create a product.
+      </p>
     );
+  }
+  return (
+    <form action={formAction} className={`${styles.form}`}>
+      <label className={`${styles.form_label}`} htmlFor="title">
+        Name
+        <input
+          className={`${styles.form_input}`}
+          type="text"
+          id="title"
+          name="title"
+          autoComplete="title"
+          defaultValue={state?.values?.title ?? initialValues?.title}
+          // Product title validation: Required field, min 2 chars (matches CreateProductSchema)
+          required
+          minLength={2}
+          maxLength={100}
+          title="Title must be at least 2 characters"
+        />
+      </label>
+      <label className={`${styles.form_label}`} htmlFor="description">
+        Description
+        <textarea
+          className={`${styles.form_input}`}
+          id="description"
+          name="description"
+          rows={3}
+          defaultValue={
+            state?.values?.description ?? initialValues?.description
+          }
+          // Description is required and limited to 500 chars (matches backend schema)
+          required
+          maxLength={500}
+          title="Description must be at most 500 characters"
+        />
+      </label>
+      {(initialValues?.image_url || previewImage) && (
+        <Image
+          src={previewImage ?? initialValues.image_url}
+          alt="Product Image"
+          className="mb-4 max-h-60 object-cover"
+          width={128}
+          height={128}
+        />
+      )}
+      <input
+        type="hidden"
+        name="image_url"
+        value={state?.values?.image_url ?? initialValues?.image_url ?? ""}
+      />
+      <label className={`${styles.form_label}`} htmlFor="image_file">
+        <input
+          type="file"
+          id="image_file"
+          name="image_file"
+          // 'accept' restricts file picker to images only (image/*)
+          accept="image/*"
+          className={`${styles.form_input}`}
+          // Conditionally required: Only for new products without existing image
+          // Edit mode allows keeping existing image, so not required
+          required={!isEditMode && !initialValues?.image_url}
+          title="Please select an image file"
+          onChange={(e) => {
+            const file = e.target.files?.[0] as File | undefined;
+            console.log("Selected file:", file);
+            // Create preview URL using createObjectURL for immediate visual feedback
+            const url = URL.createObjectURL(file);
+            setPreviewImage(url);
+          }}
+        />
+      </label>
+      <label className={`${styles.form_label}`} htmlFor="price">
+        Price
+        <input
+          className={`${styles.form_input}`}
+          // type="number" enables numeric keyboard on mobile and prevents non-numeric input
+          type="number"
+          id="price"
+          name="price"
+          // 'min' prevents negative prices (matches backend: min(0))
+          min="0"
+          // 'step="0.01"' allows decimal values like $19.99
+          step="0.01"
+          // 'inputMode="decimal"' optimizes mobile keyboard for decimal entry
+          inputMode="decimal"
+          defaultValue={state?.values?.price ?? initialValues?.price}
+          required
+          title="Price must be a positive number"
+        />
+      </label>
+      <label className={`${styles.form_label}`} htmlFor="quantity">
+        Quantity
+        <input
+          className={`${styles.form_input}`}
+          type="number"
+          id="quantity"
+          name="quantity"
+          defaultValue={state?.values?.quantity ?? initialValues?.quantity}
+          required
+          // Quantity cannot be negative (inventory must be >= 0)
+          min="0"
+          // 'step="1"' ensures only whole numbers (no decimals for quantity)
+          step="1"
+          title="Quantity must be a positive number"
+        />
+      </label>
+
+      <label className={`${styles.form_label}`} htmlFor="category">
+        Category
+        <select
+          className={`${styles.form_input}`}
+          key={state?.values?.category ?? initialValues?.category ?? ""}
+          id="category"
+          name="category"
+          defaultValue={
+            state?.values?.category ?? initialValues?.category ?? ""
+          }
+          // Category selection is required (matches backend enum validation)
+          required
+          title="Please select a category"
+        >
+          <option value="" disabled>
+            Select your category
+          </option>
+          {ProductCategories.map((category: string) => (
+            <option key={category} value={category}>
+              {category.charAt(0).toUpperCase() + category.slice(1)}
+            </option>
+          ))}
+        </select>
+      </label>
+      {isEditMode && (
+        <input
+          type="hidden"
+          name="product_id"
+          value={state?.values?.product_id ?? initialValues?.product_id}
+        />
+      )}
+      <input
+        type="hidden"
+        name="user_id"
+        value={state?.values?.userId ?? initialValues?.userId}
+      />
+      <button
+        type="submit"
+        name="_action"
+        value={isEditMode ? "update" : "create"}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        {isEditMode ? "Update Product" : "Create Product"}
+      </button>
+      {isEditMode && (
+        <button type="submit" name="_action" value="delete">
+          Delete Product
+        </button>
+      )}
+      <div className={styles.form_error}>
+        {state?.message && (
+          <>
+            {state?.success ? null : (
+              <ExclamationCircleIcon className={styles.form_error_icon} />
+            )}
+            <p className={styles.form_error_text}>{state.message}</p>
+          </>
+        )}
+      </div>
+    </form>
+  );
 }

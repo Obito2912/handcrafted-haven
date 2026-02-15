@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Product } from "@/app/(main)/lib/definitions";
 import { useCart } from "@/app/context/CartContext";
@@ -7,13 +7,22 @@ import Link from "next/link";
 import "../../shared/Card/Card.css";
 import RatingStars from "@/components/shared/RatingStars/RatingStars";
 type ProductCardProps = {
-  product: Product,
-  disableTitleLink?: boolean,
-  average_rating?: number
+  product: Product;
+  disableTitleLink?: boolean;
+  average_rating?: number;
 };
 
-export default function ProductCard({ disableTitleLink = false, product, average_rating }: ProductCardProps) {
-console.log("Rendering ProductCard with product:", product.title, " and average rating: ", average_rating);
+export default function ProductCard({
+  disableTitleLink = false,
+  product,
+  average_rating,
+}: ProductCardProps) {
+  console.log(
+    "Rendering ProductCard with product:",
+    product.title,
+    " and average rating: ",
+    average_rating,
+  );
   const titleContent = <h2 className="card__title">{product.title}</h2>;
   const { addToCart, isLoading } = useCart();
 
@@ -38,20 +47,30 @@ console.log("Rendering ProductCard with product:", product.title, " and average 
       {disableTitleLink ? (
         titleContent
       ) : (
-        <Link href={`/products/view/${product.product_id}`}>{titleContent}</Link>
+        <Link href={`/products/view/${product.product_id}`}>
+          {titleContent}
+        </Link>
       )}
       <div className="rating-stock">
         <div className="card__icon-container">
           {<RatingStars rating={average_rating} />}
         </div>
-        <span className="card__product-stock">Only X left!</span>
+        <span
+          // Product is considered low stock if quantity is less than 11
+          // Change text color to red if stock is low, green otherwise
+          className="card__product-stock"
+          style={{ color: product.quantity < 11 ? "#ef4444" : "#22c55e" }}
+        >
+          Only {product.quantity} left!
+        </span>
       </div>
       <div className="card__details">
         <p className="card__price">${product.price}</p>
         <button
           className="card__add-btn"
           onClick={handleAddToCart}
-          /* disabled={isLoading} */ >
+          /* disabled={isLoading} */
+        >
           <i className="fa-solid fa-cart-plus"></i>Add to Cart
           {/* {isLoading ? 'Adding...' : 'Add'} */}
         </button>

@@ -8,6 +8,7 @@ type SearchParams = {
   minPrice?: string;
   maxPrice?: string;
   category?: string;
+  rating?: string;
 };
 
 export default async function Home({
@@ -24,11 +25,14 @@ export default async function Home({
   const minPrice = minPriceValue === "" ? undefined : Number(minPriceValue);
   const maxPrice = maxPriceValue === "" ? undefined : Number(maxPriceValue);
   const category = resolvedSearchParams?.category?.trim() || "";
+  const ratingValue = resolvedSearchParams?.rating ?? "";
+  const rating = ratingValue === "" ? undefined : Number(ratingValue);
   const { productData, ratingRows } = await fetchProductsByFilters({
     query: query || undefined,
     minPrice: Number.isFinite(minPrice) ? minPrice : undefined,
     maxPrice: Number.isFinite(maxPrice) ? maxPrice : undefined,
     category: category || undefined,
+    rating: Number.isFinite(rating) ? rating : undefined,
   });
   return (
     <>
@@ -38,8 +42,12 @@ export default async function Home({
           minPrice={minPriceValue}
           maxPrice={maxPriceValue}
           category={category}
+          rating={ratingValue}
         />
-        <ProductCardWrapper products={productData} productRatings={ratingRows} />
+        <ProductCardWrapper
+          products={productData}
+          productRatings={ratingRows}
+        />
       </ScrollableContainer>
     </>
   );
