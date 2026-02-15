@@ -5,6 +5,7 @@ import ArtisansDisplay from "@/components/main/Artisans/ArtisansDisplay";
 import ArtisansProductDisplay from "@/components/main/Artisans/ArtisansProductDisplay";
 import styles from "../artisans.module.css";
 import { Metadata } from "next";
+import { getLoggedInInfo } from "../../lib/session";
 
 export async function generateMetadata(
   props: { params: Promise<{ id: string }> }
@@ -21,12 +22,13 @@ export async function generateMetadata(
 export default async function Artisans(
   props: { params: Promise<{ id: string }> }
 ) {
+  const { userId } = await getLoggedInInfo();
   const params = await props.params;
   console.log(`Fetching artisan profile for user ID ${params.id}...`);
   // Fetch data
   const user = await fetchUserInformation(params.id);
   const userProfile = await fetchUserProfile(params.id);
-  const { productData, averageRatings, allRatings } = await fetchUserProducts(params.id);
+  const { productData, averageRatings, allRatings, userFavorites } = await fetchUserProducts(params.id);
 
   return (
     <>
@@ -41,8 +43,8 @@ export default async function Artisans(
         <ScrollableContainer>
           <div className={styles.content}>
             <ArtisansDisplay userProfile={userProfile} user={user}></ArtisansDisplay>
-            <ArtisansProductDisplay products={productData} productRatings={averageRatings}></ArtisansProductDisplay>
-          </div>
+            <ArtisansProductDisplay products={productData} productRatings={averageRatings} userFavoriteProducts={userFavorites} userId={userId}></ArtisansProductDisplay>
+            </div>
         </ScrollableContainer>
       </div>
     </>
