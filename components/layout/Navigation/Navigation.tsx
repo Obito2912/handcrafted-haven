@@ -8,6 +8,7 @@ const links = [
   { name: 'Home', href: '/', loggedIn: false },
   { name: 'Artisans', href: '/artisans', loggedIn: false },
   { name: 'Shopping Cart', href: '/cart', loggedIn: true },
+  { name: 'My Favorites', href: '/products/favorites', loggedIn: true },
   { name: 'Support', href: '/support', loggedIn: false },
 ];
 

@@ -1,26 +1,41 @@
 'use client'
 
+import { useActionState } from "react";
 import { Product } from "@/app/(main)/lib/definitions"
+import {toggleFavoriteAction} from "@/app/(main)/lib/actions"
 import { useCart } from "@/app/context/CartContext"
 import Image from "next/image"
 import Link from "next/link"
 import "./ProductCard.css"
 import RatingStars from "@/components/shared/RatingStars/RatingStars"
+
 type ProductCardProps = {
   product: Product,
   disableTitleLink?: boolean,
-  average_rating?: number
+  average_rating?: number, 
+  favorite?: boolean,
+  userId?: string;
 }
 
-export default function ProductCard({ disableTitleLink = false, product, average_rating }: ProductCardProps) {
-  console.log("Rendering ProductCard with product:", product.title, " and average rating: ", average_rating)
+export default function ProductCard({ 
+  disableTitleLink = false, 
+  product, 
+  average_rating,
+  favorite = false,
+  userId,
+}: ProductCardProps) {  
   const titleContent = <h2 className="card__title">{product.title}</h2>
   const { addToCart, isLoading } = useCart()
 
   const handleAddToCart = async () => {
     await addToCart(product.product_id, 1)
   }
-
+  const [state, formAction] = useActionState(toggleFavoriteAction,
+    {
+      favorite: favorite,
+      message: null,
+    }
+  );
   return (
     <article className="card">
       <div className="card__image-container">
@@ -31,9 +46,15 @@ export default function ProductCard({ disableTitleLink = false, product, average
           height={150}
           className="card__image"
         />
-        <button className="card__like-btn" aria-label={`Add ${product.title} to Favorites`} aria-pressed="false"> {/* aria-pressed='false' is for indicating the initial state of the button */}
-          <i className="fa-regular fa-heart" aria-hidden="true"></i>
+        {userId && (
+        <form action={formAction}>
+        <input type="hidden" name="product_id" value={product.product_id} />
+        <input type="hidden" name="user_id" value={userId} />
+        <button type="submit" className="card__like-btn" aria-label={`Add ${product.title} to Favorites`} aria-pressed={state.favorite}> 
+          <i className={`fa-${state.favorite ? 'solid' : 'regular'} fa-heart`} aria-hidden="true"></i>
         </button>
+        </form>
+        )}
       </div>
       {disableTitleLink ? (
         titleContent
