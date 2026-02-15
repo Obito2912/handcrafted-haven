@@ -135,6 +135,8 @@ export async function fetchProductsByFilters(filters: ProductFilters, userId?: s
               WHERE user_id =${userId}
           `;
     }
+    console.log("UserId" + userId);
+    console.log("Filtered user favorite products fetched:", userFavorites.length);
     return { productData, ratingRows, userFavorites };
   } catch (error) {
     console.error("Error fetching filtered product data:", error);
@@ -384,6 +386,78 @@ export async function fetchProductDataByUser(userId: string): Promise<{
     throw new Error("Failed to fetch product data.");
   }
 }
+
+export async function fetchUserFavoriteProducts(userId: string): Promise<{
+  productData: Product[];
+  averageRatings: ProductAverageRating[];
+  allRatings: ProductRatingDisplay[];
+  userFavorites: UserFavoriteProduct[];
+}> {
+  try {
+    console.log("Fetching products for user:", userId);
+    const products = await sql<Product[]>`
+      SELECT 
+        product_id,
+        title,
+        description,
+        image_url,
+        user_id,
+        quantity,
+        price,
+        category,
+        created_at
+      FROM products
+      WHERE product_id IN (
+        SELECT product_id
+        FROM user_favorite_products
+        WHERE user_id = ${userId})
+      ORDER BY created_at DESC
+    `;
+    console.log(`Fetched ${products.length} products for user ${userId}`);
+
+    const averageRatings = await sql<ProductAverageRating[]>`
+            SELECT product_id, ROUND(AVG(rating)) AS average_rating
+FROM product_ratings
+WHERE product_id IN (
+  SELECT product_id 
+  FROM user_favorite_products
+  WHERE user_id = ${userId}
+)
+GROUP BY product_id`;
+
+    const allRatings = await sql<ProductRatingDisplay[]>`
+            SELECT 
+                a.product_id as ProductId,
+                a.user_id as UserId,
+                c.name as UserName,
+                c.image_url as UserImageUrl,
+                a.rating,
+                a.review,
+                a.created_at as CreatedAt
+            FROM product_ratings a
+            INNER JOIN products b on a.product_id = b.product_id
+            INNER JOIN user_profiles c ON a.user_id = c.user_id
+            WHERE a.product_id IN (
+              SELECT product_id 
+              FROM user_favorite_products
+              WHERE user_id = ${userId}
+            )
+        `;
+    let userFavorites: UserFavoriteProduct[] = [];
+    if (userId) {
+      userFavorites = await sql<UserFavoriteProduct[]>`
+              SELECT user_id, product_id
+              FROM user_favorite_products
+              WHERE user_id =${userId}
+          `;
+    }
+    return { productData: products, averageRatings, allRatings, userFavorites };
+  } catch (error) {
+    console.error("Error fetching user products:", error);
+    throw new Error("Failed to fetch user products.");
+  }
+}
+
 
 export async function fetchUserProfile(
   userId: string,

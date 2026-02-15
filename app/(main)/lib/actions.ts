@@ -620,3 +620,31 @@ console.log("rateProductFromForm called with:", {
     };
   }
 }
+export async function toggleFavoriteAction(
+  prevState: { favorite: boolean; message: string | null },
+  formData: FormData,  
+): Promise<{ favorite: boolean; message: string | null }> {
+  const productId = formData.get("product_id")?.toString();
+  const userId = formData.get("user_id")?.toString();
+  const [{ count }] = await sql<  { count: number }[]>`
+        SELECT count(*) :: int as count
+         FROM User_favorite_products where product_id = ${productId}
+        and user_id =${userId}
+      `;
+  const favExists = count > 0;
+  if (favExists) {
+    await sql`
+      DELETE FROM User_favorite_products
+      WHERE product_id = ${productId} AND user_id = ${userId}
+    `;
+  } else {
+    await sql`
+      INSERT INTO User_favorite_products (product_id, user_id)
+      VALUES (${productId}, ${userId})
+    `;
+  } 
+  return {    
+    favorite: !favExists,
+    message: null,
+  }
+}
