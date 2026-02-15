@@ -1,7 +1,7 @@
 .sidebar {
   /* background-color: rgb(41, 41, 41); */
   background-color: #fff;
-  border: 3px solid #6d543a;
+  border: 3px solid #6D543A;
   flex: 0 0 200px;
   border-radius: 10px;
   display: flex;
@@ -9,7 +9,7 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
-  max-height: 80vh;
+  /* max-height: 80vh; */
 }
 
 /* Mobile header wrapper - only used on mobile */
@@ -26,15 +26,15 @@
   border: none;
   width: fit-content;
   font-size: 1.2rem;
-  padding: 0.3em;
+  padding: .3em;
   position: absolute;
   bottom: 20px;
 }
 
 .sign-out:hover,
 .sign-out:focus {
-  color: #ad1e1e;
-  outline: 1px solid #ad1e1e;
+  color: #AD1E1E;
+  outline: 1px solid #AD1E1E;
 }
 
 .sign-out:active {

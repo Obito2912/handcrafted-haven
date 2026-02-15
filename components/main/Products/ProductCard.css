@@ -2,6 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1em;
+    flex: 1;
 }
 
 .card {
@@ -13,11 +14,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: 250px;
+    width: 250px;
     position: relative;
     color: #6D543A;
     min-width: 200px;
+}
+
+.product__card_item {
+    list-style: none;
 }
 
 .card__image-container {
@@ -39,7 +43,7 @@
 .fa-heart {
     font-size: 1.5rem;
     cursor: pointer;
-    color: #6D543A;
+    color: #ad1e1e;
 }
 
 .card__image {

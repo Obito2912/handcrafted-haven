@@ -3,21 +3,27 @@ import { RatingCard } from "./RatingCard";
 import styles from "./ProductDisplay.module.css";
 
 type AllReviewsDisplayProps = {
+    productId: string;
     allRatings?: ProductRatingDisplay[];
 };
 
-export function AllReviewsDisplay({ allRatings }: AllReviewsDisplayProps) {
+export function AllReviewsDisplay({ productId, allRatings }: AllReviewsDisplayProps) {
+    const productRatings = allRatings?.filter((rating) => rating.productId === productId) ?? [];
     return (
         <>
-            <div className={styles.reviewsSection}>
-                {allRatings && allRatings.length > 0 ? (
-                    allRatings.map((rating) => (
-                        <RatingCard key={`${rating.productId}-${rating.userId}`} rating={rating} />
-                    ))
+            <section className={styles.reviewsSection} aria-label="Product Reviews">
+                {productRatings.length > 0 ? (
+                    <ul className={styles.reviewsList}>
+                        {productRatings.map((rating) => (
+                            <li key={`${rating.productId}-${rating.userId}`}>
+                                <RatingCard rating={rating} />
+                            </li>
+                        ))}
+                    </ul>
                 ) : (
-                    <p>No reviews available.</p>
+                    <p role="status">No reviews available.</p>
                 )}
-            </div>
+            </section>
         </>
     );
 }

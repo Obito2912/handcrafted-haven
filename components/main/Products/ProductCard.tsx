@@ -1,48 +1,61 @@
-"use client";
+"use client"
 
-import { Product } from "@/app/(main)/lib/definitions";
-import { useCart } from "@/app/context/CartContext";
-import Image from "next/image";
-import Link from "next/link";
+import { useActionState } from "react";
+import { Product } from "@/app/(main)/lib/definitions"
+import {toggleFavoriteAction} from "@/app/(main)/lib/actions"
+import { useCart } from "@/app/context/CartContext"
+import Image from "next/image"
+import Link from "next/link"
+import "./ProductCard.css"
 import "../../shared/Card/Card.css";
-import RatingStars from "@/components/shared/RatingStars/RatingStars";
-type ProductCardProps = {
-  product: Product;
-  disableTitleLink?: boolean;
-  average_rating?: number;
-};
+import RatingStars from "@/components/shared/RatingStars/RatingStars"
 
-export default function ProductCard({
-  disableTitleLink = false,
-  product,
+type ProductCardProps = {
+  product: Product,
+  disableTitleLink?: boolean,
+  average_rating?: number, 
+  favorite?: boolean,
+  userId?: string;
+}
+
+export default function ProductCard({ 
+  disableTitleLink = false, 
+  product, 
   average_rating,
-}: ProductCardProps) {
-  console.log(
-    "Rendering ProductCard with product:",
-    product.title,
-    " and average rating: ",
-    average_rating,
-  );
-  const titleContent = <h2 className="card__title">{product.title}</h2>;
-  const { addToCart, isLoading } = useCart();
+  favorite = false,
+  userId,
+}: ProductCardProps) {  
+  const titleContent = <h2 className="card__title">{product.title}</h2>
+  const { addToCart, isLoading } = useCart()
 
   const handleAddToCart = async () => {
-    await addToCart(product.product_id, 1);
-  };
-
+    await addToCart(product.product_id, 1)
+  }
+  const [state, formAction] = useActionState(toggleFavoriteAction,
+    {
+      favorite: favorite,
+      message: null,
+    }
+  );
   return (
-    <div className="card">
+    <article className="card">
       <div className="card__image-container">
         <Image
           src={product.image_url}
-          alt={product.title}
+          alt={`${product.title} product image`}
           width={150}
           height={150}
           className="card__image"
         />
-        <button className="card__like-btn" aria-label="Add to Favorites">
-          <i className="fa-regular fa-heart"></i>
+        {userId && (
+        <form action={formAction}>
+        <input type="hidden" name="product_id" value={product.product_id} />
+        <input type="hidden" name="user_id" value={userId} />
+        <button type="submit" className="card__like-btn" aria-label={`Add ${product.title} to Favorites`} aria-pressed={state.favorite}> 
+          <i className={`fa-${state.favorite ? 'solid' : 'regular'} fa-heart`} aria-hidden="true"></i>
         </button>
+        </form>
+        )}
       </div>
       {disableTitleLink ? (
         titleContent
@@ -69,12 +82,12 @@ export default function ProductCard({
         <button
           className="card__add-btn"
           onClick={handleAddToCart}
-          /* disabled={isLoading} */
-        >
-          <i className="fa-solid fa-cart-plus"></i>Add to Cart
+          aria-label={`Add ${product.title} to cart`}
+          /* disabled={isLoading} */ >
+          <i className="fa-solid fa-cart-plus" aria-hidden="true"></i>Add to Cart
           {/* {isLoading ? 'Adding...' : 'Add'} */}
         </button>
       </div>
-    </div>
-  );
+    </article>
+  )
 }

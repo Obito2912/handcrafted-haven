@@ -14,7 +14,7 @@ export default function Aside({ isAuthenticated, userType }: AsideProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="sidebar">
+    <aside className="sidebar" aria-label="Sidebar with navigation and user actions">
       {/* Mobile header bar with hamburger and sign out */}
       <div className="sidebar__mobile-header">
         <Navigation loggedIn={isAuthenticated} userType={userType} />
@@ -22,7 +22,7 @@ export default function Aside({ isAuthenticated, userType }: AsideProps) {
         {isAuthenticated && (
           <button
             className="sign-out"
-            onClick={() => signOut({ redirect: true, callbackUrl: pathname })}
+            onClick={() => signOut({ redirect: true, callbackUrl: pathname })} aria-label="Sign Out"
           >
             Sign Out
           </button>

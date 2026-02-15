@@ -18,7 +18,7 @@ export default function AuthForm({
   const [state, formAction, isPending] = useActionState(handleAuth, undefined);
 
   return (
-    <form action={formAction} className={`${styles.form}`}>
+    <form action={formAction} className={`${styles.form}`} aria-label={signup ? 'Sign Up Form' : 'Login Form'}>
       <input type="hidden" name="mode" value={signup ? "signup" : "login"} />
       {signup && (
         <>
@@ -30,7 +30,7 @@ export default function AuthForm({
               id="name"
               name="name"
               autoComplete="name"
-              defaultValue={state?.values?.name}
+              aria-required="true" defaultValue={state?.values?.name}
               // Client-side validation: Prevent form submission if name is missing or too short
               // 'required' ensures field is not empty before submit
               required
@@ -54,7 +54,7 @@ export default function AuthForm({
           id="email"
           name="email"
           autoComplete="email"
-          defaultValue={state?.values?.email}
+          aria-required="true" defaultValue={state?.values?.email}
           // Required field - browser prevents submit if empty
           required
           // Tooltip shown when validation fails
@@ -68,7 +68,7 @@ export default function AuthForm({
           type="password"
           id="password"
           name="password"
-          autoComplete="current-password"
+          autoComplete="current-password" aria-required="true" 
           // Required field validation
           required
           // Minimum 6 characters enforced (matches SignupFormSchema minimum)
@@ -88,14 +88,14 @@ export default function AuthForm({
         <span className={`${styles.form_text}`}>
           {signup ? "Already have an account?" : "New here? Join the community"}
         </span>
-        <button type="button" onClick={() => setSignup(!signup)}>
+        <button type="button" onClick={() => setSignup(!signup)} aria-label={signup ? 'Switch to Login' : 'Switch to Sign Up'}>
           {signup ? "Login" : "Sign Up"}
         </button>
       </div>
-      <div className={styles.form_error}>
+      <div className={styles.form_error} role="alert" aria-live="polite">
         {state?.message && (
           <>
-            <ExclamationCircleIcon className={styles.form_error_icon} />
+            <ExclamationCircleIcon className={styles.form_error_icon} aria-hidden="true" />
             <p className={styles.form_error_text}>{state.message}</p>
           </>
         )}

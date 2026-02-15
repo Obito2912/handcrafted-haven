@@ -15,8 +15,6 @@ export default async function MainLayout({ children }: { children: React.ReactNo
     const userType = userProfile?.user_type ?? null;
     const userProfileImg = userProfile?.image_url ?? null;
 
-    console.log('Session in layout:', session); // Debug log
-
     return (
         <div className="page">
             <div className="page__content">
@@ -31,9 +29,9 @@ export default async function MainLayout({ children }: { children: React.ReactNo
                             userType={userType} />
                         <main className="main">{children}</main>
                     </div>
-                    <Footer />
                 </CartProvider>
             </div>
+            <Footer />
         </div>
     );
 }

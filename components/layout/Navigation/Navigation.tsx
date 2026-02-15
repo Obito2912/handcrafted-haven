@@ -6,11 +6,11 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const links = [
-  { name: "Home", href: "/", loggedIn: false },
-  { name: "Artisans", href: "/artisans", loggedIn: false },
-  { name: "Purchases", href: "/purchases", loggedIn: true },
-  { name: "Shopping Cart", href: "/cart", loggedIn: true },
-  { name: "Support", href: "/support", loggedIn: false },
+  { name: 'Home', href: '/', loggedIn: false },
+  { name: 'Artisans', href: '/artisans', loggedIn: false },
+  { name: 'Shopping Cart', href: '/cart', loggedIn: true },
+  { name: 'My Favorites', href: '/products/favorites', loggedIn: true },
+  { name: 'Support', href: '/support', loggedIn: false },
 ];
 
 export default function Navigation({
@@ -34,7 +34,7 @@ export default function Navigation({
   };
 
   return (
-    <nav className="nav">
+    <nav className='nav' aria-label="Main Navigation">
       {/* Hamburger button - visible only on mobile */}
       <button
         className={`nav__hamburger ${isOpen ? "nav__hamburger--open" : ""}`}
@@ -59,7 +59,7 @@ export default function Navigation({
                   href={link.href}
                   className={pathname === link.href ? "active" : ""}
                   onClick={closeMenu}
-                >
+                 aria-current={pathname === link.href ? 'page' : undefined}>
                   {link.name}
                 </Link>
               </li>
@@ -74,7 +74,7 @@ export default function Navigation({
               href="/products"
               className={pathname === "/products" ? "active" : ""}
               onClick={closeMenu}
-            >
+             aria-current={pathname === '/products' ? 'page' : undefined}>
               Manage Shop
             </Link>
           </li>

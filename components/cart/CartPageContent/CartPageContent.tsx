@@ -19,34 +19,37 @@ export default function CartPageContent({ userId }: { userId: string }) {
 
     if (items.length === 0) {
         return (
-            <div className='cart__empty'>
+            <section className='cart__empty' aria-label="Empty Cart">
                 <h2 className='cart__empty_title'>Your cart is empty</h2>
                 <p className='cart__empty_message'>Start shopping to add items to your cart</p>
                 <Link href="/" className='cart__empty_link'>Continue Shopping</Link>
-            </div>
+            </section>
         );
     }
 
     return (
-        <div className={'cart__items_container'}>
-            <div className={'cart__items'}>
-                {items.map((item) => (
-                    <CartItem key={item.cart_item_id} item={item} />
-                ))}
-            </div>
+        <div className='cart__items_container'>
+            <section aria-label="Cart Items" className='cart__items_section'>
+                <ul className='cart__items'>
+                    {items.map((item) => (
+                        <li key={item.cart_item_id} className='cart__item'>
+                            <CartItem item={item} />
+                        </li>
+                    ))}
+                </ul>
+            </section>
             {/* Clear Cart Button */}
             <button
                 onClick={() => clearCart()}
-                className={'cart__button_clear'}
-                    /* disabled={isLoading} */ >
-                Clear Cart
+                className='cart__button_clear'
+                aria-label={`Clear cart with ${totalItems} items totaling $${totalPrice.toFixed(2)}`}>Clear Cart
             </button>
             {/* Cart Summary */}
-            <div className={'cart__summary'}>
+            <section className='cart__summary_section' aria-label="Cart Summary">
                 <CartSummary
                     totalItems={totalItems}
                     totalPrice={totalPrice} />
-            </div>
+            </section>
 
         </div>
     );

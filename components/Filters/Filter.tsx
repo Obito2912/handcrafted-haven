@@ -63,8 +63,8 @@ export default function ProductFilters({
   };
 
   return (
-    <div>
-      <form className="product-filters__form" onSubmit={handleSubmit}>
+    <section aria-label='filters heading'>
+      <form className="product-filters__form" onSubmit={handleSubmit} aria-label="Product Filters" role='search'>
         <div className="product-filters__container">
           <div className="product-filters__row">
             <label className="product-filters__field" htmlFor="q">
@@ -89,7 +89,8 @@ export default function ProductFilters({
                 min="0"
                 step="0.01"
                 value={filters.minPrice}
-                onChange={(e) => handleFilterChange("minPrice", e.target.value)}
+                onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+                aria-label='Minimum price in dollars'
               />
             </label>
             <label className="product-filters__field" htmlFor="maxPrice">
@@ -102,7 +103,8 @@ export default function ProductFilters({
                 min="0"
                 step="0.01"
                 value={filters.maxPrice}
-                onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
+                onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                aria-label='Maximum price in dollars'
               />
             </label>
             <label className="product-filters__field" htmlFor="rating">
@@ -155,6 +157,6 @@ export default function ProductFilters({
           </div>
         </div>
       </form>
-    </div>
+    </section>
   );
 }

@@ -1,15 +1,16 @@
 .header {
-    /* background-color: rgb(41, 41, 41); */
-    background-color: #fff;
-    border: 3px solid #6D543A;
-    border-radius: 10px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #495867;
-    padding: 0 1em;
+  /* background-color: rgb(41, 41, 41); */
+  background-color: #fff;
+  border: 3px solid #6D543A;
+  border-radius: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #495867;
+  padding: 0 1em;
 }
+
 .header__logo-container {
   display: flex;
   align-items: center;
@@ -24,62 +25,66 @@
 }
 
 .fa-house {
-    font-size: 2rem;
-    color: #6D543A;
+  font-size: 2rem;
+  color: #327b2c;
+}
+
+.header__logo-container .fa-house {
+  margin-right: -5px;
 }
 
 .fa-leaf {
-    color: #327b2c;
-    font-size: 1.5rem;
+  color: #327b2c;
+  font-size: 1.5rem;
 }
 
 .header__title {
-    font-size: 1.5rem;
-    font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .header__settings-container {
-    display: flex;
-    align-items: center;
-    gap: 1em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
 }
 
 .header__profile-image {
-    display: block;
-    width: 44px;
-    height: 44px;
-    border: 2px solid #6D543A;
-    border-radius: 50%;
-    object-fit: cover;
+  display: block;
+  width: 44px;
+  height: 44px;
+  border: 2px solid #6D543A;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .header__settings-button,
 .signin-btn {
-    border: 1px solid #495867;
-    padding: 0.3em 0.6em;
-    border-radius: 8px;
-    background: transparent;
-    font-size: 1.1rem;
-    cursor: pointer;
+  border: 1px solid #495867;
+  padding: 0.3em 0.6em;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 1.1rem;
+  cursor: pointer;
 }
 
 .header__settings-button,
 .signin-btn {
-    text-decoration: none;
-    color: #495867;
+  text-decoration: none;
+  color: #495867;
 }
 
 .header__settings-button:hover,
 .header__settings-button:focus,
 .signin-btn:hover,
 .signin-btn:focus {
-    border: 2px solid #6D543A;
-    color: #6D543A;
+  border: 2px solid #6D543A;
+  color: #6D543A;
 }
 
 .active {
-    border: 2px solid #6D543A;
-    color: #6D543A;
+  border: 2px solid #6D543A;
+  color: #6D543A;
 }
 
 /* Responsive: tablet and down. */

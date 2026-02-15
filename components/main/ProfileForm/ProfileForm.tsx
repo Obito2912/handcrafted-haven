@@ -24,7 +24,7 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
     <form
       action={formAction}
       className={`${styles.form}`}
-      key={initialValues?.user_type}
+      key={initialValues?.user_type} aria-label="Edit Profile Form"
     >
       <label className={`${styles.form_label}`} htmlFor="name">
         Name
@@ -33,10 +33,9 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
           type="text"
           id="name"
           name="name"
-          autoComplete="name"
+          autoComplete="name" required aria-required="true"
           defaultValue={state?.values?.name ?? initialValues?.name}
           // Name validation matching ProfileSchema: required, min 2, max 100
-          required
           minLength={2}
           maxLength={100}
           title="Name must be at least 2 characters"
@@ -49,11 +48,9 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
           type="number"
           id="age"
           name="age"
-          defaultValue={state?.values?.age ?? initialValues?.age}
+          min={13} max={120} required aria-required="true" defaultValue={state?.values?.age ?? initialValues?.age}
           // Age range validation: 10-120 (matches backend ProfileSchema)
           // Min 10 ensures no children, max 120 is reasonable upper limit
-          min="10"
-          max="120"
           // Whole numbers only for age
           step="1"
           title="Age must be between 10 and 120"
@@ -65,7 +62,7 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
           className={`${styles.form_input}`}
           id="bio"
           name="bio"
-          rows={3}
+          aria-label="Tell others about yourself" rows={3}
           defaultValue={state?.values?.bio ?? initialValues?.bio}
           // Bio max length 500 chars (matches backend schema)
           // Prevents excessively long bios that could break UI
@@ -79,9 +76,8 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
           className={`${styles.form_input}`}
           id="gender"
           name="gender"
-          defaultValue={state?.values?.gender ?? initialValues?.gender}
+          defaultValue={state?.values?.gender ?? initialValues?.gender} required aria-required="true"
           // Gender is required field (enum validation: "male" | "female")
-          required
           title="Please select your gender"
         >
           <option value="" disabled>
@@ -102,7 +98,7 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
           id="profile-image"
           name="image_url"
           autoComplete="profile-image"
-          defaultValue={state?.values?.image_url ?? initialValues?.image_url}
+          defaultValue={state?.values?.image_url ?? initialValues?.image_url} aria-label="Profile Image URL"
           // Image URL limited to 200 chars (matches backend schema)
           // Prevents excessively long URLs that could cause database issues
           maxLength={200}
@@ -115,10 +111,9 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
           className={`${styles.form_input}`}
           id="user_type"
           name="user_type"
-          defaultValue={state?.values?.user_type ?? initialValues?.user_type}
+          defaultValue={state?.values?.user_type ?? initialValues?.user_type} required aria-required="true"
           // User type is required (enum: "buyer" | "seller")
           // Determines user permissions and available features
-          required
           title="Please select your user type"
         >
           <option value="" disabled>
@@ -133,13 +128,13 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
         name="user_id"
         value={state?.values?.user_id ?? initialValues?.user_id}
       />
-      <button type="submit">Update Profile</button>
+      <button type="submit" aria-label="Update Profile">Update Profile</button>
 
-      <div className={styles.form_error}>
+      <div className={styles.form_error} role="alert" aria-live="polite">
         {state?.message && (
           <>
             {state?.success ? null : (
-              <ExclamationCircleIcon className={styles.form_error_icon} />
+              <ExclamationCircleIcon className={styles.form_error_icon} aria-hidden="true" />
             )}
             <p className={styles.form_error_text}>{state.message}</p>
           </>

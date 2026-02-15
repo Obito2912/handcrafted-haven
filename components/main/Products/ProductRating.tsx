@@ -57,16 +57,18 @@ export default function ProductRating({
               onClick={(event) => handleRate(starValue, event)}
               disabled={isPending}
               aria-label={`Rate ${starValue} star${starValue === 1 ? "" : "s"}`}
+              aria-pressed={currentRating === starValue}
             >
               <i
                 className={isActive ? "fa-solid fa-star" : "fa-regular fa-star"}
+                aria-hidden="true"
               ></i>
             </button>
           );
         })}
       </span>
-      <span className="rating-value">{ratingLabel}</span>
-      {message ? <span className="rating-message">{message}</span> : null}
+      <span className="rating-value" aria-live="polite">{ratingLabel}</span>
+      {message ? <span className="rating-message" aria-live="polite" role="status">{message}</span> : null}
     </div>
   );
 }

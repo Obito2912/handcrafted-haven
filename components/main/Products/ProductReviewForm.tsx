@@ -52,7 +52,7 @@ export default function ProductReviewForm({
   };
 
   return (
-    <form className={styles.form} action={formAction} onSubmit={handleSubmit}>
+    <form className={styles.form} action={formAction} onSubmit={handleSubmit} aria-label="Product Review Form">
       {/* Hidden inputs send data to server - not visible to user */}
       <input type="hidden" name="product_id" value={productId} />
       <input type="hidden" name="user_id" value={userId} />
@@ -73,7 +73,7 @@ export default function ProductReviewForm({
       <div
         className={styles.stars}
         role="radiogroup"
-        aria-label="Choose rating"
+        aria-label="Select a rating from 1 to 5 stars"
         aria-required="true"
       >
         {Array.from({ length: 5 }, (_, index) => {
@@ -84,6 +84,7 @@ export default function ProductReviewForm({
               key={`review-star-${starValue}`}
               // type="button" prevents form submission on star click
               type="button"
+              role="radio"
               className={isActive ? styles.starActive : styles.star}
               // aria-pressed for accessibility: indicates if star is selected
               aria-pressed={isActive}
@@ -91,36 +92,41 @@ export default function ProductReviewForm({
               onClick={() => setSelectedRating(starValue)}
               // Helpful tooltip on hover
               title={`Rate ${starValue} star${starValue > 1 ? "s" : ""}`}
+              aria-label={`Rate ${starValue} star${starValue === 1 ? "" : "s"}`}
             >
               <i
                 // FontAwesome icons: solid (filled) when active, regular (outline) when not
                 className={isActive ? "fa-solid fa-star" : "fa-regular fa-star"}
+                aria-hidden="true"
               ></i>
             </button>
           );
         })}
       </div>
-      <div className={styles.label}>Review</div>
+      <label className={styles.label} htmlFor="review">
+        Review (optional)
+      </label>
       <textarea
         className={`${styles.textarea}`}
         id="review"
         name="review"
         rows={3}
-        // Controlled component: value tied to state, onChange updates state
         value={reviewText}
+        aria-describedby="review-help"
         onChange={(e) => setReviewText(e.target.value)}
         // maxLength prevents excessive review length (1000 chars)
         maxLength={1000}
         title="Review can be up to 1000 characters"
         // placeholder provides helpful hint text when field is empty
         placeholder="Share your thoughts about this product..."
+        aria-label="Write your review"
       />
-      <button className={styles.submit} type="submit">
+      <button className={styles.submit} type="submit" aria-label="Submit your review" disabled={selectedRating === 0} aria-disabled={selectedRating === 0}>
         Save Review
       </button>
 
       {state.message ? (
-        <p className={state.success ? styles.success : styles.error}>
+        <p className={state.success ? styles.success : styles.error} role="alert" aria-live="polite">
           {state.message}
         </p>
       ) : null}
