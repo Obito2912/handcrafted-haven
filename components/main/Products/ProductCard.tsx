@@ -7,7 +7,6 @@ import { useCart } from "@/app/context/CartContext"
 import Image from "next/image"
 import Link from "next/link"
 import "./ProductCard.css"
-import "../../shared/Card/Card.css";
 import RatingStars from "@/components/shared/RatingStars/RatingStars"
 
 type ProductCardProps = {

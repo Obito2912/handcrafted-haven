@@ -59,7 +59,7 @@ export default function ProductForm({
                     />
             </label>
             <label className={`${styles.form_label}`} htmlFor="description">Description
-                <textarea className={`${styles.form_input}`} id="description" name="description" rows={3} 
+                <textarea className={`${styles.form_input}`} id="description" name="description" rows={6} 
                 required 
                 aria-required="true" 
                 defaultValue={state?.values?.description ?? initialValues?.description} 
