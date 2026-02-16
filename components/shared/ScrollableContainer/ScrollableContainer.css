@@ -3,5 +3,7 @@
     overflow-y: auto;
     min-height: 0;
     padding: 1rem;
+    justify-content: center;
+    align-items: center;
     /* Ensure the container can shrink properly */
 }

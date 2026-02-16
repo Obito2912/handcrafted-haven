@@ -379,6 +379,7 @@ async function updateProduct(
         price: formData.get("price")?.toString(),
         category: formData.get("category")?.toString(),
       },
+      success: false,
     };
   }
   const {
@@ -406,7 +407,7 @@ async function updateProduct(
               category;
         `;
     return {
-      message: "Product created successfully.",
+      message: "Product updated successfully.",
       success: true,
       values: {
         product_id: product.product_id,
@@ -420,7 +421,7 @@ async function updateProduct(
       },
     };
   } catch (error) {
-    console.error("Error creating/updating product:", error);
+    console.error("Error updating product:", error);
     return {
       message: "Error updating product. Please try again.",
       values: {
@@ -433,6 +434,7 @@ async function updateProduct(
         price: formData.get("price")?.toString(),
         category: formData.get("category")?.toString(),
       },
+      success: false,
     };
   }
   //TODO or revalidate path where products are listed
@@ -457,9 +459,9 @@ async function deleteProduct(
     revalidatePath("/products");
     redirect("/products");
   } catch (error) {
-    console.error("Error creating/updating product:", error);
+    console.error("Error deleting product:", error);
     return {
-      message: "Error updating product. Please try again.",
+      message: "Error deleting product. Please try again.",
       values: {
         product_id: formData.get("product_id")?.toString(),
         title: formData.get("title")?.toString(),
@@ -470,6 +472,7 @@ async function deleteProduct(
         price: formData.get("price")?.toString(),
         category: formData.get("category")?.toString(),
       },
+      success: false,
     };
   }
 }

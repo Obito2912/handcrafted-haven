@@ -17,13 +17,15 @@
 }
 
 .form button {
-    color: #2B2E37;
-    background: transparent;
-    border-radius: 4px;
+    color: #fff;
+    background: #6d543a;
+    border-radius: 999px;
     outline: 1px solid #c7c7c7;
     cursor: pointer;
     border: none;
-    width: fit-content
+    width: fit-content;
+     padding: 0.85rem 1.5rem;
+     font-weight: 600;
 }
 
 .form>button[type="submit"] {
@@ -74,7 +76,11 @@
     color: #ef4444;
     font-size: 1rem;
 }
-
+.form_success_text {
+    color: #2b7a39;
+    font-size: 1rem;
+    font-weight: 600;
+}
 
 :global(.circle-icon) {
     height: 1.5rem;

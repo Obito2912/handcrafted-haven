@@ -8,6 +8,8 @@
 
 .cart__item_container {
     display: flex;
+    gap: 1rem;
+    flex-direction: row;
     width: 100%;
 }
 
@@ -86,4 +88,13 @@
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+}
+
+@media (max-width: 900px) {
+    .cart__item_container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
 }

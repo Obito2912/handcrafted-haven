@@ -9,6 +9,7 @@ import {
     clearCartAction,
     fetchCartItemsAction
 } from '../actions/cartActions';
+import { redirect } from "next/navigation";
 
 type CartContextType = {
     items: CartItemWithProduct[];
@@ -44,7 +45,10 @@ export function CartProvider({
     }, 0);
 
     const addToCart = async (productId: string, quantity = 1) => {
-        if (!userId) return;
+        if (!userId) 
+        {
+            redirect('/login');
+        }
 
         setIsLoading(true);
         try {

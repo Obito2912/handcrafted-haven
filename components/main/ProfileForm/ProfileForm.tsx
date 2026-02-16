@@ -19,7 +19,8 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
   };
 
   const [state, formAction] = useActionState(updateUserProfile, initialState);
-
+  const hasMessage = Boolean(state?.message);
+  const isSuccess = state?.success === true;
   return (
     <form
       action={formAction}
@@ -130,16 +131,26 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
       />
       <button type="submit" aria-label="Update Profile">Update Profile</button>
 
-      <div className={styles.form_error} role="alert" aria-live="polite">
-        {state?.message && (
-          <>
-            {state?.success ? null : (
-              <ExclamationCircleIcon className={styles.form_error_icon} aria-hidden="true" />
-            )}
-            <p className={styles.form_error_text}>{state.message}</p>
-          </>
-        )}
-      </div>
+    <div
+      className={styles.form_error}
+      role={hasMessage ? (isSuccess ? "status" : "alert") : undefined}
+      aria-live={hasMessage ? (isSuccess ? "polite" : "assertive") : undefined}
+      aria-atomic={hasMessage ? true : undefined}
+    >
+      {hasMessage && (
+        <>
+          {!isSuccess && (
+            <ExclamationCircleIcon
+              className={styles.form_error_icon}
+              aria-hidden="true"
+            />
+          )}
+          <p className={isSuccess ? styles.form_success_text : styles.form_error_text}>
+            {state.message}
+          </p>
+        </>
+      )}
+    </div>
     </form>
   );
 }

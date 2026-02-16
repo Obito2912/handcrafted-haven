@@ -41,7 +41,8 @@ export default function ProductForm({
     initialState,
   );
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-
+  const hasMessage = Boolean(state?.message);
+  const isSuccess = state?.success === true;
     // const [isUploading, setIsUploading] = useState(false);
     if (!userId) {
         return <p role="alert" className={styles.form_error_text}>You must be logged in to create a product.</p>;
@@ -161,16 +162,26 @@ export default function ProductForm({
                 </Link>
             </button>            
             </div>
-      <div className={styles.form_error} role="alert" aria-live="polite">
-        {state?.message && (
-          <>
-            {state?.success ? null : (
-              <ExclamationCircleIcon className={styles.form_error_icon} aria-hidden="true" />
+        <div
+        className={styles.form_error}
+        role={hasMessage ? (isSuccess ? "status" : "alert") : undefined}
+        aria-live={hasMessage ? (isSuccess ? "polite" : "assertive") : undefined}
+        aria-atomic={hasMessage ? true : undefined}
+        >
+        {hasMessage && (
+            <>
+            {!isSuccess && (
+                <ExclamationCircleIcon
+                className={styles.form_error_icon}
+                aria-hidden="true"
+                />
             )}
-            <p className={styles.form_error_text}>{state.message}</p>
-          </>
+            <p className={isSuccess ? styles.form_success_text : styles.form_error_text}>
+                {state.message}
+            </p>
+            </>
         )}
-      </div>
+        </div>
     </form>
   );
 }
