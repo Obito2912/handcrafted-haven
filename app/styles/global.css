@@ -1,3 +1,15 @@
+:root {
+  --color-background: #fefae0;
+  --color-primary: #606c38;
+  --color-secondary: #dda15e;
+  --color-accent: #bc6c25;
+  --color-link: #4993fb;
+  --color-link-hover: #4ADE1E;
+  --color-text-light: #fefefe;
+  --color-text-dark: #283618;
+
+}
+
 @import "tailwindcss";
 @import "./global-large.css";
 
@@ -63,12 +75,12 @@
 
 ::-webkit-scrollbar {
   width: 6px;
-  background-color: #000;
+  background-color: var(--color-text-dark);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #ffffff;
+  background-color: var(--color-text-light);
   border-radius: 3px;
 }
 
