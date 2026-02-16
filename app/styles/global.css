@@ -1,3 +1,5 @@
+@import "tailwindcss";
+@import "./global-large.css";
 :root {
   --color-background: #fefae0;
   --color-primary: #606c38;
@@ -9,10 +11,7 @@
   --color-text-dark: #283618;
 
 }
-
-@import "tailwindcss";
-@import "./global-large.css";
-
+  
 * {
   margin: 0;
   padding: 0;
