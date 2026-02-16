@@ -42,12 +42,14 @@ export default async function ProductReviewPage({
   if (!userId) {
     return (
       <>
+        <div className={styles.reviews}>
         <Breadcrumbs
           breadcrumbs={[
             { label: "Home", href: "/" },
             { label: productValue.title ?? "Product", href: `/products/view/${productValue.product_id}`, active: true },
           ]}
         />
+
         <ScrollableContainer>
           <div className={styles.details}>
             <h1>Write a review</h1>
@@ -55,12 +57,15 @@ export default async function ProductReviewPage({
             <Link href="/login">Go to login</Link>
           </div>
         </ScrollableContainer>
+        </div>
       </>
     );
   }
 
   return (
-    <>    <Breadcrumbs
+    <>    
+    <div className={styles.reviews}>
+    <Breadcrumbs
       breadcrumbs={[
         { label: "Home", href: "/" },
         { label: productValue.title ?? "Product", href: `/products/view/${productValue.product_id}`, active: true },
@@ -81,6 +86,7 @@ export default async function ProductReviewPage({
           </Link>
         </div>
       </ScrollableContainer>
+      </div>
     </>
   );
 }

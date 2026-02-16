@@ -59,10 +59,9 @@ export default function ProductReviewForm({
       {/* selectedRating state is passed to server via hidden input */}
       <input type="hidden" name="rating" value={selectedRating} />
 
-      <div className={styles.label}>
-        {/* Red asterisk indicates required field */}
+      {/* <div className={styles.label}>
         Rating <span style={{ color: "#ef4444" }}>*</span>
-      </div>
+      </div> */}
 
       {/* 
         Custom star rating component:
