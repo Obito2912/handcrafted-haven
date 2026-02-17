@@ -1,16 +1,26 @@
-.artisanProfile{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    gap: .75rem;
-    /* background: #fffaf4; */
+.artisanProfile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  /* gap: .75rem; */
+  /* background: #fffaf4; */
+  background-color: #fff;
+  border: 2px solid #6D543A;
+  border-radius: 8px;
+}
+
+.artisanProfile__heading {
+  color: #6D543A;
 }
 
 .artisanProducts {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  gap: 1rem; /* space between the heading and ProductCardWrapper */
+  gap: 1rem;
+}
 
+.artisanProfile__bio {
+  margin: 10px 0;
 }
