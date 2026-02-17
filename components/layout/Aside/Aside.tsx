@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import "./Aside.css";
-import Navigation from "../Navigation/Navigation";
-import { signOut } from "next-auth/react";
-import { usePathname } from "next/navigation";
+import './Aside.css';
+import Navigation from '../Navigation/Navigation';
+import { signOut } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 
 type AsideProps = {
   isAuthenticated: boolean;
-  userType: "buyer" | "seller";
+  userType: 'buyer' | 'seller';
 };
 
 export default function Aside({ isAuthenticated, userType }: AsideProps) {

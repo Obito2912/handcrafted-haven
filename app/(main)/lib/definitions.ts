@@ -10,21 +10,21 @@ export type UserProfile = {
   user_id: string;
   name: string;
   age: number | null;
-  gender: "male" | "female" | null;
+  gender: 'male' | 'female' | null;
   bio: string | null;
   image_url: string | null;
-  user_type: "buyer" | "seller" | null;
+  user_type: 'buyer' | 'seller' | null;
   created_at: string; // ISO date string
 };
 
 export const ProductCategories = [
-  "painting",
-  "sculpture",
-  "craft",
-  "drawing",
-  "photography",
-  "art",
-  "other",
+  'painting',
+  'sculpture',
+  'craft',
+  'drawing',
+  'photography',
+  'art',
+  'other',
 ] as const;
 
 export type ProductCategory = (typeof ProductCategories)[number];

@@ -1,6 +1,6 @@
-import { fetchProductData } from "@/app/(main)/lib/data";
-import { Product, ProductAverageRating, UserFavoriteProduct } from "@/app/(main)/lib/definitions";
-import ProductCard from "./ProductCard";
+import { fetchProductData } from '@/app/(main)/lib/data';
+import { Product, ProductAverageRating, UserFavoriteProduct } from '@/app/(main)/lib/definitions';
+import ProductCard from './ProductCard';
 import '../../main/Products/ProductCard.css';
 
 type ProductCardWrapperProps = {

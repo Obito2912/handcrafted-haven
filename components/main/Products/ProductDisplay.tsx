@@ -1,12 +1,12 @@
 
-import Image from "next/image";
-import styles from "./ProductDisplay.module.css";
-import { ProductValue } from "@/app/(main)/lib/schemas/productSchema";
-import { UserProfileValue } from "@/app/(main)/lib/schemas/profileSchemas";
-import { ProductRating, ProductRatingDisplay } from "@/app/(main)/lib/definitions";
-import Link from "next/link";
-import RatingStars from "../../shared/RatingStars/RatingStars";
-import { AllReviewsDisplay } from "./AllReviewsDisplay";
+import Image from 'next/image';
+import styles from './ProductDisplay.module.css';
+import { ProductValue } from '@/app/(main)/lib/schemas/productSchema';
+import { UserProfileValue } from '@/app/(main)/lib/schemas/profileSchemas';
+import { ProductRating, ProductRatingDisplay } from '@/app/(main)/lib/definitions';
+import Link from 'next/link';
+import RatingStars from '../../shared/RatingStars/RatingStars';
+import { AllReviewsDisplay } from './AllReviewsDisplay';
 
 type ProductDisplayProps = {
   product: ProductValue;
@@ -43,7 +43,7 @@ export default function ProductDisplay({ product, productSeller, averageRating, 
               <div className={styles.ratingRow} aria-label="Product Rating">
                 <RatingStars rating={averageRating} />
                 <span className={styles.ratingCount}>
-                  {reviewCount} review{reviewCount === 1 ? "" : "s"}
+                  {reviewCount} review{reviewCount === 1 ? '' : 's'}
                 </span>
               </div>
               {userRating ? (

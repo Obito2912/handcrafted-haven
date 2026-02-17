@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import styles from "@/components/shared/Form/Form.module.css";
-import { useActionState } from "react";
-import { updateUserProfile } from "@/app/(main)/lib/actions";
-import type { ProfileFormState } from "@/app/(main)/lib/schemas/profileSchemas";
-import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
-import type { UserProfileValue } from "@/app/(main)/lib/schemas/profileSchemas";
+import styles from '@/components/shared/Form/Form.module.css';
+import { useActionState } from 'react';
+import { updateUserProfile } from '@/app/(main)/lib/actions';
+import type { ProfileFormState } from '@/app/(main)/lib/schemas/profileSchemas';
+import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
+import type { UserProfileValue } from '@/app/(main)/lib/schemas/profileSchemas';
 
 type ProfileFormProps = {
   initialValues?: UserProfileValue;
@@ -133,8 +133,8 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
 
     <div
       className={styles.form_error}
-      role={hasMessage ? (isSuccess ? "status" : "alert") : undefined}
-      aria-live={hasMessage ? (isSuccess ? "polite" : "assertive") : undefined}
+      role={hasMessage ? (isSuccess ? 'status' : 'alert') : undefined}
+      aria-live={hasMessage ? (isSuccess ? 'polite' : 'assertive') : undefined}
       aria-atomic={hasMessage ? true : undefined}
     >
       {hasMessage && (

@@ -1,16 +1,16 @@
-import { z } from "zod";
-import { ProductCategories } from "../definitions";
+import { z } from 'zod';
+import { ProductCategories } from '../definitions';
 
 export const ProductSchema = z.object({
   product_id: z.uuid(),
-  title: z.string().min(2, "Title must be at least 2 characters").max(100),
+  title: z.string().min(2, 'Title must be at least 2 characters').max(100),
   description: z
     .string()
-    .max(2000, "Description must be at most 2000 characters"),
-  image_url: z.string().max(200, "Image URL must be at most 200 characters"),
+    .max(2000, 'Description must be at most 2000 characters'),
+  image_url: z.string().max(200, 'Image URL must be at most 200 characters'),
   userId: z.uuid(),
-  quantity: z.number().min(0, "Quantity cannot be negative"),
-  price: z.number().min(0, "Price cannot be negative"),
+  quantity: z.number().min(0, 'Quantity cannot be negative'),
+  price: z.number().min(0, 'Price cannot be negative'),
   category: z.enum(ProductCategories),
 });
 

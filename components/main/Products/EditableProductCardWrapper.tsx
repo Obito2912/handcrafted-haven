@@ -1,6 +1,6 @@
-import { fetchProductData } from "@/app/(main)/lib/data";
-import { Product, ProductAverageRating } from "@/app/(main)/lib/definitions";
-import ProductCard from "./ProductCard";
+import { fetchProductData } from '@/app/(main)/lib/data';
+import { Product, ProductAverageRating } from '@/app/(main)/lib/definitions';
+import ProductCard from './ProductCard';
 import Link from 'next/link';
 
 type EditableProductCardWrapperProps = {

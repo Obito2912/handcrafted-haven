@@ -1,4 +1,4 @@
-import styles from "@/components/main/Products/ProductDisplay.module.css";
+import styles from '@/components/main/Products/ProductDisplay.module.css';
 
 export default function RatingStars({ rating }: { rating: number | null | undefined }) {
   if (rating === null || rating === undefined) {
@@ -14,7 +14,7 @@ export default function RatingStars({ rating }: { rating: number | null | undefi
         <i
           key={`rating-star-${index}`}
           className={
-            index < rating ? "fa-solid fa-star" : "fa-regular fa-star"
+            index < rating ? 'fa-solid fa-star' : 'fa-regular fa-star'
           }
           aria-hidden="true"
         ></i>

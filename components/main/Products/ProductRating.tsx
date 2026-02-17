@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import type { MouseEvent } from "react";
-import { rateProduct } from "@/app/(main)/lib/actions";
+import { useState, useTransition } from 'react';
+import type { MouseEvent } from 'react';
+import { rateProduct } from '@/app/(main)/lib/actions';
 
 type ProductRatingProps = {
   productId: string;
@@ -21,7 +21,7 @@ export default function ProductRating({
 
   const hasRating = currentRating !== null && currentRating !== undefined;
   const roundedRating = hasRating ? Math.round(currentRating) : 0;
-  const ratingLabel = hasRating ? currentRating : "No ratings";
+  const ratingLabel = hasRating ? currentRating : 'No ratings';
 
   const handleRate = (value: number, event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -42,7 +42,7 @@ export default function ProductRating({
     <div
       className="card__icon-container"
       aria-label={
-        hasRating ? `Rated ${ratingLabel} out of 5` : "No ratings yet"
+        hasRating ? `Rated ${ratingLabel} out of 5` : 'No ratings yet'
       }
     >
       <span className="rating-stars" aria-hidden="true">
@@ -56,11 +56,11 @@ export default function ProductRating({
               className="rating-button"
               onClick={(event) => handleRate(starValue, event)}
               disabled={isPending}
-              aria-label={`Rate ${starValue} star${starValue === 1 ? "" : "s"}`}
+              aria-label={`Rate ${starValue} star${starValue === 1 ? '' : 's'}`}
               aria-pressed={currentRating === starValue}
             >
               <i
-                className={isActive ? "fa-solid fa-star" : "fa-regular fa-star"}
+                className={isActive ? 'fa-solid fa-star' : 'fa-regular fa-star'}
                 aria-hidden="true"
               ></i>
             </button>

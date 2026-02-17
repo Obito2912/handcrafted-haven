@@ -1,7 +1,7 @@
-import { ProductRatingDisplay } from "@/app/(main)/lib/definitions";
-import Image from "next/image";
-import styles from "./ProductDisplay.module.css";
-import RatingStars from "@/components/shared/RatingStars/RatingStars";
+import { ProductRatingDisplay } from '@/app/(main)/lib/definitions';
+import Image from 'next/image';
+import styles from './ProductDisplay.module.css';
+import RatingStars from '@/components/shared/RatingStars/RatingStars';
 type RatingCardProps = {
     rating: ProductRatingDisplay;
 };

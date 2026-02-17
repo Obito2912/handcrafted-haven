@@ -1,9 +1,9 @@
 // app/cart/page.tsx
-import { auth } from "@/auth";
-import { redirect } from "next/dist/client/components/navigation";
-import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
-import CartPageContent from "@/components/cart/CartPageContent/CartPageContent";
-import styles from "./cart.module.css";
+import { auth } from '@/auth';
+import { redirect } from 'next/dist/client/components/navigation';
+import ScrollableContainer from '@/components/shared/ScrollableContainer/ScrollableContainer';
+import CartPageContent from '@/components/cart/CartPageContent/CartPageContent';
+import styles from './cart.module.css';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ export default async function Cart() {
   const session = await auth();
 
   if (!session?.user?.id) {
-    redirect("/login");
+    redirect('/login');
   }
 
   return (

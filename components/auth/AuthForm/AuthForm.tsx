@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import styles from "@/components/shared/Form/Form.module.css";
-import { useSearchParams } from "next/navigation";
-import { useActionState } from "react";
-import { handleAuth } from "../../../app/(main)/lib/actions";
-import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
+import styles from '@/components/shared/Form/Form.module.css';
+import { useSearchParams } from 'next/navigation';
+import { useActionState } from 'react';
+import { handleAuth } from '../../../app/(main)/lib/actions';
+import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 
 export default function AuthForm({
   signup,
@@ -14,12 +14,12 @@ export default function AuthForm({
   setSignup: (value: boolean) => void;
 }) {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const callbackUrl = searchParams.get('callbackUrl') || '/';
   const [state, formAction, isPending] = useActionState(handleAuth, undefined);
 
   return (
     <form action={formAction} className={`${styles.form}`} aria-label={signup ? 'Sign Up Form' : 'Login Form'}>
-      <input type="hidden" name="mode" value={signup ? "signup" : "login"} />
+      <input type="hidden" name="mode" value={signup ? 'signup' : 'login'} />
       {signup && (
         <>
           <label className={`${styles.form_label}`} htmlFor="name">
@@ -82,14 +82,14 @@ export default function AuthForm({
       <input type="hidden" name="redirectTo" value={callbackUrl} />
       <button type="submit" disabled={isPending}>
         {isPending && <span className="spinner" />}
-        {signup ? "Sign Up" : "Login"}
+        {signup ? 'Sign Up' : 'Login'}
       </button>
       <div className={`${styles.form_text_container}`}>
         <span className={`${styles.form_text}`}>
-          {signup ? "Already have an account?" : "New here? Join the community"}
+          {signup ? 'Already have an account?' : 'New here? Join the community'}
         </span>
         <button type="button" onClick={() => setSignup(!signup)} aria-label={signup ? 'Switch to Login' : 'Switch to Sign Up'}>
-          {signup ? "Login" : "Sign Up"}
+          {signup ? 'Login' : 'Sign Up'}
         </button>
       </div>
       <div className={styles.form_error} role="alert" aria-live="polite">

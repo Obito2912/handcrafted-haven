@@ -1,14 +1,14 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import ScrollableContainer from '@/components/shared/ScrollableContainer/ScrollableContainer';
 import {
   fetchProductDetail,
-} from "@/app/(main)/lib/data";
-import { getLoggedInInfo } from "@/app/(main)/lib/session";
-import ProductReviewForm from "@/components/main/Products/ProductReviewForm";
-import styles from "@/components/main/Products/ProductReviewForm.module.css";
-import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
-import { Metadata } from "next";
+} from '@/app/(main)/lib/data';
+import { getLoggedInInfo } from '@/app/(main)/lib/session';
+import ProductReviewForm from '@/components/main/Products/ProductReviewForm';
+import styles from '@/components/main/Products/ProductReviewForm.module.css';
+import Breadcrumbs from '@/components/shared/Breadcrumbs/Breadcrumbs';
+import { Metadata } from 'next';
 
 export async function generateMetadata(
   props: { params: Promise<{ id: string }> }
@@ -17,8 +17,8 @@ export async function generateMetadata(
   const product = await fetchProductDetail(params.id);
 
   return {
-    title: `Review ${product?.productValue?.title ?? "Product"}`,
-    description: `Write a review for the product "${product?.productValue?.title ?? "this product"}" in your shop at Handcrafted Haven.`,
+    title: `Review ${product?.productValue?.title ?? 'Product'}`,
+    description: `Write a review for the product "${product?.productValue?.title ?? 'this product'}" in your shop at Handcrafted Haven.`,
   };
 }
 
@@ -35,7 +35,7 @@ export default async function ProductReviewPage({
   const userProductRating = allRatings?.find(r => r.productId === id && r.userId === userId)?.rating;
 
   if (!productValue) {
-    redirect("/");
+    redirect('/');
   }
 
   // Require login so the rating can be tied to the user.
@@ -45,8 +45,8 @@ export default async function ProductReviewPage({
         <div className={styles.reviews}>
         <Breadcrumbs
           breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: productValue.title ?? "Product", href: `/products/view/${productValue.product_id}`, active: true },
+            { label: 'Home', href: '/' },
+            { label: productValue.title ?? 'Product', href: `/products/view/${productValue.product_id}`, active: true },
           ]}
         />
 
@@ -67,9 +67,9 @@ export default async function ProductReviewPage({
     <div className={styles.reviews}>
     <Breadcrumbs
       breadcrumbs={[
-        { label: "Home", href: "/" },
-        { label: productValue.title ?? "Product", href: `/products/view/${productValue.product_id}`, active: true },
-        { label: "Write a review", href: `/products/view/${productValue.product_id}/review`, active: true },
+        { label: 'Home', href: '/' },
+        { label: productValue.title ?? 'Product', href: `/products/view/${productValue.product_id}`, active: true },
+        { label: 'Write a review', href: `/products/view/${productValue.product_id}/review`, active: true },
       ]}
     />
       <ScrollableContainer>

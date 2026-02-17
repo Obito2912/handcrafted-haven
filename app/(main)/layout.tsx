@@ -1,9 +1,9 @@
-import Aside from "@/components/layout/Aside/Aside";
-import Footer from "@/components/shared/Footer/Footer";
-import Header from "@/components/shared/Header/Header";
-import { auth } from "@/auth";
-import { fetchUserProfile } from "@/app/(main)/lib/data";
-import { CartProvider } from "../context/CartContext";
+import Aside from '@/components/layout/Aside/Aside';
+import Footer from '@/components/shared/Footer/Footer';
+import Header from '@/components/shared/Header/Header';
+import { auth } from '@/auth';
+import { fetchUserProfile } from '@/app/(main)/lib/data';
+import { CartProvider } from '../context/CartContext';
 
 export default async function MainLayout({ children }: { children: React.ReactNode }) {
     const session = await auth();

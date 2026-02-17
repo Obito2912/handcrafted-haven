@@ -1,6 +1,6 @@
-import { ProductRating, ProductRatingDisplay } from "@/app/(main)/lib/definitions";
-import { RatingCard } from "./RatingCard";
-import styles from "./ProductDisplay.module.css";
+import { ProductRating, ProductRatingDisplay } from '@/app/(main)/lib/definitions';
+import { RatingCard } from './RatingCard';
+import styles from './ProductDisplay.module.css';
 
 type AllReviewsDisplayProps = {
     productId: string;

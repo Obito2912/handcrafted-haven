@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useActionState, useState } from "react";
-import { rateProductFromForm } from "@/app/(main)/lib/actions";
-import styles from "./ProductReviewForm.module.css";
+import { useActionState, useState } from 'react';
+import { rateProductFromForm } from '@/app/(main)/lib/actions';
+import styles from './ProductReviewForm.module.css';
 
 type ProductReviewFormProps = {
   productId: string;
@@ -35,7 +35,7 @@ export default function ProductReviewForm({
   const [selectedRating, setSelectedRating] = useState<number>(
     initialRating ?? 0,
   );
-  const [reviewText, setReviewText] = useState<string>(initialReview ?? "");
+  const [reviewText, setReviewText] = useState<string>(initialReview ?? '');
 
   /**
    * Custom validation handler for rating selection
@@ -46,7 +46,7 @@ export default function ProductReviewForm({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (selectedRating === 0) {
       e.preventDefault();
-      alert("Please select a rating before submitting");
+      alert('Please select a rating before submitting');
       return;
     }
   };
@@ -90,12 +90,12 @@ export default function ProductReviewForm({
               // onClick updates state, triggers re-render with new active stars
               onClick={() => setSelectedRating(starValue)}
               // Helpful tooltip on hover
-              title={`Rate ${starValue} star${starValue > 1 ? "s" : ""}`}
-              aria-label={`Rate ${starValue} star${starValue === 1 ? "" : "s"}`}
+              title={`Rate ${starValue} star${starValue > 1 ? 's' : ''}`}
+              aria-label={`Rate ${starValue} star${starValue === 1 ? '' : 's'}`}
             >
               <i
                 // FontAwesome icons: solid (filled) when active, regular (outline) when not
-                className={isActive ? "fa-solid fa-star" : "fa-regular fa-star"}
+                className={isActive ? 'fa-solid fa-star' : 'fa-regular fa-star'}
                 aria-hidden="true"
               ></i>
             </button>

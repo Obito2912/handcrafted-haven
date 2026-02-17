@@ -1,20 +1,20 @@
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import { LoginFormSchema } from "@/app/(main)/lib/schemas/authSchemas";
-import { authConfig } from "./auth.config";
-import type { User } from "@/app/(main)/lib/definitions";
-import bcrypt from "bcrypt";
-import postgres from "postgres";
+import NextAuth from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import { LoginFormSchema } from '@/app/(main)/lib/schemas/authSchemas';
+import { authConfig } from './auth.config';
+import type { User } from '@/app/(main)/lib/definitions';
+import bcrypt from 'bcrypt';
+import postgres from 'postgres';
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 async function getUser(email: string): Promise<User | undefined> {
   try {
     const user = await sql<User[]>`SELECT * FROM users WHERE email=${email}`;
     return user[0];
   } catch (error) {
-    console.error("Failed to fetch user:", error);
-    throw new Error("Failed to fetch user.");
+    console.error('Failed to fetch user:', error);
+    throw new Error('Failed to fetch user.');
   }
 }
 
@@ -35,7 +35,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
           );
           if (passwordsMatch) return user;
         }
-        console.log("Invalid credentials provided.");
+        console.log('Invalid credentials provided.');
         return null;
       },
     }),

@@ -1,6 +1,6 @@
-import { Product, ProductAverageRating, UserFavoriteProduct } from "@/app/(main)/lib/definitions";
-import styles from "./ArtisansDisplay.module.css";
-import ProductCardWrapper from "../Products/ProductCardWrapper";
+import { Product, ProductAverageRating, UserFavoriteProduct } from '@/app/(main)/lib/definitions';
+import styles from './ArtisansDisplay.module.css';
+import ProductCardWrapper from '../Products/ProductCardWrapper';
 
 type ArtisansProductDisplayProps = {
     products: Product[];
@@ -13,7 +13,7 @@ export default function ArtisansProductDisplay({
   products = [],
   productRatings = [],
   userFavoriteProducts = [],
-  userId = "",
+  userId = '',
 }: ArtisansProductDisplayProps) {   
     return (     
         <div className={styles.artisanProducts}>

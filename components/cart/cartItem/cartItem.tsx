@@ -1,9 +1,9 @@
 'use client';
 
-import { useCart } from "@/app/context/CartContext";
-import { CartItemWithProduct } from "@/app/(main)/lib/definitions";
-import Image from "next/image";
-import "./CartItem.css";
+import { useCart } from '@/app/context/CartContext';
+import { CartItemWithProduct } from '@/app/(main)/lib/definitions';
+import Image from 'next/image';
+import './CartItem.css';
 
 export default function CartItem({ item }: { item: CartItemWithProduct }) {
   const { updateQuantity, removeFromCart, isLoading } = useCart();
@@ -29,7 +29,7 @@ export default function CartItem({ item }: { item: CartItemWithProduct }) {
         {/* Product Image */}
         <div className={'cart__item_image-container'}>
           <Image
-            src={item.product.image_url || "/placeholder-image.jpg"}
+            src={item.product.image_url || '/placeholder-image.jpg'}
             alt={`${item.product.title} image`}
             className={'cart__item_image'}
             width={150}

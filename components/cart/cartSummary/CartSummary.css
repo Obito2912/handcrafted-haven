@@ -1,27 +1,78 @@
 .summary {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .strong {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .summary__title {
-    font-size: 1.5rem;
-    color: #6D543A;
-    text-align: center;
+  font-size: 1.5rem;
+  color: #6d543a;
+  text-align: center;
 }
 
 .summary__checkout_button {
-    padding: 0.75em 1.5em;
-    background-color: #6D543A;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    width: 80%;
-    margin-inline: auto;
+  padding: 0.75em 1.5em;
+  background-color: #6d543a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 80%;
+  margin-inline: auto;
+  transition:
+    background-color 0.3s ease,
+    opacity 0.3s ease;
+}
+
+/* Hover state of checkout button */
+.summary__checkout_button:hover:not(:disabled) {
+  background-color: #8b6f47;
+}
+
+/* Disabled state when processing or cart is empty */
+.summary__checkout_button:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Message container below checkout button */
+.summary__message {
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: center;
+  font-weight: 500;
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Success message with green text */
+.summary__message--success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #4caf50;
+}
+
+/* Error message with red text */
+.summary__message--error {
+  background-color: #ffe5e5;
+  color: #c62828;
+  border: 1px solid #ef5350;
+}
+
+/* Message slide-in animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

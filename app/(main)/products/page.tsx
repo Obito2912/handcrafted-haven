@@ -1,15 +1,15 @@
-import EditableProductCardWrapper from "@/components/main/Products/EditableProductCardWrapper";
-import { getLoggedInInfo } from "../lib/session";
-import { fetchProductDataByUser } from "../lib/data";
-import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
-import Link from "next/link";
-import styles from "./products.module.css";
-import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
-import { Metadata } from "next";
+import EditableProductCardWrapper from '@/components/main/Products/EditableProductCardWrapper';
+import { getLoggedInInfo } from '../lib/session';
+import { fetchProductDataByUser } from '../lib/data';
+import ScrollableContainer from '@/components/shared/ScrollableContainer/ScrollableContainer';
+import Link from 'next/link';
+import styles from './products.module.css';
+import Breadcrumbs from '@/components/shared/Breadcrumbs/Breadcrumbs';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Manage Shop",
-  description: "View and manage your handmade products in your shop at Handcrafted Haven.",
+  title: 'Manage Shop',
+  description: 'View and manage your handmade products in your shop at Handcrafted Haven.',
 };
 
 export default async function Products() {
@@ -22,8 +22,8 @@ export default async function Products() {
     <div className={styles.products__container}>
       <Breadcrumbs
         breadcrumbs={[
-          { label: "Home", href: "/" },
-          { label: "Manage Shop", href: "/products" },
+          { label: 'Home', href: '/' },
+          { label: 'Manage Shop', href: '/products' },
         ]}
       />
       <div className={styles.products}>
