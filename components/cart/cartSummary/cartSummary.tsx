@@ -15,12 +15,15 @@ export default function CartSummary({
 
       <dl className='summary__details'>
         <div className='summary__row'>
-          <dt className="summary__label">Items ({totalItems}):</dt>
+          <dt className="summary__label">Items: </dt>
+          <dd className="summary__value">{totalItems}</dd>
+        </div>
+        <div className='summary__row'>
+          <dt className="summary__label">Subtotal: </dt>
           <dd className="summary__value">${totalPrice.toFixed(2)}</dd>
         </div>
-
         <div className='summary__row'>
-          <dt className="summary__label">Shipping:</dt>
+          <dt className="summary__label">Shipping: </dt>
           <dd className="summary__value">Free</dd>
         </div>
 
@@ -29,7 +32,7 @@ export default function CartSummary({
         </div>
 
         <div className='summary__row summary__total'>
-          <dt className="summary__label">Total:</dt>
+          <dt className="summary__label">Total: </dt>
           <dd className="summary__value">${totalPrice.toFixed(2)}</dd>
         </div>
       </dl>

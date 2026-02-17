@@ -4,7 +4,7 @@
     gap: 1rem;
 }
 
-.strong {
+.summary__label {
     font-weight: bold;
 }
 
@@ -24,4 +24,19 @@
     font-weight: bold;
     width: 80%;
     margin-inline: auto;
+}
+
+.summary__divider {
+    margin: 10px 0;
+}
+
+.summary__details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.summary__row {
+    display: flex;
+    justify-content: space-between;
 }
