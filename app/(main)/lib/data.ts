@@ -1,4 +1,4 @@
-import postgres from 'postgres';
+import postgres from "postgres";
 import {
   Product,
   ProductAverageRating,
@@ -10,13 +10,13 @@ import {
   CartItem,
   CartItemWithProduct,
   UserFavoriteProduct,
-} from './definitions';
+} from "./definitions";
 
-import { UserProfileValue } from './schemas/profileSchemas';
-import { ProductValue } from './schemas/productSchema';
-import { toUserProfileValues, toProductValue } from './mappers';
+import { UserProfileValue } from "./schemas/profileSchemas";
+import { ProductValue } from "./schemas/productSchema";
+import { toUserProfileValues, toProductValue } from "./mappers";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 export async function fetchProductData(userId?: string): Promise<{
   productData: Product[];
@@ -55,8 +55,8 @@ export async function fetchProductData(userId?: string): Promise<{
     }
     return { productData, ratingRows, userFavorites }; //Return rating also
   } catch (error) {
-    console.error('Error fetching product data:', error);
-    throw new Error('Failed to fetch product data.');
+    console.error("Error fetching product data:", error);
+    throw new Error("Failed to fetch product data.");
   }
 }
 
@@ -145,8 +145,8 @@ export async function fetchProductsByFilters(
     }
     return { productData, ratingRows, userFavorites };
   } catch (error) {
-    console.error('Error fetching filtered product data:', error);
-    throw new Error('Failed to fetch filtered product data.');
+    console.error("Error fetching filtered product data:", error);
+    throw new Error("Failed to fetch filtered product data.");
   }
 }
 
@@ -170,8 +170,8 @@ export async function fetchUserInformation(
     `;
     return user || null;
   } catch (error) {
-    console.error('Error fetching user information:', error);
-    throw new Error('Failed to fetch user information.');
+    console.error("Error fetching user information:", error);
+    throw new Error("Failed to fetch user information.");
   }
 }
 
@@ -241,8 +241,8 @@ GROUP BY product_id`;
     }
     return { productData: products, averageRatings, allRatings, userFavorites };
   } catch (error) {
-    console.error('Error fetching user products:', error);
-    throw new Error('Failed to fetch user products.');
+    console.error("Error fetching user products:", error);
+    throw new Error("Failed to fetch user products.");
   }
 }
 
@@ -270,8 +270,8 @@ export async function fetchProductById(
     const productValue = toProductValue(products[0]);
     return productValue;
   } catch (error) {
-    console.error('Error fetching product:', error);
-    throw new Error('Failed to fetch product.');
+    console.error("Error fetching product:", error);
+    throw new Error("Failed to fetch product.");
   }
 }
 
@@ -338,8 +338,8 @@ export async function fetchProductDetail(
     const productValue = toProductValue(products[0]);
     return { productValue, averageRating, allRatings, userFavorites };
   } catch (error) {
-    console.error('Error fetching product:', error);
-    throw new Error('Failed to fetch product.');
+    console.error("Error fetching product:", error);
+    throw new Error("Failed to fetch product.");
   }
 }
 
@@ -385,8 +385,8 @@ export async function fetchProductDataByUser(userId: string): Promise<{
     }
     return { productData, averageRatings, userFavorites };
   } catch (error) {
-    console.error('Error fetching product data:', error);
-    throw new Error('Failed to fetch product data.');
+    console.error("Error fetching product data:", error);
+    throw new Error("Failed to fetch product data.");
   }
 }
 
@@ -454,8 +454,8 @@ GROUP BY product_id`;
     }
     return { productData: products, averageRatings, allRatings, userFavorites };
   } catch (error) {
-    console.error('Error fetching user products:', error);
-    throw new Error('Failed to fetch user products.');
+    console.error("Error fetching user products:", error);
+    throw new Error("Failed to fetch user products.");
   }
 }
 
@@ -483,7 +483,7 @@ export async function fetchUserProfile(
     const userProfileValues = toUserProfileValues(userProfile);
     return userProfileValues;
   } catch (error) {
-    console.error('Error fetching user profile:', error);
+    console.error("Error fetching user profile:", error);
     return undefined;
   }
 }
@@ -508,7 +508,7 @@ export async function fetchSellerUserProfiles(): Promise<
     const userProfileValues = userProfiles.map((p) => toUserProfileValues(p));
     return userProfileValues;
   } catch (error) {
-    console.error('Error fetching user profiles:', error);
+    console.error("Error fetching user profiles:", error);
     return undefined;
   }
 }
@@ -533,8 +533,8 @@ async function getOrCreateCart(userId: string): Promise<string> {
 
     return newCart[0].cart_id;
   } catch (error) {
-    console.error('Error getting or creating cart:', error);
-    throw new Error('Failed to get or create cart');
+    console.error("Error getting or creating cart:", error);
+    throw new Error("Failed to get or create cart");
   }
 }
 
@@ -605,8 +605,8 @@ export async function fetchCartItems(
       },
     }));
   } catch (error) {
-    console.error('Error fetching cart items:', error);
-    throw new Error('Failed to fetch cart items');
+    console.error("Error fetching cart items:", error);
+    throw new Error("Failed to fetch cart items");
   }
 }
 
@@ -648,8 +648,8 @@ export async function addToCart(
       UPDATE carts SET updated_at = now() WHERE cart_id = ${cartId}
     `;
   } catch (error) {
-    console.error('Error adding to cart:', error);
-    throw new Error('Failed to add item to cart');
+    console.error("Error adding to cart:", error);
+    throw new Error("Failed to add item to cart");
   }
 }
 
@@ -663,8 +663,8 @@ export async function removeFromCart(cartItemId: string): Promise<void> {
       WHERE cart_item_id = ${cartItemId}
     `;
   } catch (error) {
-    console.error('Error removing from cart:', error);
-    throw new Error('Failed to remove item from cart');
+    console.error("Error removing from cart:", error);
+    throw new Error("Failed to remove item from cart");
   }
 }
 
@@ -687,8 +687,8 @@ export async function updateCartItemQuantity(
       `;
     }
   } catch (error) {
-    console.error('Error updating cart item quantity:', error);
-    throw new Error('Failed to update cart item quantity');
+    console.error("Error updating cart item quantity:", error);
+    throw new Error("Failed to update cart item quantity");
   }
 }
 
@@ -705,8 +705,8 @@ export async function clearCart(userId: string): Promise<void> {
       )
     `;
   } catch (error) {
-    console.error('Error clearing cart:', error);
-    throw new Error('Failed to clear cart');
+    console.error("Error clearing cart:", error);
+    throw new Error("Failed to clear cart");
   }
 }
 
@@ -728,7 +728,7 @@ export async function updateProductInventory(
     `;
 
     if (product.length === 0) {
-      throw new Error('Product not found');
+      throw new Error("Product not found");
     }
 
     const currentQuantity = product[0].quantity;
@@ -746,7 +746,7 @@ export async function updateProductInventory(
       WHERE product_id = ${productId}
     `;
   } catch (error) {
-    console.error('Error updating product inventory:', error);
+    console.error("Error updating product inventory:", error);
     throw error;
   }
 }
@@ -771,8 +771,8 @@ export async function processCheckout(
     if (cartItems.length === 0) {
       return {
         success: false,
-        message: 'Cart is empty',
-        error: 'Cannot checkout with an empty cart',
+        message: "Cart is empty",
+        error: "Cannot checkout with an empty cart",
       };
     }
 
@@ -786,7 +786,7 @@ export async function processCheckout(
       if (product.length === 0) {
         return {
           success: false,
-          message: 'Product not found',
+          message: "Product not found",
           error: `Product ${item.product.title} no longer exists`,
         };
       }
@@ -795,7 +795,7 @@ export async function processCheckout(
       if (availableQuantity < item.quantity) {
         return {
           success: false,
-          message: 'Insufficient inventory',
+          message: "Insufficient inventory",
           error: `Not enough ${item.product.title} in stock. Available: ${availableQuantity}, Requested: ${item.quantity}`,
         };
       }
@@ -815,11 +815,11 @@ export async function processCheckout(
       message: `Successfully checked out ${cartItems.length} items`,
     };
   } catch (error) {
-    console.error('Error processing checkout:', error);
+    console.error("Error processing checkout:", error);
     return {
       success: false,
-      message: 'Checkout failed',
-      error: error instanceof Error ? error.message : 'Unknown error occurred',
+      message: "Checkout failed",
+      error: error instanceof Error ? error.message : "Unknown error occurred",
     };
   }
 }

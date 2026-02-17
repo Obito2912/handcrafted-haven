@@ -1,6 +1,6 @@
-import Header from '@/components/shared/Header/Header';
-import Footer from '@/components/shared/Footer/Footer';
-import '../styles/global.css';
+import Header from "@/components/shared/Header/Header";
+import Footer from "@/components/shared/Footer/Footer";
+import "../styles/global.css";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
     return (

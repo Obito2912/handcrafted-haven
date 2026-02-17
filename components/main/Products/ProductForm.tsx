@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import styles from '@/components/shared/Form/Form.module.css';
-import { useActionState, useState } from 'react';
-import { createProduct, updateOrDeleteProduct } from '@/app/(main)/lib/actions';
+import styles from "@/components/shared/Form/Form.module.css";
+import { useActionState, useState } from "react";
+import { createProduct, updateOrDeleteProduct } from "@/app/(main)/lib/actions";
 import {
   ProductFormState,
   ProductValue,
-} from '@/app/(main)/lib/schemas/productSchema';
-import { ProductCategories } from '@/app/(main)/lib/definitions';
-import ExclamationCircleIcon from '@heroicons/react/24/solid/esm/ExclamationCircleIcon';
-import Image from 'next/image.js';
-import Link from 'next/link';
+} from "@/app/(main)/lib/schemas/productSchema";
+import { ProductCategories } from "@/app/(main)/lib/definitions";
+import ExclamationCircleIcon from "@heroicons/react/24/solid/esm/ExclamationCircleIcon";
+import Image from "next/image.js";
+import Link from "next/link";
 
 type ProductFormProps = {
   initialValues?: ProductValue;
@@ -25,14 +25,14 @@ export default function ProductForm({
     message: null,
     errors: null,
     values: {
-      product_id: initialValues?.product_id ?? '',
-      title: initialValues?.title ?? '',
-      description: initialValues?.description ?? '',
-      image_url: initialValues?.image_url ?? '',
-      userId: initialValues?.userId ?? userId ?? '',
-      quantity: initialValues?.quantity?.toString() ?? '',
-      price: initialValues?.price?.toString() ?? '',
-      category: initialValues?.category ?? '',
+      product_id: initialValues?.product_id ?? "",
+      title: initialValues?.title ?? "",
+      description: initialValues?.description ?? "",
+      image_url: initialValues?.image_url ?? "",
+      userId: initialValues?.userId ?? userId ?? "",
+      quantity: initialValues?.quantity?.toString() ?? "",
+      price: initialValues?.price?.toString() ?? "",
+      category: initialValues?.category ?? "",
     },
   };
   const isEditMode = !!initialValues;
@@ -48,7 +48,7 @@ export default function ProductForm({
         return <p role="alert" className={styles.form_error_text}>You must be logged in to create a product.</p>;
     }
     return (
-        <form action={formAction} className={`${styles.form}`} aria-label={isEditMode ? 'Edit Product Form' : 'Create Product Form'}>
+        <form action={formAction} className={`${styles.form}`} aria-label={isEditMode ? "Edit Product Form" : "Create Product Form"}>
             <label className={`${styles.form_label}`} htmlFor="title">Name
                 <input className={`${styles.form_input}`}
                     type="text" id="title" name="title" autoComplete="false" required aria-required="true"
@@ -78,7 +78,7 @@ export default function ProductForm({
             <input
                 type="hidden"
                 name="image_url"
-                value={state?.values?.image_url ?? initialValues?.image_url ?? ''}
+                value={state?.values?.image_url ?? initialValues?.image_url ?? ""}
             />
             <label className={`${styles.form_label}`} htmlFor="image_file">
                 <input type="file" id="image_file"
@@ -109,11 +109,11 @@ export default function ProductForm({
         Category
         <select
           className={`${styles.form_input}`}
-          key={state?.values?.category ?? initialValues?.category ?? ''}
+          key={state?.values?.category ?? initialValues?.category ?? ""}
           id="category"
           name="category"
           defaultValue={
-            state?.values?.category ?? initialValues?.category ?? ''
+            state?.values?.category ?? initialValues?.category ?? ""
           }
           // Category selection is required (matches backend enum validation)
           required
@@ -145,10 +145,10 @@ export default function ProductForm({
       <button
         type="submit"
         name="_action"
-        value={isEditMode ? 'update' : 'create'}
+        value={isEditMode ? "update" : "create"}
         
       >
-        {isEditMode ? 'Update Product' : 'Create Product'}
+        {isEditMode ? "Update Product" : "Create Product"}
       </button>
 
       {isEditMode && (
@@ -158,14 +158,14 @@ export default function ProductForm({
       )}
             <button type="button" name="_action" value="link">
                 <Link href="/products">
-                    {'Go Back'}
+                    {"Go Back"}
                 </Link>
             </button>            
             </div>
         <div
         className={styles.form_error}
-        role={hasMessage ? (isSuccess ? 'status' : 'alert') : undefined}
-        aria-live={hasMessage ? (isSuccess ? 'polite' : 'assertive') : undefined}
+        role={hasMessage ? (isSuccess ? "status" : "alert") : undefined}
+        aria-live={hasMessage ? (isSuccess ? "polite" : "assertive") : undefined}
         aria-atomic={hasMessage ? true : undefined}
         >
         {hasMessage && (

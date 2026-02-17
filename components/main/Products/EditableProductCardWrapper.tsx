@@ -1,7 +1,7 @@
-import { fetchProductData } from '@/app/(main)/lib/data';
-import { Product, ProductAverageRating } from '@/app/(main)/lib/definitions';
-import ProductCard from './ProductCard';
-import Link from 'next/link';
+import { fetchProductData } from "@/app/(main)/lib/data";
+import { Product, ProductAverageRating } from "@/app/(main)/lib/definitions";
+import ProductCard from "./ProductCard";
+import Link from "next/link";
 
 type EditableProductCardWrapperProps = {
   products?: Product[];
@@ -26,7 +26,7 @@ export default async function EditableProductCardWrapper({
           const rating = productRatings?.find((r) => r.product_id === product.product_id);
           return (
             <li key={product.product_id}>
-              <Link href={`/products/edit/${product.product_id}`} aria-label={`Edit ${product.title || 'product'}`}>
+              <Link href={`/products/edit/${product.product_id}`} aria-label={`Edit ${product.title || "product"}`}>
                 <ProductCard disableTitleLink product={product} average_rating={rating?.average_rating} />
               </Link>
             </li>

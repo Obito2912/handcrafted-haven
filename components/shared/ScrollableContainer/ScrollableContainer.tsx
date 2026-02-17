@@ -1,4 +1,4 @@
-import './ScrollableContainer.css';
+import "./ScrollableContainer.css";
 
 type ScrollableContainerProps = {
     children: React.ReactNode;

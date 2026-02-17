@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useState, useCallback } from 'react';
-import { ProductCategories } from '@/app/(main)/lib/definitions';
-import './Filter.css';
+import { useRouter } from "next/navigation";
+import { useState, useCallback } from "react";
+import { ProductCategories } from "@/app/(main)/lib/definitions";
+import "./Filter.css";
 
 type FilterProps = {
   query?: string;
@@ -23,11 +23,11 @@ export default function ProductFilters({
   const router = useRouter();
 
   const [filters, setFilters] = useState({
-    q: query || '',
-    minPrice: minPrice || '',
-    maxPrice: maxPrice || '',
-    category: category || '',
-    rating: rating || '',
+    q: query || "",
+    minPrice: minPrice || "",
+    maxPrice: maxPrice || "",
+    category: category || "",
+    rating: rating || "",
   });
 
   const handleFilterChange = useCallback((key: string, value: string) => {
@@ -41,11 +41,11 @@ export default function ProductFilters({
     const params = new URLSearchParams();
 
     // Add non-empty values
-    if (filters.q) params.set('q', filters.q);
-    if (filters.minPrice) params.set('minPrice', filters.minPrice);
-    if (filters.maxPrice) params.set('maxPrice', filters.maxPrice);
-    if (filters.category) params.set('category', filters.category);
-    if (filters.rating) params.set('rating', filters.rating);
+    if (filters.q) params.set("q", filters.q);
+    if (filters.minPrice) params.set("minPrice", filters.minPrice);
+    if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
+    if (filters.category) params.set("category", filters.category);
+    if (filters.rating) params.set("rating", filters.rating);
 
     // Navigate with new search params (no page refresh!)
     router.push(`/?${params.toString()}`);
@@ -53,13 +53,13 @@ export default function ProductFilters({
 
   const handleClear = () => {
     setFilters({
-      q: '',
-      minPrice: '',
-      maxPrice: '',
-      category: '',
-      rating: '',
+      q: "",
+      minPrice: "",
+      maxPrice: "",
+      category: "",
+      rating: "",
     });
-    router.push('/'); // Clear all filters
+    router.push("/"); // Clear all filters
   };
 
   return (
@@ -75,7 +75,7 @@ export default function ProductFilters({
                 name="q"
                 type="text"
                 value={filters.q}
-                onChange={(e) => handleFilterChange('q', e.target.value)}
+                onChange={(e) => handleFilterChange("q", e.target.value)}
                 placeholder="Search products..."
               />
             </label>
@@ -89,7 +89,7 @@ export default function ProductFilters({
                 min="0"
                 step="0.01"
                 value={filters.minPrice}
-                onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+                onChange={(e) => handleFilterChange("minPrice", e.target.value)}
                 aria-label='Minimum price in dollars'
               />
             </label>
@@ -103,7 +103,7 @@ export default function ProductFilters({
                 min="0"
                 step="0.01"
                 value={filters.maxPrice}
-                onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
                 aria-label='Maximum price in dollars'
               />
             </label>
@@ -114,7 +114,7 @@ export default function ProductFilters({
                 id="rating"
                 name="rating"
                 value={filters.rating}
-                onChange={(e) => handleFilterChange('rating', e.target.value)}
+                onChange={(e) => handleFilterChange("rating", e.target.value)}
               >
                 <option value="">All Ratings</option>
                 <option value="5">5★</option>
@@ -131,7 +131,7 @@ export default function ProductFilters({
                 id="category"
                 name="category"
                 value={filters.category}
-                onChange={(e) => handleFilterChange('category', e.target.value)}
+                onChange={(e) => handleFilterChange("category", e.target.value)}
               >
                 <option value="">All Categories</option>
                 {ProductCategories.map((cat) => (

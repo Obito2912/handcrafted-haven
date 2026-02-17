@@ -3,7 +3,7 @@ import nextVitals from "eslint-config-next/core-web-vitals";
 
 /**
  * ESLint configuration for the project
- * - Enforces single quotes instead of double quotes
+ * - Enforces double quotes instead of single quotes
  * - Uses Next.js recommended rules
  * - Defines files and folders to ignore
  */
@@ -11,12 +11,12 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   {
     rules: {
-      // Require single quotes instead of double quotes
-      // avoidEscape: allows double quotes if it avoids escaping
+      // Require double quotes instead of single quotes
+      // avoidEscape: allows single quotes if it avoids escaping
       // allowTemplateLiterals: allows template literals (backticks)
       quotes: [
         "error",
-        "single",
+        "double",
         { avoidEscape: true, allowTemplateLiterals: true },
       ],
     },

@@ -1,6 +1,6 @@
-import Image from 'next/image';
-import './ProfileCard.css';
-import { UserProfileValue } from '@/app/(main)/lib/schemas/profileSchemas';
+import Image from "next/image";
+import "./ProfileCard.css";
+import { UserProfileValue } from "@/app/(main)/lib/schemas/profileSchemas";
 
 export default function ProfileCard(userProfile: UserProfileValue) {
     return (

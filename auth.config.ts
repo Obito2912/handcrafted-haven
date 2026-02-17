@@ -1,13 +1,13 @@
-import type { NextAuthConfig } from 'next-auth';
+import type { NextAuthConfig } from "next-auth";
 
 export const authConfig = {
   pages: {
-    signIn: '/login',
+    signIn: "/login",
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      if (nextUrl.pathname.startsWith('/profile')) {
+      if (nextUrl.pathname.startsWith("/profile")) {
         return isLoggedIn;
         // if (nextUrl.pathname.startsWith('/profile')) {
         //   if (isLoggedIn) return true;

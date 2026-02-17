@@ -1,21 +1,21 @@
 // app/cart/page.tsx
-import { auth } from '@/auth';
-import { redirect } from 'next/dist/client/components/navigation';
-import ScrollableContainer from '@/components/shared/ScrollableContainer/ScrollableContainer';
-import CartPageContent from '@/components/cart/CartPageContent/CartPageContent';
-import styles from './cart.module.css';
-import { Metadata } from 'next';
+import { auth } from "@/auth";
+import { redirect } from "next/dist/client/components/navigation";
+import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
+import CartPageContent from "@/components/cart/CartPageContent/CartPageContent";
+import styles from "./cart.module.css";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Shopping Cart',
-  description: 'View and manage the items in your shopping cart at Handcrafted Haven.',
+  title: "Shopping Cart",
+  description: "View and manage the items in your shopping cart at Handcrafted Haven.",
 }
 
 export default async function Cart() {
   const session = await auth();
 
   if (!session?.user?.id) {
-    redirect('/login');
+    redirect("/login");
   }
 
   return (

@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import './SupportContactUs.css';
+import Image from "next/image";
+import "./SupportContactUs.css";
 
 export default function SupportContactUs() {
     return (

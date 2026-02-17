@@ -1,32 +1,32 @@
-'use server';
+"use server";
 
-import { z } from 'zod';
-import { redirect } from 'next/navigation';
-import postgres from 'postgres';
-import { revalidatePath } from 'next/cache';
-import bcrypt from 'bcrypt';
-import { auth, signIn } from '@/auth';
-import { AuthError } from 'next-auth';
-import { SignupFormSchema, AuthFormState } from './schemas/authSchemas';
-import { ProfileSchema, ProfileFormState } from './schemas/profileSchemas';
+import { z } from "zod";
+import { redirect } from "next/navigation";
+import postgres from "postgres";
+import { revalidatePath } from "next/cache";
+import bcrypt from "bcrypt";
+import { auth, signIn } from "@/auth";
+import { AuthError } from "next-auth";
+import { SignupFormSchema, AuthFormState } from "./schemas/authSchemas";
+import { ProfileSchema, ProfileFormState } from "./schemas/profileSchemas";
 import {
   CreateProductSchema,
   ProductFormState,
   ProductSchema,
   UpdateProductSchema,
-} from './schemas/productSchema';
-import { pinata } from '@/components/utils/pinataConfig';
-import { ProductRating, RateProductResult } from './definitions';
+} from "./schemas/productSchema";
+import { pinata } from "@/components/utils/pinataConfig";
+import { ProductRating, RateProductResult } from "./definitions";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 export async function handleAuth(
   prevState: AuthFormState | undefined,
   formData: FormData,
 ) {
-  const mode = formData.get('mode');
+  const mode = formData.get("mode");
 
-  if (mode === 'signup') {
+  if (mode === "signup") {
     return await createUserProfile(prevState, formData);
   } else {
     return await authenticate(formData);
@@ -37,9 +37,9 @@ async function createUserProfile(
   formData: FormData,
 ) {
   const validatedFields = SignupFormSchema.safeParse({
-    name: formData.get('name'),
-    email: formData.get('email'),
-    password: formData.get('password'),
+    name: formData.get("name"),
+    email: formData.get("email"),
+    password: formData.get("password"),
   });
 
   if (!validatedFields.success) {
@@ -47,8 +47,8 @@ async function createUserProfile(
       errors: z.prettifyError(validatedFields.error),
       message: z.prettifyError(validatedFields.error),
       values: {
-        name: formData.get('name')?.toString(),
-        email: formData.get('email')?.toString(),
+        name: formData.get("name")?.toString(),
+        email: formData.get("email")?.toString(),
         // Don't include password for security
       },
     };
@@ -56,7 +56,7 @@ async function createUserProfile(
 
   const { name, email, password } = validatedFields.data;
   const passwordHash = await bcrypt.hash(password, 10);
-  const date = new Date().toISOString().split('T')[0];
+  const date = new Date().toISOString().split("T")[0];
   try {
     const [user] = await sql`
             INSERT INTO users (email, password_hash, created_at)
@@ -69,27 +69,27 @@ async function createUserProfile(
             VALUES (${user.id}, ${name}, ${date})
         `;
   } catch (error) {
-    console.error('Error creating user:', error);
+    console.error("Error creating user:", error);
     return {
-      message: 'Error creating user. Please try again.',
+      message: "Error creating user. Please try again.",
     };
   }
 
-  revalidatePath('/login');
-  redirect('/login');
+  revalidatePath("/login");
+  redirect("/login");
 }
 
 async function authenticate(formData: FormData) {
-  console.log('authenticate called');
+  console.log("authenticate called");
   try {
-    await signIn('credentials', formData, { redirectTo: '/' });
+    await signIn("credentials", formData, { redirectTo: "/" });
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
-        case 'CredentialsSignin':
-          return { message: 'Invalid credentials.' };
+        case "CredentialsSignin":
+          return { message: "Invalid credentials." };
         default:
-          return { message: 'Something went wrong.' };
+          return { message: "Something went wrong." };
       }
     }
 
@@ -103,13 +103,13 @@ export async function updateUserProfile(
   formData: FormData,
 ): Promise<ProfileFormState> {
   const validatedFields = ProfileSchema.safeParse({
-    user_id: formData.get('user_id')?.toString(),
-    name: formData.get('name'),
-    age: formData.get('age'),
-    gender: formData.get('gender'),
-    bio: formData.get('bio'),
-    image_url: formData.get('image_url'),
-    user_type: formData.get('user_type'),
+    user_id: formData.get("user_id")?.toString(),
+    name: formData.get("name"),
+    age: formData.get("age"),
+    gender: formData.get("gender"),
+    bio: formData.get("bio"),
+    image_url: formData.get("image_url"),
+    user_type: formData.get("user_type"),
   });
 
   if (!validatedFields.success) {
@@ -118,20 +118,20 @@ export async function updateUserProfile(
       message: z.prettifyError(validatedFields.error),
       success: false,
       values: {
-        user_id: formData.get('user_id')?.toString(),
-        name: formData.get('name')?.toString(),
-        age: formData.get('age')?.toString(),
-        gender: formData.get('gender')?.toString(),
-        bio: formData.get('bio')?.toString(),
-        image_url: formData.get('image_url')?.toString(),
-        user_type: formData.get('user_type')?.toString(),
+        user_id: formData.get("user_id")?.toString(),
+        name: formData.get("name")?.toString(),
+        age: formData.get("age")?.toString(),
+        gender: formData.get("gender")?.toString(),
+        bio: formData.get("bio")?.toString(),
+        image_url: formData.get("image_url")?.toString(),
+        user_type: formData.get("user_type")?.toString(),
       },
     };
   }
 
   const { user_id, name, age, gender, bio, image_url, user_type } =
     validatedFields.data;
-  const date = new Date().toISOString().split('T')[0];
+  const date = new Date().toISOString().split("T")[0];
   // console.log("UPDATE values:", {
   //   user_id,
   //   name,
@@ -154,26 +154,26 @@ export async function updateUserProfile(
                 user_type = ${user_type}
             WHERE user_id = ${user_id}
         `;
-    revalidatePath('/(main)', 'layout');
+    revalidatePath("/(main)", "layout");
   } catch (error) {
-    console.error('Error updating user:', error);
+    console.error("Error updating user:", error);
     return {
-      message: 'Error updating user. Please try again.',
+      message: "Error updating user. Please try again.",
       success: false,
     };
   }
 
   return {
-    message: 'Profile updated successfully.',
+    message: "Profile updated successfully.",
     success: true,
     values: {
-      user_id: formData.get('user_id')?.toString(),
-      name: formData.get('name')?.toString(),
-      age: formData.get('age')?.toString(),
-      gender: formData.get('gender')?.toString(),
-      bio: formData.get('bio')?.toString(),
-      image_url: formData.get('image_url')?.toString(),
-      user_type: formData.get('user_type')?.toString(),
+      user_id: formData.get("user_id")?.toString(),
+      name: formData.get("name")?.toString(),
+      age: formData.get("age")?.toString(),
+      gender: formData.get("gender")?.toString(),
+      bio: formData.get("bio")?.toString(),
+      image_url: formData.get("image_url")?.toString(),
+      user_type: formData.get("user_type")?.toString(),
     },
   };
 }
@@ -195,8 +195,8 @@ export async function createProduct(
   //   category: formData.get("category"),
   // });
 
-  const imageFile = formData.get('image_file') as File | null;
-  let imageUrl = '';
+  const imageFile = formData.get("image_file") as File | null;
+  let imageUrl = "";
 
   if (imageFile) {
     try {
@@ -205,49 +205,49 @@ export async function createProduct(
       imageUrl = uploadResult;
     } catch (error) {
       return {
-        errors: 'Error uploading image. Please try again.',
-        message: 'Error uploading image. Please try again.',
+        errors: "Error uploading image. Please try again.",
+        message: "Error uploading image. Please try again.",
         values: {
-          title: formData.get('title')?.toString(),
-          description: formData.get('description')?.toString(),
-          image_url: 'test.jpg', //formData.get("image_url")?.toString(),
-          userId: formData.get('user_id')?.toString(),
-          quantity: formData.get('quantity')?.toString(),
-          price: formData.get('price')?.toString(),
-          category: formData.get('category')?.toString(),
+          title: formData.get("title")?.toString(),
+          description: formData.get("description")?.toString(),
+          image_url: "test.jpg", //formData.get("image_url")?.toString(),
+          userId: formData.get("user_id")?.toString(),
+          quantity: formData.get("quantity")?.toString(),
+          price: formData.get("price")?.toString(),
+          category: formData.get("category")?.toString(),
         },
       };
     }
   }
   const validatedFields = CreateProductSchema.safeParse({
-    title: formData.get('title'),
-    description: formData.get('description'),
+    title: formData.get("title"),
+    description: formData.get("description"),
     image_url: imageUrl,
-    userId: formData.get('user_id')?.toString(),
-    quantity: formData.get('quantity')
-      ? Number(formData.get('quantity'))
+    userId: formData.get("user_id")?.toString(),
+    quantity: formData.get("quantity")
+      ? Number(formData.get("quantity"))
       : undefined,
-    price: formData.get('price') ? Number(formData.get('price')) : undefined,
-    category: formData.get('category'),
+    price: formData.get("price") ? Number(formData.get("price")) : undefined,
+    category: formData.get("category"),
   });
   if (!validatedFields.success) {
     return {
       errors: z.prettifyError(validatedFields.error),
       message: z.prettifyError(validatedFields.error),
       values: {
-        title: formData.get('title')?.toString(),
-        description: formData.get('description')?.toString(),
+        title: formData.get("title")?.toString(),
+        description: formData.get("description")?.toString(),
         image_url: imageUrl,
-        userId: formData.get('user_id')?.toString(),
-        quantity: formData.get('quantity')?.toString(),
-        price: formData.get('price')?.toString(),
-        category: formData.get('category')?.toString(),
+        userId: formData.get("user_id")?.toString(),
+        quantity: formData.get("quantity")?.toString(),
+        price: formData.get("price")?.toString(),
+        category: formData.get("category")?.toString(),
       },
     };
   }
   const { title, description, image_url, userId, quantity, price, category } =
     validatedFields.data;
-  const date = new Date().toISOString().split('T')[0];
+  const date = new Date().toISOString().split("T")[0];
   try {
     const [product] = await sql`
             INSERT INTO products (title, description, image_url, user_id, quantity, price, category, created_at)
@@ -262,7 +262,7 @@ export async function createProduct(
               category;
         `;
     return {
-      message: 'Product created successfully.',
+      message: "Product created successfully.",
       success: true,
       values: {
         product_id: product.product_id,
@@ -276,17 +276,17 @@ export async function createProduct(
       },
     };
   } catch (error) {
-    console.error('Error creating product:', error);
+    console.error("Error creating product:", error);
     return {
-      message: 'Error creating product. Please try again.',
+      message: "Error creating product. Please try again.",
       values: {
-        title: formData.get('title')?.toString(),
-        description: formData.get('description')?.toString(),
-        image_url: formData.get('image_url')?.toString(),
-        userId: formData.get('user_id')?.toString(),
-        quantity: formData.get('quantity')?.toString(),
-        price: formData.get('price')?.toString(),
-        category: formData.get('category')?.toString(),
+        title: formData.get("title")?.toString(),
+        description: formData.get("description")?.toString(),
+        image_url: formData.get("image_url")?.toString(),
+        userId: formData.get("user_id")?.toString(),
+        quantity: formData.get("quantity")?.toString(),
+        price: formData.get("price")?.toString(),
+        category: formData.get("category")?.toString(),
       },
     };
   }
@@ -297,14 +297,14 @@ export async function updateOrDeleteProduct(
   prevState: ProductFormState | undefined,
   formData: FormData,
 ): Promise<ProductFormState> {
-  const intent = formData.get('_action');
-  if (intent === 'update') {
+  const intent = formData.get("_action");
+  if (intent === "update") {
     return await updateProduct(prevState, formData);
-  } else if (intent === 'delete') {
-    const productId = formData.get('product_id')?.toString();
+  } else if (intent === "delete") {
+    const productId = formData.get("product_id")?.toString();
     if (!productId) {
       return {
-        message: 'Product ID is required for deletion.',
+        message: "Product ID is required for deletion.",
         success: false,
       };
     }
@@ -316,8 +316,8 @@ async function updateProduct(
   prevState: ProductFormState | undefined,
   formData: FormData,
 ): Promise<ProductFormState> {
-  const existingUrl = formData.get('image_url')?.toString() || null;
-  const imageFile = formData.get('image_file') as File | null;
+  const existingUrl = formData.get("image_url")?.toString() || null;
+  const imageFile = formData.get("image_file") as File | null;
   let imageUrl = existingUrl;
   if (imageFile && imageFile.size > 0) {
     try {
@@ -326,32 +326,32 @@ async function updateProduct(
       imageUrl = uploadResult;
     } catch (error) {
       return {
-        errors: 'Error uploading image. Please try again.',
-        message: 'Error uploading image. Please try again.',
+        errors: "Error uploading image. Please try again.",
+        message: "Error uploading image. Please try again.",
         values: {
-          product_id: formData.get('product_id')?.toString(),
-          title: formData.get('title')?.toString(),
-          description: formData.get('description')?.toString(),
+          product_id: formData.get("product_id")?.toString(),
+          title: formData.get("title")?.toString(),
+          description: formData.get("description")?.toString(),
           image_url: imageUrl,
-          userId: formData.get('user_id')?.toString(),
-          quantity: formData.get('quantity')?.toString(),
-          price: formData.get('price')?.toString(),
-          category: formData.get('category')?.toString(),
+          userId: formData.get("user_id")?.toString(),
+          quantity: formData.get("quantity")?.toString(),
+          price: formData.get("price")?.toString(),
+          category: formData.get("category")?.toString(),
         },
       };
     }
   }
   const validatedFields = UpdateProductSchema.safeParse({
-    product_id: formData.get('product_id')?.toString(),
-    title: formData.get('title'),
-    description: formData.get('description'),
+    product_id: formData.get("product_id")?.toString(),
+    title: formData.get("title"),
+    description: formData.get("description"),
     image_url: imageUrl,
-    userId: formData.get('user_id')?.toString(),
-    quantity: formData.get('quantity')
-      ? Number(formData.get('quantity'))
+    userId: formData.get("user_id")?.toString(),
+    quantity: formData.get("quantity")
+      ? Number(formData.get("quantity"))
       : undefined,
-    price: formData.get('price') ? Number(formData.get('price')) : undefined,
-    category: formData.get('category'),
+    price: formData.get("price") ? Number(formData.get("price")) : undefined,
+    category: formData.get("category"),
   });
   // console.log("updateProduct called with:", {
   //   product_id: formData.get("product_id")?.toString(),
@@ -370,14 +370,14 @@ async function updateProduct(
       errors: z.prettifyError(validatedFields.error),
       message: z.prettifyError(validatedFields.error),
       values: {
-        product_id: formData.get('product_id')?.toString(),
-        title: formData.get('title')?.toString(),
-        description: formData.get('description')?.toString(),
+        product_id: formData.get("product_id")?.toString(),
+        title: formData.get("title")?.toString(),
+        description: formData.get("description")?.toString(),
         image_url: imageUrl,
-        userId: formData.get('user_id')?.toString(),
-        quantity: formData.get('quantity')?.toString(),
-        price: formData.get('price')?.toString(),
-        category: formData.get('category')?.toString(),
+        userId: formData.get("user_id")?.toString(),
+        quantity: formData.get("quantity")?.toString(),
+        price: formData.get("price")?.toString(),
+        category: formData.get("category")?.toString(),
       },
       success: false,
     };
@@ -392,7 +392,7 @@ async function updateProduct(
     price,
     category,
   } = validatedFields.data;
-  const date = new Date().toISOString().split('T')[0];
+  const date = new Date().toISOString().split("T")[0];
   try {
     const [product] = await sql`
             UPDATE products SET title = ${title}, description = ${description}, image_url = ${image_url}, user_id = ${userId}, quantity = ${quantity}, price = ${price}, category = ${category}, updated_at = ${date}
@@ -407,7 +407,7 @@ async function updateProduct(
               category;
         `;
     return {
-      message: 'Product updated successfully.',
+      message: "Product updated successfully.",
       success: true,
       values: {
         product_id: product.product_id,
@@ -421,18 +421,18 @@ async function updateProduct(
       },
     };
   } catch (error) {
-    console.error('Error updating product:', error);
+    console.error("Error updating product:", error);
     return {
-      message: 'Error updating product. Please try again.',
+      message: "Error updating product. Please try again.",
       values: {
-        product_id: formData.get('product_id')?.toString(),
-        title: formData.get('title')?.toString(),
-        description: formData.get('description')?.toString(),
+        product_id: formData.get("product_id")?.toString(),
+        title: formData.get("title")?.toString(),
+        description: formData.get("description")?.toString(),
         image_url: imageUrl,
-        userId: formData.get('user_id')?.toString(),
-        quantity: formData.get('quantity')?.toString(),
-        price: formData.get('price')?.toString(),
-        category: formData.get('category')?.toString(),
+        userId: formData.get("user_id")?.toString(),
+        quantity: formData.get("quantity")?.toString(),
+        price: formData.get("price")?.toString(),
+        category: formData.get("category")?.toString(),
       },
       success: false,
     };
@@ -444,10 +444,10 @@ async function deleteProduct(
   prevState: ProductFormState | undefined,
   formData: FormData,
 ): Promise<ProductFormState> {
-  const productId = formData.get('product_id')?.toString();
+  const productId = formData.get("product_id")?.toString();
   if (!productId) {
     return {
-      message: 'Product ID is required for deletion.',
+      message: "Product ID is required for deletion.",
       success: false,
       values: {},
     };
@@ -456,21 +456,21 @@ async function deleteProduct(
     await sql`
             DELETE FROM products WHERE product_id = ${productId}`;
 
-    revalidatePath('/products');
-    redirect('/products');
+    revalidatePath("/products");
+    redirect("/products");
   } catch (error) {
-    console.error('Error deleting product:', error);
+    console.error("Error deleting product:", error);
     return {
-      message: 'Error deleting product. Please try again.',
+      message: "Error deleting product. Please try again.",
       values: {
-        product_id: formData.get('product_id')?.toString(),
-        title: formData.get('title')?.toString(),
-        description: formData.get('description')?.toString(),
-        image_url: formData.get('image_url')?.toString(),
-        userId: formData.get('user_id')?.toString(),
-        quantity: formData.get('quantity')?.toString(),
-        price: formData.get('price')?.toString(),
-        category: formData.get('category')?.toString(),
+        product_id: formData.get("product_id")?.toString(),
+        title: formData.get("title")?.toString(),
+        description: formData.get("description")?.toString(),
+        image_url: formData.get("image_url")?.toString(),
+        userId: formData.get("user_id")?.toString(),
+        quantity: formData.get("quantity")?.toString(),
+        price: formData.get("price")?.toString(),
+        category: formData.get("category")?.toString(),
       },
       success: false,
     };
@@ -486,13 +486,13 @@ async function uploadImageToPinata(file: File): Promise<string> {
     // data.set("file", file);
     const uploadData = await pinata.upload.public
       .file(file)
-      .group(process.env.PINATA_GROUP_ID || 'handcrafted-haven-group');
+      .group(process.env.PINATA_GROUP_ID || "handcrafted-haven-group");
     const cid = (uploadData as any).cid ?? (uploadData as any).IpfsHash; // Adjust based on actual response structure
     const imageUrl = `https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`;
     return imageUrl;
   } catch (error) {
-    console.error('Error uploading file to Pinata:', error);
-    throw new Error('Failed to upload image. Please try again.');
+    console.error("Error uploading file to Pinata:", error);
+    throw new Error("Failed to upload image. Please try again.");
   }
 }
 
@@ -504,13 +504,13 @@ export async function rateProduct(data: {
   const userId = session?.user?.id;
 
   if (!userId) {
-    return { success: false, message: 'You must be logged in to rate.' };
+    return { success: false, message: "You must be logged in to rate." };
   }
 
   // Normalize clicks/inputs and keep the DB constraint intact.
   const rating = Math.round(Number(data.rating));
   if (!Number.isFinite(rating) || rating < 1 || rating > 5) {
-    return { success: false, message: 'Rating must be between 1 and 5.' };
+    return { success: false, message: "Rating must be between 1 and 5." };
   }
 
   try {
@@ -522,12 +522,12 @@ export async function rateProduct(data: {
       DO UPDATE SET rating = EXCLUDED.rating
     `;
 
-    revalidatePath('/');
+    revalidatePath("/");
     revalidatePath(`/products/view/${data.productId}`);
-    return { success: true, message: 'Thanks for your rating!', rating };
+    return { success: true, message: "Thanks for your rating!", rating };
   } catch (error) {
-    console.error('Error saving rating:', error);
-    return { success: false, message: 'Unable to save rating.' };
+    console.error("Error saving rating:", error);
+    return { success: false, message: "Unable to save rating." };
   }
 }
 
@@ -548,14 +548,14 @@ export async function rateProductFromForm(
 //   review: formData.get("review")?.toString(),
 //   user_id: formData.get("user_id")?.toString(),
 // });
-  const productId = formData.get('product_id')?.toString();
-  const ratingValue = Number(formData.get('rating'));
+  const productId = formData.get("product_id")?.toString();
+  const ratingValue = Number(formData.get("rating"));
   const rating = Math.round(ratingValue);
-  const review = formData.get('review')?.toString() ?? null;
+  const review = formData.get("review")?.toString() ?? null;
   
   if (!userId) {
     return {
-      message: 'You must be logged in to rate.',
+      message: "You must be logged in to rate.",
       success: false,
       rating: rating ?? prevState.rating ?? null,
       review: review ?? prevState.review ?? null,
@@ -566,7 +566,7 @@ export async function rateProductFromForm(
 
   if (!productId) {
     return {
-      message: 'Missing product.',
+      message: "Missing product.",
       success: false,
       rating: rating ?? prevState.rating ?? null,
       review: review ?? prevState.review ?? null,
@@ -575,7 +575,7 @@ export async function rateProductFromForm(
 
   if (!Number.isFinite(rating) || rating < 1 || rating > 5) {
     return {
-      message: 'Rating must be between 1 and 5.',
+      message: "Rating must be between 1 and 5.",
       success: false,
       rating: rating ?? prevState.rating ?? null,
       review: review ?? prevState.review ?? null,
@@ -591,20 +591,20 @@ export async function rateProductFromForm(
       DO UPDATE SET rating = EXCLUDED.rating, review = EXCLUDED.review
     `;
 
-    revalidatePath('/');
+    revalidatePath("/");
     revalidatePath(`/products/view/${productId}`);
     revalidatePath(`/products/view/${productId}/review`);
 
     return {
-      message: 'Review saved.',
+      message: "Review saved.",
       success: true,
       rating,
       review,
     };
   } catch (error) {
-    console.error('Error saving rating:', error);
+    console.error("Error saving rating:", error);
     return {
-      message: 'Unable to save rating.',
+      message: "Unable to save rating.",
       success: false,
       rating: rating ?? prevState.rating ?? null,
       review: review ?? prevState.review ?? null,
@@ -615,8 +615,8 @@ export async function toggleFavoriteAction(
   prevState: { favorite: boolean; message: string | null },
   formData: FormData,  
 ): Promise<{ favorite: boolean; message: string | null }> {
-  const productId = formData.get('product_id')?.toString();
-  const userId = formData.get('user_id')?.toString();
+  const productId = formData.get("product_id")?.toString();
+  const userId = formData.get("user_id")?.toString();
   const [{ count }] = await sql<  { count: number }[]>`
         SELECT count(*) :: int as count
          FROM User_favorite_products where product_id = ${productId}

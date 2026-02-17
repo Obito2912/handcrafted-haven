@@ -1,29 +1,29 @@
-import Link from 'next/link';
-import './SupportCard.css';
-import Image from 'next/image';
+import Link from "next/link";
+import "./SupportCard.css";
+import Image from "next/image";
 
 export default function SupportCard() {
     //Support array
     const support = [
         {
-            title: 'Orders & Shipping',
-            description: 'Track your order, or get help with your shipping.',
-            icon: '/shipping-icon.png'
+            title: "Orders & Shipping",
+            description: "Track your order, or get help with your shipping.",
+            icon: "/shipping-icon.png"
         },
         {
-            title: 'Returns & Refunds',
-            description: 'Questions about returns or refunds? We can help.',
-            icon: '/return-package-icon.png'
+            title: "Returns & Refunds",
+            description: "Questions about returns or refunds? We can help.",
+            icon: "/return-package-icon.png"
         },
         {
-            title: 'Account & Profile',
-            description: 'Learn how to manage your settings and profile information.',
-            icon: '/account-icon.png'
+            title: "Account & Profile",
+            description: "Learn how to manage your settings and profile information.",
+            icon: "/account-icon.png"
         },
         {
-            title: 'Artisan Resources',
-            description: 'Resources and support for our artisan community.',
-            icon: '/paint-palette-icon.png'
+            title: "Artisan Resources",
+            description: "Resources and support for our artisan community.",
+            icon: "/paint-palette-icon.png"
         },
 
     ];

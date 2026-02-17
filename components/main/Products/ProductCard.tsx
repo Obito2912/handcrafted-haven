@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useActionState } from 'react';
-import { Product } from '@/app/(main)/lib/definitions';
-import { toggleFavoriteAction } from '@/app/(main)/lib/actions';
-import { useCart } from '@/app/context/CartContext';
-import Image from 'next/image';
-import Link from 'next/link';
-import './ProductCard.css';
-import RatingStars from '@/components/shared/RatingStars/RatingStars';
+import { useActionState } from "react";
+import { Product } from "@/app/(main)/lib/definitions";
+import { toggleFavoriteAction } from "@/app/(main)/lib/actions";
+import { useCart } from "@/app/context/CartContext";
+import Image from "next/image";
+import Link from "next/link";
+import "./ProductCard.css";
+import RatingStars from "@/components/shared/RatingStars/RatingStars";
 
 type ProductCardProps = {
   product: Product;
@@ -55,7 +55,7 @@ export default function ProductCard({
               aria-pressed={state.favorite}
             >
               <i
-                className={`fa-${state.favorite ? 'solid' : 'regular'} fa-heart`}
+                className={`fa-${state.favorite ? "solid" : "regular"} fa-heart`}
                 aria-hidden="true"
               ></i>
             </button>
@@ -77,11 +77,11 @@ export default function ProductCard({
           // Product is considered low stock if quantity is less than 11
           // Change text color to red if stock is low, green otherwise
           className="card__product-stock"
-          style={{ color: product.quantity < 11 ? '#ef4444' : '#22c55e' }}
+          style={{ color: product.quantity < 11 ? "#ef4444" : "#22c55e" }}
         >
           {product.quantity > 11
             ? `${product.quantity} left!` // Show message product available
-            : `Only ${product.quantity} left!`}{' '}
+            : `Only ${product.quantity} left!`}{" "}
           {/* Show message low stock */}
         </span>
       </div>

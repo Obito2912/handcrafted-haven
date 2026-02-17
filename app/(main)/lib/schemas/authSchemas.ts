@@ -1,11 +1,11 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 const FormSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters').max(100),
+  name: z.string().min(2, "Name must be at least 2 characters").max(100),
   email: z.email(),
   password: z
     .string()
-    .min(6, 'Password must be at least 6 characters')
+    .min(6, "Password must be at least 6 characters")
     .max(100),
   //   .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
   //   .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
@@ -28,5 +28,5 @@ type FormState<TFields extends string> = {
 };
 
 export type AuthFormState = FormState<
-  'name' | 'email' | 'password'
+  "name" | "email" | "password"
 >;

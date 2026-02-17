@@ -1,11 +1,11 @@
-import ProductForm from '@/components/main/Products/ProductForm'
-import { getLoggedInInfo } from '@/app/(main)/lib/session';
-import { fetchProductById } from '@/app/(main)/lib/data';
-import ScrollableContainer from '@/components/shared/ScrollableContainer/ScrollableContainer';
-import { redirect } from 'next/navigation';
-import Breadcrumbs from '@/components/shared/Breadcrumbs/Breadcrumbs';
-import { Metadata } from 'next';
-import styles from '../../products.module.css';
+import ProductForm from "@/components/main/Products/ProductForm"
+import { getLoggedInInfo } from "@/app/(main)/lib/session";
+import { fetchProductById } from "@/app/(main)/lib/data";
+import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
+import { redirect } from "next/navigation";
+import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
+import { Metadata } from "next";
+import styles from "../../products.module.css";
 
 export async function generateMetadata(
     props: { params: Promise<{ id: string }> }
@@ -14,8 +14,8 @@ export async function generateMetadata(
     const product = await fetchProductById(params.id);
 
     return {
-        title: product?.title ?? 'Edit Product',
-        description: `Edit the details of your product "${product?.title ?? 'this product'}" in your shop at Handcrafted Haven.`,
+        title: product?.title ?? "Edit Product",
+        description: `Edit the details of your product "${product?.title ?? "this product"}" in your shop at Handcrafted Haven.`,
     };
 }
 
@@ -31,15 +31,15 @@ export default async function EditProduct(
     const product = await fetchProductById(productId);
     if (!product) {
         // return <div>Product not found.</div>;
-        redirect('/products');
+        redirect("/products");
     }
     return (
         <>
         <div className={styles.products__container}>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Home', href: '/' },
-                    { label: 'Manage Shop', href: '/products' },
+                    { label: "Home", href: "/" },
+                    { label: "Manage Shop", href: "/products" },
                     { label: `Edit Product`, href: `/products/edit/${product.product_id}`, active: true },
                 ]}
             />

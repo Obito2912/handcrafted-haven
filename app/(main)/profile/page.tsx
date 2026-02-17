@@ -1,13 +1,13 @@
-import ProfileForm from '@/components/main/ProfileForm/ProfileForm';
-import { fetchUserProfile } from '../lib/data';
-import { getLoggedInInfo } from '../lib/session';
-import ScrollableContainer from '@/components/shared/ScrollableContainer/ScrollableContainer';
-import styles from './profile.module.css';
-import { Metadata } from 'next';
+import ProfileForm from "@/components/main/ProfileForm/ProfileForm";
+import { fetchUserProfile } from "../lib/data";
+import { getLoggedInInfo } from "../lib/session";
+import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
+import styles from "./profile.module.css";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: 'Your Profile',
-    description: 'View and edit your profile information at Handcrafted Haven.',
+    title: "Your Profile",
+    description: "View and edit your profile information at Handcrafted Haven.",
 }
 
 export default async function Profile() {

@@ -1,11 +1,11 @@
-import ScrollableContainer from '@/components/shared/ScrollableContainer/ScrollableContainer';
-import { fetchUserInformation, fetchUserProfile, fetchUserProducts } from '@/app/(main)/lib/data';
-import Breadcrumbs from '@/components/shared/Breadcrumbs/Breadcrumbs';
-import ArtisansDisplay from '@/components/main/Artisans/ArtisansDisplay';
-import ArtisansProductDisplay from '@/components/main/Artisans/ArtisansProductDisplay';
-import styles from '../artisans.module.css';
-import { Metadata } from 'next';
-import { getLoggedInInfo } from '../../lib/session';
+import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
+import { fetchUserInformation, fetchUserProfile, fetchUserProducts } from "@/app/(main)/lib/data";
+import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
+import ArtisansDisplay from "@/components/main/Artisans/ArtisansDisplay";
+import ArtisansProductDisplay from "@/components/main/Artisans/ArtisansProductDisplay";
+import styles from "../artisans.module.css";
+import { Metadata } from "next";
+import { getLoggedInInfo } from "../../lib/session";
 
 export async function generateMetadata(
   props: { params: Promise<{ id: string }> }
@@ -14,8 +14,8 @@ export async function generateMetadata(
   const userProfile = await fetchUserProfile(params.id);
 
   return {
-    title: userProfile?.name ?? 'Artisan',
-    description: `Discover ${userProfile?.name ?? 'this artisan'}'s unique handmade products and craftsmanship at Handcrafted Haven.`,
+    title: userProfile?.name ?? "Artisan",
+    description: `Discover ${userProfile?.name ?? "this artisan"}'s unique handmade products and craftsmanship at Handcrafted Haven.`,
   };
 }
 
@@ -35,9 +35,9 @@ export default async function Artisans(
       <div className={styles.artisans}>
         <Breadcrumbs
           breadcrumbs={[
-            { label: 'Home', href: '/' },
-            { label: 'Artisans', href: '/artisans' },
-            { label: userProfile?.name ?? 'Artisan', href: `/artisans/${params.id}`, active: true },
+            { label: "Home", href: "/" },
+            { label: "Artisans", href: "/artisans" },
+            { label: userProfile?.name ?? "Artisan", href: `/artisans/${params.id}`, active: true },
           ]}
         />
         <ScrollableContainer>

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useCart } from '@/app/context/CartContext';
-import CartItem from '../cartItem/cartItem';
-import CartSummary from '../cartSummary/cartSummary';
-import './CartPageContent.css';
-import Link from 'next/link';
+import { useCart } from "@/app/context/CartContext";
+import CartItem from "../cartItem/cartItem";
+import CartSummary from "../cartSummary/cartSummary";
+import "./CartPageContent.css";
+import Link from "next/link";
 
 export default function CartPageContent({ userId }: { userId: string }) {
     const { items, totalItems, totalPrice, isLoading, clearCart } = useCart();

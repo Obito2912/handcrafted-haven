@@ -1,7 +1,7 @@
-import ProfileCard from './ProfileCard';
-import { UserProfileValue } from '@/app/(main)/lib/schemas/profileSchemas';
-import Link from 'next/dist/client/link';
-import './ProfileCardWrapper.css';
+import ProfileCard from "./ProfileCard";
+import { UserProfileValue } from "@/app/(main)/lib/schemas/profileSchemas";
+import Link from "next/dist/client/link";
+import "./ProfileCardWrapper.css";
 
 type ProfileCardWrapperProps = {
     userProfiles?: UserProfileValue[];

@@ -1,16 +1,16 @@
-import EditableProductCardWrapper from '@/components/main/Products/EditableProductCardWrapper';
-import { getLoggedInInfo } from '../../lib/session';
-import { fetchProductDataByUser, fetchUserFavoriteProducts } from '../../lib/data';
-import ScrollableContainer from '@/components/shared/ScrollableContainer/ScrollableContainer';
-import Link from 'next/link';
-import styles from '../products.module.css';
-import Breadcrumbs from '@/components/shared/Breadcrumbs/Breadcrumbs';
-import { Metadata } from 'next';
-import ProductCardWrapper from '@/components/main/Products/ProductCardWrapper';
+import EditableProductCardWrapper from "@/components/main/Products/EditableProductCardWrapper";
+import { getLoggedInInfo } from "../../lib/session";
+import { fetchProductDataByUser, fetchUserFavoriteProducts } from "../../lib/data";
+import ScrollableContainer from "@/components/shared/ScrollableContainer/ScrollableContainer";
+import Link from "next/link";
+import styles from "../products.module.css";
+import Breadcrumbs from "@/components/shared/Breadcrumbs/Breadcrumbs";
+import { Metadata } from "next";
+import ProductCardWrapper from "@/components/main/Products/ProductCardWrapper";
 
 export const metadata: Metadata = {
-  title: 'My Favorite Products',
-  description: 'View your favorite products at Handcrafted Haven.',
+  title: "My Favorite Products",
+  description: "View your favorite products at Handcrafted Haven.",
 };
 
 export default async function Favorites() {
@@ -23,8 +23,8 @@ export default async function Favorites() {
     <div className={styles.products__container}>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Home', href: '/' },
-          { label: 'My Favorite Products', href: '/products/favorites' },
+          { label: "Home", href: "/" },
+          { label: "My Favorite Products", href: "/products/favorites" },
         ]}
       />
       <div className={styles.products}>

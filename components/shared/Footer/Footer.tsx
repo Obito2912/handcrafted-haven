@@ -1,12 +1,12 @@
-import './Footer.css';
-import Image from 'next/image';
+import "./Footer.css";
+import Image from "next/image";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const socialMediaArr = [
-    { name: 'Facebook', url: 'https://www.facebook.com', icon: 'fa-brands fa-facebook' },
-    { name: 'Instagram', url: 'https://www.instagram.com', icon: 'fa-brands fa-instagram' },
-    { name: 'Twitter', url: 'https://www.twitter.com', icon: 'fa-brands fa-twitter' }
+    { name: "Facebook", url: "https://www.facebook.com", icon: "fa-brands fa-facebook" },
+    { name: "Instagram", url: "https://www.instagram.com", icon: "fa-brands fa-instagram" },
+    { name: "Twitter", url: "https://www.twitter.com", icon: "fa-brands fa-twitter" }
   ];
 
 
